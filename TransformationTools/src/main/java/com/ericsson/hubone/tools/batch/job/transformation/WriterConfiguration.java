@@ -16,7 +16,8 @@ import org.springframework.core.io.FileSystemResource;
 import com.ericsson.hubone.tools.batch.data.ecb.Account;
 import com.ericsson.hubone.tools.batch.data.ecb.EcbRootBean;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
-import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
+import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
+import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
 import com.ericsson.hubone.tools.batch.job.superjob.FilesNames;
 
 @Configuration
@@ -30,7 +31,7 @@ public class WriterConfiguration {
 
 			@Override
 			public void writeHeader(Writer writer) throws IOException {
-				writer.write(Subscription.header());
+				writer.write(SimpleSubscription.header());
 
 			}
 		});
@@ -38,7 +39,30 @@ public class WriterConfiguration {
 		DelimitedLineAggregator<EcbRootBean> delLineAgg = new DelimitedLineAggregator<EcbRootBean>();
 		delLineAgg.setDelimiter("|");		
 		BeanWrapperFieldExtractor<EcbRootBean> fieldExtractor = new BeanWrapperFieldExtractor<EcbRootBean>();
-		fieldExtractor.setNames(Subscription.column);
+		fieldExtractor.setNames(SimpleSubscription.column);
+		delLineAgg.setFieldExtractor(fieldExtractor);
+		writer.setLineAggregator(delLineAgg);
+		return writer;
+
+	}
+	
+	private FlatFileItemWriter<EcbRootBean> writerGCOM(String ouput) {
+
+		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
+		writer.setShouldDeleteIfExists(true);
+		writer.setHeaderCallback(new FlatFileHeaderCallback() {
+
+			@Override
+			public void writeHeader(Writer writer) throws IOException {
+				writer.write(GroupSubscription.header());
+
+			}
+		});
+		writer.setResource(new FileSystemResource(FilesNames.OUTPUT_FOLDER+ouput));
+		DelimitedLineAggregator<EcbRootBean> delLineAgg = new DelimitedLineAggregator<EcbRootBean>();
+		delLineAgg.setDelimiter("|");		
+		BeanWrapperFieldExtractor<EcbRootBean> fieldExtractor = new BeanWrapperFieldExtractor<EcbRootBean>();
+		fieldExtractor.setNames(GroupSubscription.column);
 		delLineAgg.setFieldExtractor(fieldExtractor);
 		writer.setLineAggregator(delLineAgg);
 		return writer;
@@ -131,8 +155,8 @@ public class WriterConfiguration {
 
 	}
 	
-	@Bean(name="writerOldCOM")
-	public ItemWriter<EcbRootBean> writerOldCOM() {
+	@Bean(name="writerOldSubscription")
+	public ItemWriter<EcbRootBean> writerOldSubscription() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writerCOM("/Subscription.Old.input.csv");
 		writer.open(new ExecutionContext());
@@ -141,10 +165,30 @@ public class WriterConfiguration {
 
 	}
 	
-	@Bean(name="writerNewCOM")
-	public ItemWriter<EcbRootBean> writerNewCOM() {
+	@Bean(name="writerNewSubscription")
+	public ItemWriter<EcbRootBean> writerNewSubscription() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writerCOM("/Subscription.New.input.csv");
+		writer.open(new ExecutionContext());
+
+		return writer;
+
+	}
+	
+	@Bean(name="writerOldGroupSubscription")
+	public ItemWriter<EcbRootBean> writerOldGroupSubscription() {
+
+		FlatFileItemWriter<EcbRootBean> writer = writerGCOM("/GroupSubscription.Old.input.csv");
+		writer.open(new ExecutionContext());
+
+		return writer;
+
+	}
+	
+	@Bean(name="writerNewGroupSubscription")
+	public ItemWriter<EcbRootBean> writerNewGroupSubscription() {
+
+		FlatFileItemWriter<EcbRootBean> writer = writerGCOM("/GroupSubscription.New.input.csv");
 		writer.open(new ExecutionContext());
 
 		return writer;

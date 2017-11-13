@@ -7,6 +7,8 @@ import java.util.Date;
 import org.springframework.stereotype.Component;
 
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
+import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
+import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 import com.ericsson.hubone.tools.report.transformation.TransformationReportLine;
@@ -22,8 +24,17 @@ public class ComToSubscription extends MappingConstants{
 		firstDayOfMonthDate = c.getTime(); 
 	}
 
-	private Subscription createSouscription(Com com){
-		Subscription subscription = new Subscription();
+	private Subscription createSouscription(Com com,boolean gsub){
+		
+		Subscription subscription = null;
+		
+		if(gsub){
+			subscription = new GroupSubscription();
+			((GroupSubscription)subscription).setName(com.getCODE_COMMANDE());
+			((GroupSubscription)subscription).setDescription(com.getCODE_COMMANDE());
+		}else
+			subscription = new SimpleSubscription();
+		
 		subscription.setAccountId(com.getCODE_CLIENT());
 		try {
 
@@ -38,7 +49,7 @@ public class ComToSubscription extends MappingConstants{
 				subscription.setNewCOM(true);
 			else
 				subscription.setNewCOM(false);
-
+			
 
 		} catch (ParseException e) {
 			return errorCOM(com,e.getMessage());
@@ -71,7 +82,7 @@ public class ComToSubscription extends MappingConstants{
 
 	public Subscription createFraisPonctuel(Com com){
 
-		Subscription ecbCOM = createSouscription(com);
+		Subscription ecbCOM = createSouscription(com,false);
 		ecbCOM.setProductOfferingId("PONCT");
 
 
@@ -80,16 +91,16 @@ public class ComToSubscription extends MappingConstants{
 
 	public Subscription createAbonnement(Com com){
 
-		Subscription ecbCOM = createSouscription(com);
+		Subscription ecbCOM = createSouscription(com,false);
 		ecbCOM.setProductOfferingId("REC");
 		//ecbCOM.setSharedBucketScope(sharedBucketScope);
 
 		return ecbCOM;
 	}
 
-	public Subscription createGrilleTarifaire(Com com){
+	public Subscription createGrilleTarifaire(Com com,boolean gsub){
 
-		Subscription ecbCOM = createSouscription(com);
+		Subscription ecbCOM = createSouscription(com,gsub);
 		ecbCOM.setProductOfferingId("TETRA0001U");
 
 		//IF IsSharedTariffGrid TRUE -> use TargetTariffGridId ELSE EP
@@ -107,7 +118,7 @@ public class ComToSubscription extends MappingConstants{
 		return new Subscription();
 	}
 
-	public Subscription createSurcharge(Com com){
+	public Subscription createSurcharge(Com com,boolean gsub){
 		return new Subscription();
 	}
 

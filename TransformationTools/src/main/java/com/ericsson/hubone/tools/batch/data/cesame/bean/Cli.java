@@ -328,11 +328,11 @@ public class Cli extends CesameRootBean implements Serializable {
 	}
 	
 	public void setID_ADRESSE(String ID_ADRESSE) {
-		this.ID_ADRESSE = new CesameBeanField(ID_ADRESSE,false,new String[]{},"STRING15");
+		this.ID_ADRESSE = new CesameBeanField(ID_ADRESSE,true,new String[]{},"STRING15");
 	}
 
 	public void setID_ADRESSE_EXP(String ID_ADRESSE_EXP) {
-		this.ID_ADRESSE_EXP = new CesameBeanField(ID_ADRESSE_EXP,false,new String[]{},"STRING15");
+		this.ID_ADRESSE_EXP = new CesameBeanField(ID_ADRESSE_EXP,true,new String[]{},"STRING15");
 	}
 	
 	public void setCODE_CC(String CODE_CC) {
