@@ -25,16 +25,16 @@ public class ComToSubscription extends MappingConstants{
 	}
 
 	private Subscription createSouscription(Com com,boolean gsub){
-		
+
 		Subscription subscription = null;
-		
+
 		if(gsub){
 			subscription = new GroupSubscription();
 			((GroupSubscription)subscription).setName(com.getCODE_COMMANDE());
 			((GroupSubscription)subscription).setDescription(com.getCODE_COMMANDE());
 		}else
 			subscription = new SimpleSubscription();
-		
+
 		subscription.setAccountId(com.getCODE_CLIENT());
 		try {
 
@@ -49,7 +49,8 @@ public class ComToSubscription extends MappingConstants{
 				subscription.setNewCOM(true);
 			else
 				subscription.setNewCOM(false);
-			
+
+
 
 		} catch (ParseException e) {
 			return errorCOM(com,e.getMessage());
@@ -98,7 +99,22 @@ public class ComToSubscription extends MappingConstants{
 		return ecbCOM;
 	}
 
-	public Subscription createGrilleTarifaire(Com com,boolean gsub){
+	public Subscription createGrilleTarifaire(Com com){
+
+		boolean gsub = false;
+
+		if(com.getPARAM_PRODUIT_ADD()!=null || !com.getPARAM_PRODUIT_ADD().equals("")){
+			for(String param:com.getPARAM_PRODUIT_ADD().split(";")){
+				if(param.split("=")[0].equals("NIVEAU_APPLICATION")){
+					if(!param.split("=")[1].equals("EP")){
+						gsub = true;
+						break;
+					}
+				}
+
+			}
+		}
+
 
 		Subscription ecbCOM = createSouscription(com,gsub);
 		ecbCOM.setProductOfferingId("TETRA0001U");

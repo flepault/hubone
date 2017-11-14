@@ -11,22 +11,22 @@ join t_base_props props ON po.id_po = props.id_prop
 		  <DynymicFieldMapper>
 			<CurrentValue>PONCT</CurrentValue>
 			<TargePropertyName>ProductOfferingId</TargePropertyName>
-			<NewValue>145</NewValue>
+			<NewValue>1121</NewValue>
 		  </DynymicFieldMapper>
 		  <DynymicFieldMapper>
 			<CurrentValue>REC</CurrentValue>
 			<TargePropertyName>ProductOfferingId</TargePropertyName>
-			<NewValue>153</NewValue>
+			<NewValue>1129</NewValue>
 		  </DynymicFieldMapper>
 		  <DynymicFieldMapper>
 			<CurrentValue>RECCA</CurrentValue>
 			<TargePropertyName>ProductOfferingId</TargePropertyName>
-			<NewValue>161</NewValue>
+			<NewValue>1137</NewValue>
 		  </DynymicFieldMapper>
 		  <DynymicFieldMapper>
 			<CurrentValue>TETRA0001U</CurrentValue>
 			<TargePropertyName>ProductOfferingId</TargePropertyName>
-			<NewValue>169</NewValue>
+			<NewValue>1145</NewValue>
 		  </DynymicFieldMapper>
 		</DynamicFieldsValues>
 	</FieldMapper>

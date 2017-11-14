@@ -63,9 +63,7 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 					com.getCODE_PRODUIT_RAFAEL().startsWith("RECCA") ){
 				subscription = comToSubscription.createAbonnement(com);
 			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("GT") ){
-				boolean gsub = false;
-				//if(com.getPARAM_PRODUIT_ADD())
-				subscription = comToSubscription.createGrilleTarifaire(com,gsub);
+				subscription = comToSubscription.createGrilleTarifaire(com);
 			}else if(com.getCODE_PRODUIT_RAFAEL().equals("PONCT") || 
 					com.getCODE_PRODUIT_RAFAEL().equals("DEDPRE")){
 				subscription = comToSubscription.createFraisPonctuel(com);
