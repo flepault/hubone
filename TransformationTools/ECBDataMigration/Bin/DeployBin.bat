@@ -1,3 +1,5 @@
+@echo off
+
 for %%f in (*) do ( 
  echo "name: %%~f"  
  cp %%~f D:\\MetraTech\\RMP\\Bin\\%%~f 
