@@ -32,7 +32,7 @@
 			<directory>${project.basedir}/docs</directory>
 			<outputDirectory>TransformationTools</outputDirectory>
 			<includes>
-				<include>Readme.txt</include>
+				<include>MigrationToolsReadMe.txt</include>
 			</includes>
 		</fileSet>
 		<fileSet>
