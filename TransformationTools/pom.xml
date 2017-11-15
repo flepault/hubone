@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ericsson.hubone</groupId>
-	<artifactId>TransformationTools</artifactId>
+	<artifactId>MigrationTools</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
@@ -75,7 +75,64 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>			
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>output</directory>
+							<includes>
+								<include>**/*.csv</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>reports/functional</directory>
+							<includes>
+								<include>**/*.xlsx</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>reports/technical</directory>
+							<includes>
+								<include>**/*.xlsx</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>reports/transformation</directory>
+							<includes>
+								<include>**/*.xlsx</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/assembly/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>create-archive</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

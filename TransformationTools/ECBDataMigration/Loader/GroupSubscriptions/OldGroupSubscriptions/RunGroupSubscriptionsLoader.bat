@@ -1,0 +1,1 @@
+D:\MetraTech\RMP\Bin\ECB.Loader.exe -loadgroupsubscriptions -folderlocation D:\MigrationTools\ECBDataMigration\Loader\GroupSubscriptions\OldGroupSubscriptions

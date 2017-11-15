@@ -1,0 +1,1 @@
+D:\MetraTech\RMP\Bin\ECB.Loader.exe -loadsubscriptions -folderlocation D:\MigrationTools\ECBDataMigration\Loader\Subscriptions\OldSubscriptions
