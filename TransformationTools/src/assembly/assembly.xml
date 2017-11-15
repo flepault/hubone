@@ -30,7 +30,7 @@
 		</fileSet>
 		<fileSet>
 			<directory>${project.basedir}/docs</directory>
-			<outputDirectory>TransformationTools</outputDirectory>
+			<outputDirectory>.</outputDirectory>
 			<includes>
 				<include>MigrationToolsReadMe.txt</include>
 			</includes>
