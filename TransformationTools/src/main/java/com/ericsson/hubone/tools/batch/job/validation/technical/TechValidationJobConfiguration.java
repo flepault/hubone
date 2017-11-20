@@ -134,6 +134,7 @@ public class TechValidationJobConfiguration{
 		return technicalValidationJob(jobListener,false,stepListener);								
 	}
 
+
 	public Job technicalValidationJob(JobListener jobListener,Boolean complete,StepListener stepListener) {
 
 		JobBuilder builder = jobBuilderFactory.get("technicalValidationJob");
@@ -154,7 +155,7 @@ public class TechValidationJobConfiguration{
 
 	public Step technicalValidationStepCLI(String name,String inputFile,Boolean complete,StepListener stepListener) {
 
-		
+
 		return stepBuilderFactory.get(name)
 				.listener(stepListener)
 				.<Cli, Cli> chunk(1)
@@ -176,5 +177,24 @@ public class TechValidationJobConfiguration{
 				.taskExecutor(taskExecutor.taskExecutor())
 				.build();		
 	}	
+
+	@Bean(name="technicalValidationJob")
+	@Profile({"functional","transform"})
+	public Job technicalCLIValidationJob(JobListener jobListener,StepListener stepListener) {
+
+		return technicalCLIValidationJob(jobListener,false,stepListener);								
+	}	
+
+	public Job technicalCLIValidationJob(JobListener jobListener,Boolean complete,StepListener stepListener) {
+
+		JobBuilder builder = jobBuilderFactory.get("technicalValidationJob");
+		builder.incrementer(new RunIdIncrementer());
+		builder.listener(jobListener);
+
+		return builder.flow(technicalValidationStepCLI("technicalValidationClient",filesNames.CLI_CLIENT,complete,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationRegroupCF",filesNames.CLI_REGROUPCF,complete,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationCF",filesNames.CLI_CF,complete,stepListener))
+				.end().build();								
+	}
 
 }

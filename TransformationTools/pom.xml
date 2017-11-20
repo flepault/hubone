@@ -81,6 +81,24 @@
 				<configuration>
 					<filesets>
 						<fileset>
+							<directory>softs/apache-activemq-5.15.0/data/kahadb</directory>
+							<includes>
+								<include>**/**</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>softs/apache-activemq-5.15.0/data/tmp</directory>
+							<includes>
+								<include>**/**</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>softs/apache-activemq-5.15.0/data/</directory>
+							<includes>
+								<include>**/*.log</include>
+							</includes>
+						</fileset>
+						<fileset>
 							<directory>output</directory>
 							<includes>
 								<include>**/*.csv</include>

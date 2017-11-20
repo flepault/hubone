@@ -31,6 +31,7 @@ public class SuperJobConfiguration {
 	@Autowired
 	@Qualifier("technicalValidationJob")
 	private Job technicalValidationJob;
+	
 		
 	@Autowired
 	@Qualifier("functionalValidationJob")
@@ -45,24 +46,15 @@ public class SuperJobConfiguration {
 	private Job transformationJob;
 	
 	@Bean(name="superJob")
-	@Profile("storage")
-	public Job repriseSuperJobStorage() {
-		
-		JobBuilder builder = jobBuilderFactory.get("superJob");
-		
-		return builder.start(launchStorageJob()).on("COMPLETED")
-		.to(launchFuncValidationJob()).on("COMPLETED")
-		.to(launchTransformationJob()).end().build();									
-	}
-	
-	@Bean(name="superJob")
 	@Profile("functional")
 	public Job repriseSuperJobFunctional() {
 		
 		JobBuilder builder = jobBuilderFactory.get("superJob");
 		
-		return builder.start(launchFuncValidationJob()).on("COMPLETED")
-				.to(launchTransformationJob()).end().build();									
+		return builder.start(launchTechValidationJob()).on("COMPLETED")
+		.to(launchStorageJob()).on("COMPLETED")
+		.to(launchFuncValidationJob()).on("COMPLETED")
+		.to(launchTransformationJob()).end().build();									
 	}
 	
 	@Bean(name="superJob")
@@ -71,8 +63,9 @@ public class SuperJobConfiguration {
 		
 		JobBuilder builder = jobBuilderFactory.get("superJob");
 		
-		return builder.start(launchTransformationJob()).build();	
-		
+		return builder.start(launchTechValidationJob()).on("COMPLETED")
+		.to(launchStorageJob()).on("COMPLETED")
+		.to(launchTransformationJob()).end().build();									
 	}
 	
 	@Bean(name="superJob")
@@ -85,14 +78,14 @@ public class SuperJobConfiguration {
 		.to(launchStorageJob()).on(ExitStatus.COMPLETED.getExitCode())
 		.to(launchFuncValidationJob()).on(ExitStatus.COMPLETED.getExitCode())
 		.to(launchTransformationJob()).end().build();									
-	}
+	}	
 	
 	private Step launchTechValidationJob() {
 		return stepBuilderFactory.get("launchTechValidationJob")
 					.job(technicalValidationJob)
 					.build();
 	}
-	
+		
 	
 	private Step launchFuncValidationJob() {
 		return stepBuilderFactory.get("launchFuncValidationJob")
@@ -218,5 +211,17 @@ public class SuperJobConfiguration {
 		
 		return filesNames;
 		
+	}
+	
+	@Bean("retry")
+	@Profile({"full","fast"})
+	public boolean noRetry(){
+		return false;
+	}
+	
+	@Bean("retry")
+	@Profile({"functional","transform"})
+	public boolean retry(){
+		return true;
 	}
 }

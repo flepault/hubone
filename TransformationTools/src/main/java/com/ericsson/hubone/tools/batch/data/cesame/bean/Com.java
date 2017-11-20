@@ -133,13 +133,13 @@ public class Com extends CesameRootBean implements Serializable {
 		return PRIX_APPLIQUE_MANUEL.getValue();
 	}
 	public void setPRIX_APPLIQUE_MANUEL(String PRIX_APPLIQUE_MANUEL) {
-		this.PRIX_APPLIQUE_MANUEL = new CesameBeanField(PRIX_APPLIQUE_MANUEL, false, new String[]{"RG16"}, null);
+		this.PRIX_APPLIQUE_MANUEL = new CesameBeanField(PRIX_APPLIQUE_MANUEL, true, new String[]{"RG16"}, null);
 	}
 	public String getPRIX_CATALOGUE() {
 		return PRIX_CATALOGUE.getValue();
 	}
 	public void setPRIX_CATALOGUE(String PRIX_CATALOGUE) {
-		this.PRIX_CATALOGUE = new CesameBeanField(PRIX_CATALOGUE, false, new String[]{"RG16"}, null);
+		this.PRIX_CATALOGUE = new CesameBeanField(PRIX_CATALOGUE, true, new String[]{"RG16"}, null);
 	}
 	public String getMONTANT_REMISE_MANUEL() {
 		return MONTANT_REMISE_MANUEL.getValue();
