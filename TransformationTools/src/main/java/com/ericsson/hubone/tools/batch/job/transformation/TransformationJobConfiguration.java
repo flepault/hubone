@@ -64,6 +64,10 @@ public class TransformationJobConfiguration{
     private ItemWriter<EcbRootBean> epWriter;
 	
 	@Autowired
+	@Qualifier("writerEPBME")
+    private ItemWriter<EcbRootBean> epBMEWriter;
+	
+	@Autowired
 	@Qualifier("writerOldSubscription")
     private ItemWriter<EcbRootBean> oldSouscriptionWriter;
 	
@@ -82,7 +86,7 @@ public class TransformationJobConfiguration{
 
 	public ItemListWriter writer() {		
 		
-		return new ItemListWriter(clientWriter,regroupCFWriter,cfWriter,epWriter,oldSouscriptionWriter,newSouscriptionWriter,
+		return new ItemListWriter(clientWriter,regroupCFWriter,cfWriter,epWriter,epBMEWriter,oldSouscriptionWriter,newSouscriptionWriter,
 				oldGroupSouscriptionWriter,newGroupSouscriptionWriter);
 		
 	}

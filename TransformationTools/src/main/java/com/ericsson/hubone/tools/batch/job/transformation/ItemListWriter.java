@@ -9,6 +9,7 @@ import com.ericsson.hubone.tools.batch.data.cesame.enumeration.HierarchieClient;
 import com.ericsson.hubone.tools.batch.data.ecb.Account;
 import com.ericsson.hubone.tools.batch.data.ecb.EcbRootBean;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
+import com.ericsson.hubone.tools.batch.data.ecb.EndpointBME;
 import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
@@ -23,6 +24,8 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 	private ItemWriter<EcbRootBean> cfWriter;
 
 	private ItemWriter<EcbRootBean> epWriter;
+	
+	private ItemWriter<EcbRootBean> epBMEWriter;
 
 	private ItemWriter<EcbRootBean> oldSouscriptionWriter;
 
@@ -33,13 +36,14 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 	private ItemWriter<EcbRootBean> newGroupSouscriptionWriter;
 
 	public ItemListWriter(ItemWriter<EcbRootBean> clientWriter, ItemWriter<EcbRootBean> regroupCFWriter,
-			ItemWriter<EcbRootBean> cfWriter,ItemWriter<EcbRootBean> epWriter,ItemWriter<EcbRootBean> oldSouscriptionWriter,ItemWriter<EcbRootBean> newSouscriptionWriter,
+			ItemWriter<EcbRootBean> cfWriter,ItemWriter<EcbRootBean> epWriter,ItemWriter<EcbRootBean> epBMEWriter,ItemWriter<EcbRootBean> oldSouscriptionWriter,ItemWriter<EcbRootBean> newSouscriptionWriter,
 			ItemWriter<EcbRootBean> oldGroupSouscriptionWriter,ItemWriter<EcbRootBean> newGroupSouscriptionWriter) {
 		super();
 		this.clientWriter = clientWriter;
 		this.regroupCFWriter = regroupCFWriter;
 		this.cfWriter = cfWriter;
 		this.epWriter = epWriter;
+		this.epBMEWriter = epBMEWriter;
 		this.oldSouscriptionWriter = oldSouscriptionWriter;
 		this.newSouscriptionWriter = newSouscriptionWriter;
 		this.oldGroupSouscriptionWriter = oldGroupSouscriptionWriter;
@@ -63,6 +67,7 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 			}else {
 
 				List<EcbRootBean> epList = new ArrayList<EcbRootBean>();
+				List<EcbRootBean> epBMEList = new ArrayList<EcbRootBean>();
 				List<EcbRootBean> newSubList = new ArrayList<EcbRootBean>();
 				List<EcbRootBean> oldSubList = new ArrayList<EcbRootBean>();
 				List<EcbRootBean> newGSubList = new ArrayList<EcbRootBean>();
@@ -71,6 +76,8 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 				for(EcbRootBean ecbCliCom : listEcbCliCom){
 					if(ecbCliCom instanceof Endpoint)
 						epList.add(ecbCliCom);
+					else if(ecbCliCom instanceof EndpointBME)
+						epBMEList.add(ecbCliCom);
 					else if(ecbCliCom instanceof SimpleSubscription){
 						if(((Subscription)ecbCliCom).getNewCOM())
 								newSubList.add(ecbCliCom);
@@ -87,6 +94,7 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 				}
 
 				epWriter.write(epList);
+				epBMEWriter.write(epBMEList);
 				newSouscriptionWriter.write(newSubList);
 				oldSouscriptionWriter.write(oldSubList);
 				newGroupSouscriptionWriter.write(newGSubList);

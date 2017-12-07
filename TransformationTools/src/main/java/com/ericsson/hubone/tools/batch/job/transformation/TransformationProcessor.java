@@ -22,10 +22,10 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 
 	@Autowired
 	private CliToEndpoint cliToEndpoint;
-	
+
 	@Autowired
 	private ComToSubscription comToSubscription;
-	
+
 	@Autowired
 	private CliToAccount cliToAccount;
 
@@ -54,11 +54,14 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 
 					Endpoint endpoint = cliToEndpoint.createEndpoint(com);
 
-					if(endpoint!=null)
+					if(endpoint!=null){
 						list.add(endpoint);
+						list.add(cliToEndpoint.createEndpointBME(endpoint, com));
+					}
+
 				}
 			}
-			
+
 			if(com.getCODE_PRODUIT_RAFAEL().startsWith("REC") || 
 					com.getCODE_PRODUIT_RAFAEL().startsWith("RECCA") ){
 				subscription = comToSubscription.createAbonnement(com);
@@ -67,19 +70,26 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 			}else if(com.getCODE_PRODUIT_RAFAEL().equals("PONCT") || 
 					com.getCODE_PRODUIT_RAFAEL().equals("DEDPRE")){
 				subscription = comToSubscription.createFraisPonctuel(com);
+			}else{
+				comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
 			}
-//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
-//				ecbCom = createForfaitLigne(com);
-//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
-//				ecbCom = createForfaitPartage(com);
-//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("DEST")){
-//				ecbCom = createSurcharge(com);
-//			}else if(com.getCODE_PRODUIT_RAFAEL().equals("REMPP")){
-//				ecbCom = createRemisePiedDePage(com);
-//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
-//				ecbCom = createRemiseVolume(com);
-//			}
+			//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
+			//				ecbCom = createForfaitLigne(com);
+			//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
+			//				ecbCom = createForfaitPartage(com);
+			//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("DEST")){
+			//				ecbCom = createSurcharge(com);
+			//			}else if(com.getCODE_PRODUIT_RAFAEL().equals("REMPP")){
+			//				ecbCom = createRemisePiedDePage(com);
+			//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
+			//				ecbCom = createRemiseVolume(com);
+			//			}}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
+			//				ecbCom = createRemiseVolume(com);
+			//			}}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
+			//				ecbCom = createRemiseVolume(com);
+			//			}
 
+			
 			if(subscription!=null)
 				list.add(subscription);
 
@@ -93,10 +103,10 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 		return null;
 	}
 
-	
-	
 
-	
+
+
+
 
 
 

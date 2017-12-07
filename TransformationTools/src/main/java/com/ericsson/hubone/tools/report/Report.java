@@ -2,12 +2,12 @@ package com.ericsson.hubone.tools.report;
 
 public class Report {
 
-	protected Integer cli;
-	protected Integer com;
-	protected Integer cliKO;
-	protected Integer comKO;
-	protected Integer cliOK;
-	protected Integer comOK;
+	protected volatile Integer cli;
+	protected volatile Integer com;
+	protected volatile Integer cliKO;
+	protected volatile Integer comKO;
+	protected volatile Integer cliOK;
+	protected volatile Integer comOK;
 	
 	public Report() {
 		cli= 0;	
@@ -19,27 +19,27 @@ public class Report {
 		
 	}
 	
-	public void increaseCLI() {
+	public synchronized void increaseCLI() {
 		cli++;		
 	}
 
-	public void increaseCOM() {
+	public synchronized void increaseCOM() {
 		com++;	
 	}
 
-	public void increaseCLIKO() {
+	public synchronized void increaseCLIKO() {
 		cliKO++;	
 	}
 
-	public void increaseCOMKO() {
+	public synchronized void increaseCOMKO() {
 		comKO++;	
 	}
 
-	public void increaseCLIOK() {
+	public synchronized void increaseCLIOK() {
 		cliOK++;	
 	}
 
-	public void increaseCOMOK() {
+	public synchronized void increaseCOMOK() {
 		comOK++;
 	}
 	

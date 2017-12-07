@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
 import com.ericsson.hubone.tools.batch.data.cesame.enumeration.HierarchieClient;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
+import com.ericsson.hubone.tools.batch.data.ecb.EndpointBME;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 import com.ericsson.hubone.tools.report.transformation.TransformationReportLine;
 
@@ -27,6 +28,20 @@ public class CliToEndpoint extends MappingConstants{
 		epSet = new HashSet<String>();
 	}
 
+	public EndpointBME createEndpointBME(Endpoint endpoint,Com com){
+			
+		EndpointBME endpointBME = new EndpointBME();
+		endpointBME.setEndDate(endpoint.getAccountEndDate());
+		endpointBME.setParentAccountName(endpoint.getAncestorAccount());
+		endpointBME.setStartDate(endpoint.getAccountStartDate());
+		endpointBME.setUserName(endpoint.getUserName());
+		endpointBME.setServiceId(com.getSERVICE_ID());
+		
+		return endpointBME;
+		
+		
+	}
+	
 
 	public Endpoint createEndpoint(Com com){
 

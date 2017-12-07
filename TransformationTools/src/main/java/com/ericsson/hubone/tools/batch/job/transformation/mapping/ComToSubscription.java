@@ -146,7 +146,7 @@ public class ComToSubscription extends MappingConstants{
 		return new Subscription();
 	}
 
-	private Subscription errorCOM(Com com,String str){
+	public Subscription errorCOM(Com com,String str){
 
 		TransformationReportLine trl = new TransformationReportLine("ERR-TRSF-03", com.getID_SIEBEL_LIGNE(),str);
 

@@ -68,6 +68,11 @@
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-pool</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.fl</groupId>
+			<artifactId>EngineProcessor</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
