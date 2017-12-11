@@ -39,7 +39,13 @@ public class TechValidationProcessor<T extends CesameRootBean> implements ItemPr
 
 		if(t instanceof Cli){							
 			id = ((Cli)t).getROW_ID_SIEBEL();
+			
+//			//TODO A SUPPRIMER
+//			if( ((Cli)t).getSTATUT_CRM().equals("A supprimer"))
+//				return null;
+			
 			TechnicalReport.getIntance().increaseCLI();
+					
 		}else{
 			id = ((Com)t).getID_SIEBEL_LIGNE();
 			TechnicalReport.getIntance().increaseCOM();

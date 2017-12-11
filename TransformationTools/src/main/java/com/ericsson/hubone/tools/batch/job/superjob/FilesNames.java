@@ -27,5 +27,17 @@ public class FilesNames {
 	public String COM_RESTE;
 	public String COM_CMD_M1;
 	public String COM_CMD_M2;
+	
+	public String Client = "ClientAccount.input.csv";
+	public String RegroupCF = "RegroupCFAccount.input.csv";
+	public String CF = "CFAccount.input.csv";
+	public String EP = "EPAccount.input.csv";
+	public String EPBME = "EPBME.csv";
+	public String SubscriptionOld = "Subscription.Old.input.csv";
+	public String SubscriptionNew ="Subscription.New.input.csv";
+	public String GroupSouscriptionOld = "GroupSubscription.Old.input.csv";
+	public String GroupSouscriptionNew = "GroupSubscription.New.input.csv";
+	
+	
 
 }

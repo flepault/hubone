@@ -70,6 +70,12 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 			}else if(com.getCODE_PRODUIT_RAFAEL().equals("PONCT") || 
 					com.getCODE_PRODUIT_RAFAEL().equals("DEDPRE")){
 				subscription = comToSubscription.createFraisPonctuel(com);
+			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
+				subscription = comToSubscription.createRemiseVolume(com);
+			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
+				subscription = comToSubscription.createWifiRoam(com);
+			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
+				subscription = comToSubscription.createIntercoIn(com);
 			}else{
 				comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
 			}
@@ -89,7 +95,7 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 			//				ecbCom = createRemiseVolume(com);
 			//			}
 
-			
+
 			if(subscription!=null)
 				list.add(subscription);
 

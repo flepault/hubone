@@ -3,7 +3,7 @@ package com.ericsson.hubone.tools.batch.data.cesame.enumeration;
 public enum RoleClient {
 
 	Entreprise("Entreprise"),
-	Operateur("Opérateur"),
+	Operateur("Operateur"),
 	Administration("Administration"),
 	Partenaire("Partenaire");
 

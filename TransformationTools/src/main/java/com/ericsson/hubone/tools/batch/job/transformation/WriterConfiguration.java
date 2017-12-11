@@ -30,6 +30,9 @@ public class WriterConfiguration {
 	@Qualifier("retry")
 	private boolean retry;
 	
+	@Autowired
+	public FilesNames filesNames;
+	
 	private FlatFileItemWriter<EcbRootBean> writer(String ouput,String header, String[] column) {
 
 		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
@@ -49,7 +52,7 @@ public class WriterConfiguration {
 
 			}
 		});
-		writer.setResource(new FileSystemResource(FilesNames.OUTPUT_FOLDER+ouput));
+		writer.setResource(new FileSystemResource(FilesNames.OUTPUT_FOLDER+"/"+ouput));
 		DelimitedLineAggregator<EcbRootBean> delLineAgg = new DelimitedLineAggregator<EcbRootBean>();
 		delLineAgg.setDelimiter("|");		
 		BeanWrapperFieldExtractor<EcbRootBean> fieldExtractor = new BeanWrapperFieldExtractor<EcbRootBean>();
@@ -208,7 +211,7 @@ public class WriterConfiguration {
 	@Bean(name="writerClient")
 	public ItemWriter<EcbRootBean> writerClient() {
 		
-		FlatFileItemWriter<EcbRootBean> writer = writer("/ClientAccount.input.csv",Account.header(),Account.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.Client,Account.header(),Account.column);
 		writer.open(new ExecutionContext());	
 
 		return writer;
@@ -218,7 +221,7 @@ public class WriterConfiguration {
 	@Bean(name="writerRegroupCF")
 	public ItemWriter<EcbRootBean> writerRegroupCF() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer("/RegroupCFAccount.input.csv",Account.header(),Account.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.RegroupCF,Account.header(),Account.column);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -228,7 +231,7 @@ public class WriterConfiguration {
 	@Bean(name="writerCF")
 	public ItemWriter<EcbRootBean> writerCF() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer("/CFAccount.input.csv",Account.header(),Account.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.CF,Account.header(),Account.column);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -238,7 +241,7 @@ public class WriterConfiguration {
 	@Bean(name="writerEP")
 	public ItemWriter<EcbRootBean> writerEP() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer("/EPAccount.input.csv",Endpoint.header(),Endpoint.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.EP,Endpoint.header(),Endpoint.column);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -248,7 +251,7 @@ public class WriterConfiguration {
 	@Bean(name="writerEPBME")
 	public ItemWriter<EcbRootBean> writerEPBME() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer("/EPBME.csv",EndpointBME.header(),EndpointBME.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.EPBME,EndpointBME.header(),EndpointBME.column);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -258,7 +261,7 @@ public class WriterConfiguration {
 	@Bean(name="writerOldSubscription")
 	public ItemWriter<EcbRootBean> writerOldSubscription() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer("/Subscription.Old.input.csv",SimpleSubscription.header(),SimpleSubscription.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionOld,SimpleSubscription.header(),SimpleSubscription.column);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -268,7 +271,7 @@ public class WriterConfiguration {
 	@Bean(name="writerNewSubscription")
 	public ItemWriter<EcbRootBean> writerNewSubscription() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer("/Subscription.New.input.csv",SimpleSubscription.header(),SimpleSubscription.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionNew,SimpleSubscription.header(),SimpleSubscription.column);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -278,7 +281,7 @@ public class WriterConfiguration {
 	@Bean(name="writerOldGroupSubscription")
 	public ItemWriter<EcbRootBean> writerOldGroupSubscription() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer("/GroupSubscription.Old.input.csv",GroupSubscription.header(),GroupSubscription.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.GroupSouscriptionOld,GroupSubscription.header(),GroupSubscription.column);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -288,7 +291,7 @@ public class WriterConfiguration {
 	@Bean(name="writerNewGroupSubscription")
 	public ItemWriter<EcbRootBean> writerNewGroupSubscription() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer("/GroupSubscription.New.input.csv",GroupSubscription.header(),GroupSubscription.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.GroupSouscriptionNew,GroupSubscription.header(),GroupSubscription.column);
 		writer.open(new ExecutionContext());
 
 		return writer;

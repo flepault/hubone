@@ -383,7 +383,7 @@
 			<NewValue>Entreprise</NewValue>
 		  </DynymicFieldMapper>
 		  <DynymicFieldMapper>
-			<CurrentValue>Opérateur</CurrentValue>
+			<CurrentValue>Operateur</CurrentValue>
 			<TargePropertyName>Common.CustomerRole</TargePropertyName>
 			<NewValue>Operateur</NewValue>
 		  </DynymicFieldMapper>

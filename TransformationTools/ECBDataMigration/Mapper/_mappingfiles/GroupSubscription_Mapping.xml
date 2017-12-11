@@ -247,4 +247,14 @@
 		<PropertyName>SubscriptionInfo.TargetTariffGridId</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>23</FieldPossition>
+		<PropertyName>ICBValue</PropertyName>
+		<PropertyType>string</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>24</FieldPossition>
+		<PropertyName>PiName</PropertyName>
+		<PropertyType>string</PropertyType>
+	</FieldMapper>
 </ArrayOfFieldMapper>

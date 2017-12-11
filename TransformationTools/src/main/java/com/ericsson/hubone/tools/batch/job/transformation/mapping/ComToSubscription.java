@@ -84,8 +84,7 @@ public class ComToSubscription extends MappingConstants{
 	public Subscription createFraisPonctuel(Com com){
 
 		Subscription ecbCOM = createSouscription(com,false);
-		ecbCOM.setProductOfferingId("PONCT");
-
+		ecbCOM.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
 
 		return ecbCOM;
 	}
@@ -93,7 +92,7 @@ public class ComToSubscription extends MappingConstants{
 	public Subscription createAbonnement(Com com){
 
 		Subscription ecbCOM = createSouscription(com,false);
-		ecbCOM.setProductOfferingId("REC");
+		ecbCOM.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
 		//ecbCOM.setSharedBucketScope(sharedBucketScope);
 
 		return ecbCOM;
@@ -143,7 +142,24 @@ public class ComToSubscription extends MappingConstants{
 	}
 
 	public Subscription createRemiseVolume(Com com){
-		return new Subscription();
+		Subscription ecbCOM = createSouscription(com,false);
+		ecbCOM.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
+
+		return ecbCOM;
+	}
+	
+	public Subscription createWifiRoam(Com com) {
+		Subscription ecbCOM = createSouscription(com,false);
+		ecbCOM.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
+
+		return ecbCOM;
+	}
+
+	public Subscription createIntercoIn(Com com) {
+		Subscription ecbCOM = createSouscription(com,false);
+		ecbCOM.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
+
+		return ecbCOM;
 	}
 
 	public Subscription errorCOM(Com com,String str){
@@ -154,6 +170,8 @@ public class ComToSubscription extends MappingConstants{
 
 		return null;
 	}
+
+	
 
 
 }

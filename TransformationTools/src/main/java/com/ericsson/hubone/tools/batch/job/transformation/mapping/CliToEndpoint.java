@@ -32,7 +32,7 @@ public class CliToEndpoint extends MappingConstants{
 			
 		EndpointBME endpointBME = new EndpointBME();
 		endpointBME.setEndDate(endpoint.getAccountEndDate());
-		endpointBME.setParentAccountName(endpoint.getAncestorAccount());
+		endpointBME.setParentAccountName(endpoint.getAncestorAccount());		
 		endpointBME.setStartDate(endpoint.getAccountStartDate());
 		endpointBME.setUserName(endpoint.getUserName());
 		endpointBME.setServiceId(com.getSERVICE_ID());

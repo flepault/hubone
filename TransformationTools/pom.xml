@@ -28,6 +28,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-batch</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web-services</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.hsqldb</groupId>
@@ -67,11 +72,6 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-pool</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fl</groupId>
-			<artifactId>EngineProcessor</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
@@ -158,6 +158,42 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.13.2</version>
+				<executions>
+					<execution>
+						<id>AccountCreation</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generatePackage>com.ericsson.hubone.injector.ws.accountcreation</generatePackage>
+							<schemaIncludes>
+								<include>AccountCreation.wsdl</include>
+							</schemaIncludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>SubscriptionService</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generatePackage>com.ericsson.hubone.injector.ws.subscriptionservice</generatePackage>
+							<schemaIncludes>
+								<include>SubscriptionService.wsdl</include>
+							</schemaIncludes>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<generateDirectory>${project.basedir}/src/main/java/</generateDirectory>
+					<schemaDirectory>${project.basedir}/wsdl/</schemaDirectory>
+				</configuration>
+			</plugin>-->
 		</plugins>
 	</build>
 
