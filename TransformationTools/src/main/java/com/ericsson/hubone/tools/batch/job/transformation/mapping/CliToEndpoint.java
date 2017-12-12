@@ -13,6 +13,7 @@ import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
 import com.ericsson.hubone.tools.batch.data.cesame.enumeration.HierarchieClient;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
 import com.ericsson.hubone.tools.batch.data.ecb.EndpointBME;
+import com.ericsson.hubone.tools.batch.job.transformation.exception.EndpointException;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 import com.ericsson.hubone.tools.report.transformation.TransformationReportLine;
 
@@ -43,7 +44,7 @@ public class CliToEndpoint extends MappingConstants{
 	}
 	
 
-	public Endpoint createEndpoint(Com com){
+	public Endpoint createEndpoint(Com com) throws EndpointException{
 
 		String userName = com.getCODE_CLIENT()+"_"+com.getSERVICE_ID();
 
@@ -65,10 +66,11 @@ public class CliToEndpoint extends MappingConstants{
 
 			String code_client_parent = com.getCODE_CLIENT();
 			while(ecbEP.getPayerAccount()==null){
-				List<Map<String,Object>> rows = jdbcTemplate.queryForList("select * from CLI where CODE_CLIENT = ?", code_client_parent);
+				List<Map<String,Object>> rows = jdbcTemplate.queryForList("select * from CLI where CODE_CLIENT = ? and NO_PARENT_ERROR is NULL ", code_client_parent);
 
 				if(rows.size()!=1){
-					return errorEP(com,"Endpoint : Problème de détermination du PayerAccount");
+					errorEP(com,"Endpoint : Problème de détermination du PayerAccount");
+					throw new EndpointException("Endpoint : Problème de détermination du PayerAccount");
 				}else{
 
 					Map<String,Object> ancestor = rows.get(0);
@@ -87,13 +89,12 @@ public class CliToEndpoint extends MappingConstants{
 		}
 	}
 
-	private Endpoint errorEP(Com com,String str){
+	private void errorEP(Com com,String str){
 
 		TransformationReportLine trl = new TransformationReportLine("ERR-TRSF-02", com.getID_SIEBEL_LIGNE(),str);
 
 		TransformationReport.getIntance().increaseEndpointError(trl);
 
-		return null;
 	}
 
 	private synchronized Boolean addEP(String userName){

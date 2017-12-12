@@ -1,14 +1,14 @@
 package com.ericsson.hubone.tools.batch.data.ecb;
 
 public class Subscription extends EcbRootBean{
-		
+
 	String productOfferingId;
 	String accountId;
 	String startDate;
 	String endDate;
-	
+
 	String commercialProdCode;
-	
+
 	String catalogPrice;
 	String clientCommandRef;
 	String commandId;
@@ -25,9 +25,12 @@ public class Subscription extends EcbRootBean{
 	String sharedBucketScope;
 	String siteAddressId;
 	String targetTariffGridId;
-	
+
 	Boolean newCOM;
-	
+
+	String iCBValue;
+	String piName;
+
 	public String getProductOfferingId() {
 		return productOfferingId;
 	}
@@ -160,7 +163,19 @@ public class Subscription extends EcbRootBean{
 	public void setTargetTariffGridId(String targetTariffGridId) {
 		this.targetTariffGridId = targetTariffGridId;
 	}
+	public String getiCBValue() {
+		return iCBValue;
+	}
+	public void setiCBValue(String iCBValue) {
+		this.iCBValue = iCBValue;
+	}
+	public String getPiName() {
+		return piName;
+	}
+	public void setPiName(String piName) {
+		this.piName = piName;
+	}
 	
 	
-	
+
 }

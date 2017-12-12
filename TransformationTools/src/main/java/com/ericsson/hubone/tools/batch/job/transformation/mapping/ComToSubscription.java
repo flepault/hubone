@@ -10,6 +10,7 @@ import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
 import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
+import com.ericsson.hubone.tools.batch.job.transformation.exception.ComException;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 import com.ericsson.hubone.tools.report.transformation.TransformationReportLine;
 
@@ -53,7 +54,8 @@ public class ComToSubscription extends MappingConstants{
 
 
 		} catch (ParseException e) {
-			return errorCOM(com,e.getMessage());
+			errorCOM(com,e.getMessage());
+			return null;
 		}
 
 		subscription.setEndDate("");
@@ -85,6 +87,9 @@ public class ComToSubscription extends MappingConstants{
 
 		Subscription ecbCOM = createSouscription(com,false);
 		ecbCOM.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
+		
+		ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
+		ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
 		return ecbCOM;
 	}
@@ -94,6 +99,10 @@ public class ComToSubscription extends MappingConstants{
 		Subscription ecbCOM = createSouscription(com,false);
 		ecbCOM.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
 		//ecbCOM.setSharedBucketScope(sharedBucketScope);
+		
+
+		ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
+		ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
 		return ecbCOM;
 	}
@@ -162,13 +171,12 @@ public class ComToSubscription extends MappingConstants{
 		return ecbCOM;
 	}
 
-	public Subscription errorCOM(Com com,String str){
+	public void errorCOM(Com com,String str){
 
 		TransformationReportLine trl = new TransformationReportLine("ERR-TRSF-03", com.getID_SIEBEL_LIGNE(),str);
 
 		TransformationReport.getIntance().increaseSouscriptionError(trl);
 
-		return null;
 	}
 
 	

@@ -13,6 +13,7 @@ import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
 import com.ericsson.hubone.tools.batch.data.ecb.EcbRootBean;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
 import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
+import com.ericsson.hubone.tools.batch.job.transformation.exception.EndpointException;
 import com.ericsson.hubone.tools.batch.job.transformation.mapping.CliToAccount;
 import com.ericsson.hubone.tools.batch.job.transformation.mapping.CliToEndpoint;
 import com.ericsson.hubone.tools.batch.job.transformation.mapping.ComToSubscription;
@@ -48,11 +49,18 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 
 			Subscription subscription = null;
 
+			Boolean epNullorOk = true;
+
 			if(com.getMEDIA()!=null && !com.getMEDIA().equals("")){				
 
 				if(com.getSERVICE_ID()!=null && !com.getSERVICE_ID().equals("")){				
 
-					Endpoint endpoint = cliToEndpoint.createEndpoint(com);
+					Endpoint endpoint = null;
+					try {
+						endpoint = cliToEndpoint.createEndpoint(com);
+					} catch (EndpointException e) {
+						epNullorOk = false;
+					}
 
 					if(endpoint!=null){
 						list.add(endpoint);
@@ -62,42 +70,44 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 				}
 			}
 
-			if(com.getCODE_PRODUIT_RAFAEL().startsWith("REC") || 
-					com.getCODE_PRODUIT_RAFAEL().startsWith("RECCA") ){
-				subscription = comToSubscription.createAbonnement(com);
-			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("GT") ){
-				subscription = comToSubscription.createGrilleTarifaire(com);
-			}else if(com.getCODE_PRODUIT_RAFAEL().equals("PONCT") || 
-					com.getCODE_PRODUIT_RAFAEL().equals("DEDPRE")){
-				subscription = comToSubscription.createFraisPonctuel(com);
-			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
-				subscription = comToSubscription.createRemiseVolume(com);
-			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
-				subscription = comToSubscription.createWifiRoam(com);
-			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
-				subscription = comToSubscription.createIntercoIn(com);
-			}else{
-				comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
+			if(epNullorOk) {
+				if(com.getCODE_PRODUIT_RAFAEL().startsWith("REC") || 
+						com.getCODE_PRODUIT_RAFAEL().startsWith("RECCA") ){
+					subscription = comToSubscription.createAbonnement(com);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("GT") ){
+					subscription = comToSubscription.createGrilleTarifaire(com);
+				}else if(com.getCODE_PRODUIT_RAFAEL().equals("PONCT") || 
+						com.getCODE_PRODUIT_RAFAEL().equals("DEDPRE")){
+					subscription = comToSubscription.createFraisPonctuel(com);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
+					subscription = comToSubscription.createRemiseVolume(com);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
+					subscription = comToSubscription.createWifiRoam(com);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
+					subscription = comToSubscription.createIntercoIn(com);
+				}else{
+					comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
+				}
+				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
+				//				ecbCom = createForfaitLigne(com);
+				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
+				//				ecbCom = createForfaitPartage(com);
+				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("DEST")){
+				//				ecbCom = createSurcharge(com);
+				//			}else if(com.getCODE_PRODUIT_RAFAEL().equals("REMPP")){
+				//				ecbCom = createRemisePiedDePage(com);
+				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
+				//				ecbCom = createRemiseVolume(com);
+				//			}}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
+				//				ecbCom = createRemiseVolume(com);
+				//			}}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
+				//				ecbCom = createRemiseVolume(com);
+				//			}
+
+
+				if(subscription!=null)
+					list.add(subscription);
 			}
-			//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
-			//				ecbCom = createForfaitLigne(com);
-			//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
-			//				ecbCom = createForfaitPartage(com);
-			//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("DEST")){
-			//				ecbCom = createSurcharge(com);
-			//			}else if(com.getCODE_PRODUIT_RAFAEL().equals("REMPP")){
-			//				ecbCom = createRemisePiedDePage(com);
-			//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
-			//				ecbCom = createRemiseVolume(com);
-			//			}}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
-			//				ecbCom = createRemiseVolume(com);
-			//			}}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
-			//				ecbCom = createRemiseVolume(com);
-			//			}
-
-
-			if(subscription!=null)
-				list.add(subscription);
 
 			if(list.size()==0)
 				return null;			

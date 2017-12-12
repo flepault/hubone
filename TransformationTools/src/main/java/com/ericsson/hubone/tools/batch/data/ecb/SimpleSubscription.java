@@ -4,7 +4,7 @@ public class SimpleSubscription extends Subscription{
 	
 	public static String[] column = new String[] {"productOfferingId","accountId","startDate","endDate","commercialProdCode",
 			"catalogPrice","clientCommandRef","commandId","discountAmount","discountPercent","isOnDemand","isSharedTariffGrid",
-			"media","parentProductId","productId","productIntegrationId","quantity","serviceId","sharedBucketScope","siteAddressId","targetTariffGridId"
+			"media","parentProductId","productId","productIntegrationId","quantity","serviceId","sharedBucketScope","siteAddressId","targetTariffGridId","iCBValue","piName"
 			};
 	
 	public static String header(){
@@ -17,7 +17,7 @@ public class SimpleSubscription extends Subscription{
 				+ "SubscriptionInfo.ParentProductId|SubscriptionInfo.ProductId|"
 				+ "SubscriptionInfo.ProductIntegrationId|SubscriptionInfo.Quantity|"
 				+ "SubscriptionInfo.ServiceId|SubscriptionInfo.SharedBucketScope|"
-				+ "SubscriptionInfo.SiteAddressId|SubscriptionInfo.TargetTariffGridId";
+				+ "SubscriptionInfo.SiteAddressId|SubscriptionInfo.TargetTariffGridId|ICBValue|PiName";
 		
 	}
 

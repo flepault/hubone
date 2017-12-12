@@ -5,107 +5,111 @@
 		<PropertyName>ProductOfferingId</PropertyName>
 		<PropertyType>string</PropertyType>
 		<DynamicFieldsValues>
-			<!-- New value has to match id from t_po select * from t_po po join t_base_props 
-				props ON po.id_po = props.id_prop -->
+			<!-- select '<DynymicFieldMapper>'+'<CurrentValue>'+nm_name+'</CurrentValue>'+
+    '<TargePropertyName>ProductOfferingId</TargePropertyName>'+
+	'<NewValue>'+CAST(id_prop AS VARCHAR)+'</NewValue>'+
+	'</DynymicFieldMapper>'
+   from t_po po join t_base_props 
+				props ON po.id_po = props.id_prop order by nm_name -->
 			<DynymicFieldMapper>
-				<CurrentValue>MINFAC</CurrentValue>
+				<CurrentValue>DEDPRE</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1288</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>GT_TETRA_TEST</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1275</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>GT_TETRA_SMS_TEST</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1265</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPVOL</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1260</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_POLO</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1255</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_NAT_TEST</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1248</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_MOBILE</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1243</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_FRANCE</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1238</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_FIXE</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1233</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_COLOMB</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1228</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_CARTIER</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1223</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORPACT</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1217</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>FORLDUR_TETRAX</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1212</NewValue>
+				<NewValue>1335</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>DESTACT</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1179</NewValue>
+				<NewValue>1342</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>DESTDUR</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1184</NewValue>
+				<NewValue>1347</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>DESTVOL</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1189</NewValue>
+				<NewValue>1352</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>FORLDUR_HUBSET</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1194</NewValue>
+				<NewValue>1357</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>FORLDUR_NAT_TEST</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1200</NewValue>
+				<NewValue>1362</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>FORLDUR_TETRAB</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1207</NewValue>
+				<NewValue>1369</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>DEDPRE</CurrentValue>
+				<CurrentValue>FORLDUR_TETRAX</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1113</NewValue>
+				<NewValue>1374</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPACT</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1379</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPDUR_CARTIER</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1384</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPDUR_COLOMB</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1389</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPDUR_FIXE</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1394</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPDUR_FRANCE</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1399</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPDUR_MOBILE</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1404</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPDUR_NAT_TEST</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1409</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPDUR_POLO</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1416</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>FORPVOL</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1421</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>GT_TETRA_TEST</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1430</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>Operateurs</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1437</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>OrangeAbo</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1444</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>PONCT</CurrentValue>
@@ -123,9 +127,19 @@
 				<NewValue>1137</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
+				<CurrentValue>REMV_NAT_TEST</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1451</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
 				<CurrentValue>TETRA0001U</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
 				<NewValue>1145</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>VIDE</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>1458</NewValue>
 			</DynymicFieldMapper>
 		</DynamicFieldsValues>
 	</FieldMapper>
