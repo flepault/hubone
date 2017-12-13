@@ -5,34 +5,31 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-import com.ericsson.hubone.tools.batch.job.transformation.mapping.MappingConstants;
-
 public class EndpointBME extends EcbRootBean{
 	
 	protected static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public static String[] column = new String[] {"serviceIdAudit","version","internalKey","creationDate","updateDate",			
-			"uID","endDate","parentAccountName","startDate","userName",
-			"serviceId"};
+			"uID","endDate","startDate","userName","serviceId","parentAccountName"};
 	
 	public static String header(){
 		
-		return "ServiceIdAudit|Version|InternalKey|CreationDate|"
-				+ "UpdateDate|UID|EndDate|ParentAccountName|StartDate|UserName|ServiceId";
+		return "ServiceIdAudit|Version|InternalKey|CreationDate|UpdateDate|"
+				+ "UID|EndDate|StartDate|UserName|ServiceId|ParentAccountName";
 		
 	}
 	
 	
 		
 	public EndpointBME() {
-		this.serviceIdAudit = UUID.randomUUID().toString();
+		this.serviceIdAudit = "{"+UUID.randomUUID().toString()+"}";
 		this.version ="1";
-		this.internalKey=UUID.randomUUID().toString();
+		this.internalKey="{"+UUID.randomUUID().toString()+"}";
 		
 		Date now = Calendar.getInstance().getTime();		
 		this.creationDate = format.format(now);
 		this.updateDate =  format.format(now);
-		this.uID=UUID.randomUUID().toString();
+		this.uID=new String("137");
 	}
 
 	String serviceIdAudit;

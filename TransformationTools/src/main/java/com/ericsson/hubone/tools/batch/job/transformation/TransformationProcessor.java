@@ -50,19 +50,20 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 			Subscription subscription = null;
 
 			Boolean epNullorOk = true;
+			Endpoint endpoint = null;
 
 			if(com.getMEDIA()!=null && !com.getMEDIA().equals("")){				
 
 				if(com.getSERVICE_ID()!=null && !com.getSERVICE_ID().equals("")){				
 
-					Endpoint endpoint = null;
+					
 					try {
 						endpoint = cliToEndpoint.createEndpoint(com);
 					} catch (EndpointException e) {
 						epNullorOk = false;
 					}
 
-					if(endpoint!=null){
+					if(endpoint!=null && endpoint.getNewEP()){
 						list.add(endpoint);
 						list.add(cliToEndpoint.createEndpointBME(endpoint, com));
 					}
@@ -74,17 +75,17 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 				if(com.getCODE_PRODUIT_RAFAEL().startsWith("REC") || 
 						com.getCODE_PRODUIT_RAFAEL().startsWith("RECCA") ){
 					subscription = comToSubscription.createAbonnement(com);
-				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("GT") ){
-					subscription = comToSubscription.createGrilleTarifaire(com);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("GT") ){					
+					subscription = comToSubscription.createGrilleTarifaire(com,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().equals("PONCT") || 
 						com.getCODE_PRODUIT_RAFAEL().equals("DEDPRE")){
 					subscription = comToSubscription.createFraisPonctuel(com);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
 					subscription = comToSubscription.createRemiseVolume(com);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
-					subscription = comToSubscription.createWifiRoam(com);
+					subscription = comToSubscription.createWifiRoam(com,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
-					subscription = comToSubscription.createIntercoIn(com);
+					subscription = comToSubscription.createIntercoIn(com,endpoint);
 				}else{
 					comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
 				}

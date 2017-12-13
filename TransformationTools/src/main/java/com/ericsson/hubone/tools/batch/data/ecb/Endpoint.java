@@ -16,7 +16,7 @@ public class Endpoint extends EcbRootBean{
 		
 	}
 	
-String accountType;
+	String accountType;
 	
 	String userName;
 	String password="password";
@@ -35,6 +35,8 @@ String accountType;
 	String internal_TimezoneID="(GMT+01:00) Paris, Madrid, Amsterdam";
 	String internal_Language="FR";
 	String internal_Currency="EUR";	
+	
+	Boolean newEP;
 	
 	public String getAccountType() {
 		return accountType;
@@ -139,5 +141,12 @@ String accountType;
 	public void setPayerAccount(String payerAccount) {
 		this.payerAccount = payerAccount;
 	}
+	public Boolean getNewEP() {
+		return newEP;
+	}
+	public void setNewEP(Boolean newEP) {
+		this.newEP = newEP;
+	}
+	
 
 }

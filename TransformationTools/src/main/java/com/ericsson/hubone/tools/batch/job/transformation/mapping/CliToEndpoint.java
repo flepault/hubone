@@ -49,10 +49,14 @@ public class CliToEndpoint extends MappingConstants{
 		String userName = com.getCODE_CLIENT()+"_"+com.getSERVICE_ID();
 
 		if(!addEP(userName)){
-			return null;
+			Endpoint ecbEP = new Endpoint();
+			ecbEP.setUserName(userName);	
+			ecbEP.setNewEP(false);
+			return ecbEP;
 		}else {
 
 			Endpoint ecbEP = new Endpoint();
+			ecbEP.setNewEP(true);
 			ecbEP.setAccountType(HierarchieClient.Endpoint.toString());
 			ecbEP.setUserName(userName);
 			ecbEP.setAccountStartDate(format.format(migrationHubOneStartDate));
