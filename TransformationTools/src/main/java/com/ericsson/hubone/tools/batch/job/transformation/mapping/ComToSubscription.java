@@ -67,7 +67,7 @@ public class ComToSubscription extends MappingConstants{
 		subscription.setCommandId(com.getCODE_COMMANDE());
 		subscription.setDiscountAmount(com.getMONTANT_REMISE_MANUEL());
 		subscription.setDiscountPercent(com.getPOURCENT_REMISE_MANUEL());
-		//ecbCOM.setIsOnDemand(com.get);
+		subscription.setIsOnDemand("N");
 
 		subscription.setMedia(com.getMEDIA());
 		subscription.setParentProductId(com.getID_SIEBEL_PRESTATION());
@@ -88,7 +88,7 @@ public class ComToSubscription extends MappingConstants{
 
 		Subscription ecbCOM = createSouscription(com,false);
 
-		ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
+		ecbCOM.setiCBValue(String.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT())));
 		ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
 		return ecbCOM;
@@ -97,10 +97,8 @@ public class ComToSubscription extends MappingConstants{
 	public Subscription createAbonnement(Com com){
 
 		Subscription ecbCOM = createSouscription(com,false);
-		//ecbCOM.setSharedBucketScope(sharedBucketScope);
 
-
-		ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
+		ecbCOM.setiCBValue(String.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT())));
 		ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
 		return ecbCOM;
@@ -109,13 +107,15 @@ public class ComToSubscription extends MappingConstants{
 	public Subscription createGrilleTarifaire(Com com,Endpoint endpoint){
 
 		boolean gsub = false;
-		String PARTAGE = null;
+		//TODO Replace with PARTAGE
+		
+		String NIVEAU_APPLICATION = null;
 
 		if(com.getPARAM_PRODUIT_ADD()!=null || !com.getPARAM_PRODUIT_ADD().equals("")){
 			for(String param:com.getPARAM_PRODUIT_ADD().split(";")){
-				if(param.split("=")[0].equals("PARTAGE")){
-					PARTAGE = param.split("=")[1];
-					if(!param.split("=")[1].equals("Y")){
+				if(param.split("=")[0].equals("NIVEAU_APPLICATION")){
+					NIVEAU_APPLICATION = param.split("=")[1];
+					if(!param.split("=")[1].equals("N")){
 						gsub = true;
 						break;
 					}
@@ -123,10 +123,11 @@ public class ComToSubscription extends MappingConstants{
 			}
 		}
 		
-		if(PARTAGE==null) {
-			errorCOM(com, "Aucune information de PARTAGE disponible");
-			return null;
-		}
+		//TODO Remove comments
+//		if(NIVEAU_APPLICATION==null) {
+//			errorCOM(com, "Aucune information de PARTAGE disponible");
+//			return null;
+//		}
 
 		Subscription ecbCOM = createSouscription(com,gsub);
 		ecbCOM.setProductOfferingId("TETRA0001U");
@@ -136,13 +137,12 @@ public class ComToSubscription extends MappingConstants{
 				return null;
 			}else
 				ecbCOM.setAccountId(endpoint.getUserName());
-
+		}else {
+			ecbCOM.setIsSharedTariffGrid("Y");		
 		}
 
 
-		//IF IsSharedTariffGrid TRUE -> use TargetTariffGridId ELSE EP
-		//ecbCOM.setIsSharedTariffGrid(com.get);		
-		//ecbCOM.setTargetTariffGridId(targetTariffGridId);
+		
 
 		return ecbCOM;
 	}
@@ -156,7 +156,6 @@ public class ComToSubscription extends MappingConstants{
 		}else
 			ecbCOM.setAccountId(endpoint.getUserName());
 
-		//ecbCOM.setSharedBucketScope(sharedBucketScope);		
 		//ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
 		//ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
@@ -182,17 +181,20 @@ public class ComToSubscription extends MappingConstants{
 	public Subscription createForfaitPartage(Com com){
 		Subscription ecbCOM = createSouscription(com,false);
 
-		//ecbCOM.setSharedBucketScope(sharedBucketScope);		
+		//	Client/RegroupCF/CF	
 		//ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
 		//ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
 		String CREDIT_FORFAIT = null;
+		String NIVEAU_APPLICATION = null;
 
 		if(com.getPARAM_PRODUIT_ADD()!=null || !com.getPARAM_PRODUIT_ADD().equals("")){
 			for(String param:com.getPARAM_PRODUIT_ADD().split(";")){
 				if(param.split("=")[0].equals("CREDIT_FORFAIT")){
 					CREDIT_FORFAIT = param.split("=")[1];
-					break;
+				}
+				if(param.split("=")[0].equals("NIVEAU_APPLICATION")){
+					NIVEAU_APPLICATION = param.split("=")[1];
 				}
 			}
 		}
@@ -200,6 +202,12 @@ public class ComToSubscription extends MappingConstants{
 			errorCOM(com, "Aucun CREDIT_FORFAIT disponible");
 			return null;
 		}
+		
+		if(NIVEAU_APPLICATION==null) {
+			errorCOM(com, "Aucun NIVEAU_APPLICATION disponible");
+			return null;
+		}else
+			ecbCOM.setSharedBucketScope(NIVEAU_APPLICATION);
 
 		return ecbCOM;
 	}
@@ -208,7 +216,8 @@ public class ComToSubscription extends MappingConstants{
 
 		Subscription ecbCOM = createSouscription(com,false);
 		//subscription.setAccountId(com.getCODE_CLIENT());
-		
+
+		//ecbCOM.setTargetTariffGridId(targetTariffGridId);
 
 		String DESTINATION = null;
 		String PRIX = null;
