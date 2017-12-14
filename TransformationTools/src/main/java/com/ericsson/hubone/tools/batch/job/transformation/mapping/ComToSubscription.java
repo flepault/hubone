@@ -62,6 +62,7 @@ public class ComToSubscription extends MappingConstants{
 		subscription.setCommercialProdCode(com.getCODE_PRODUIT_SIEBEL());
 		subscription.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
 
+		subscription.setAppliedPrice(com.getPRIX_APPLIQUE_MANUEL());
 		subscription.setCatalogPrice(com.getPRIX_CATALOGUE());
 		subscription.setClientCommandRef(com.getCODE_CLIENT());
 		subscription.setCommandId(com.getCODE_COMMANDE());

@@ -9,6 +9,7 @@ public class Subscription extends EcbRootBean{
 
 	String commercialProdCode;
 
+	String appliedPrice;
 	String catalogPrice;
 	String clientCommandRef;
 	String commandId;
@@ -66,6 +67,13 @@ public class Subscription extends EcbRootBean{
 	}
 	public void setCommercialProdCode(String commercialProdCode) {
 		this.commercialProdCode = commercialProdCode;
+	}
+	
+	public String getAppliedPrice() {
+		return appliedPrice;
+	}
+	public void setAppliedPrice(String appliedPrice) {
+		this.appliedPrice = appliedPrice;
 	}
 	public String getCatalogPrice() {
 		return catalogPrice;

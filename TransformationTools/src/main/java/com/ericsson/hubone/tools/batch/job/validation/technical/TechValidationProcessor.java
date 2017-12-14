@@ -13,6 +13,7 @@ import com.ericsson.hubone.tools.batch.data.cesame.rules.Rules;
 import com.ericsson.hubone.tools.batch.data.cesame.types.Types;
 import com.ericsson.hubone.tools.report.tech.TechnicalReport;
 import com.ericsson.hubone.tools.report.tech.TechnicalReportLine;
+import com.ericsson.hubone.tools.report.transformation.CartoClient;
 
 public class TechValidationProcessor<T extends CesameRootBean> implements ItemProcessor<T, T>{	
 
@@ -39,16 +40,22 @@ public class TechValidationProcessor<T extends CesameRootBean> implements ItemPr
 
 		if(t instanceof Cli){							
 			id = ((Cli)t).getROW_ID_SIEBEL();
-			
-//			//TODO A SUPPRIMER
-//			if( ((Cli)t).getSTATUT_CRM().equals("A supprimer"))
-//				return null;
-			
+
+			//			//TODO A SUPPRIMER
+			//			if( ((Cli)t).getSTATUT_CRM().equals("A supprimer"))
+			//				return null;
+
+			//CartoClient.getIntance().addAccount(((Cli)t).getCODE_CLIENT(),((Cli)t).getNIV_HIERARCHIE_CLIENT());
+
 			TechnicalReport.getIntance().increaseCLI();
-					
+
 		}else{
 			id = ((Com)t).getID_SIEBEL_LIGNE();
 			TechnicalReport.getIntance().increaseCOM();
+
+//			String codeClient = ((Com)t).getCODE_CLIENT();
+//			if(codeClient!=null)				
+//				CartoClient.getIntance().addSub(((Com)t).getCODE_CLIENT());
 		}
 
 		boolean error = false;
@@ -66,12 +73,12 @@ public class TechValidationProcessor<T extends CesameRootBean> implements ItemPr
 							TechnicalReport.getIntance().increaseMandatoryError(new TechnicalReportLine("ERR-TECH-01",file, id, t.getClass().getSimpleName()+"."+f.getName(), "Null Value"));
 							error = true;
 						}else {
-							
+
 							if(checkTypeAndRules(t,f,field,id))
 								error = true;
 						}
 					} else {
-						
+
 						if(field.getValue()==null || field.getValue().equals("")){							
 
 							if(field.isDependentMandatory()){
@@ -79,7 +86,7 @@ public class TechValidationProcessor<T extends CesameRootBean> implements ItemPr
 									error = true;
 							}
 						}else {
-							
+
 							if(checkTypeAndRules(t,f,field,id))
 								error = true;
 						}
@@ -112,23 +119,23 @@ public class TechValidationProcessor<T extends CesameRootBean> implements ItemPr
 		}
 		return t;
 	}
-	
+
 	private boolean checkTypeAndRules(T t,Field f,CesameBeanField field,String id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		boolean error = false;
-		
+
 		if(field.getType()!=null && !field.getType().equals("")){
 			if(!(Boolean)(Types.class.getMethod(field.getType(), String.class)).invoke(null,field.getValue())){
 				TechnicalReport.getIntance().increaseTypeError(field.getType(), new TechnicalReportLine("ERR-TECH-02",file, id, t.getClass().getSimpleName()+"."+f.getName(), "Error with type : "+field.getType()));
 				error = true;
 			}
 		}
-		
+
 		if(checkRules(t,f,field,id))
 			error = true;
-		
+
 		return error;
 	}
-	
+
 
 	private boolean checkRules(T t,Field f,CesameBeanField field,String id){
 

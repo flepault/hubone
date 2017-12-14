@@ -33,6 +33,7 @@ public class JobListener extends JobExecutionListenerSupport {
 			if(!technicalReport && jobExecution.getJobInstance().getJobName().equals("technicalValidationJob")){
 				TechnicalReport.getIntance().printReport();
 				technicalReport=true;
+				//CartoClient.getIntance().printCarto();
 			}
 			
 			if(!functionalReport && jobExecution.getJobInstance().getJobName().equals("functionalValidationJob")){
