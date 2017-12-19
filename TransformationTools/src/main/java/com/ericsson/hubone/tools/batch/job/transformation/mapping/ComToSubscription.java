@@ -1,5 +1,7 @@
 package com.ericsson.hubone.tools.batch.job.transformation.mapping;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,8 +33,8 @@ public class ComToSubscription extends MappingConstants{
 
 		if(gsub){
 			subscription = new GroupSubscription();
-			((GroupSubscription)subscription).setName(com.getCODE_COMMANDE());
-			((GroupSubscription)subscription).setDescription(com.getCODE_COMMANDE());
+			((GroupSubscription)subscription).setName(com.getCODE_CLIENT()+"_"+com.getCODE_PRODUIT_RAFAEL()+"_"+com.getINTEGRATION_ID());
+			((GroupSubscription)subscription).setDescription(com.getCODE_CLIENT()+"_"+com.getCODE_PRODUIT_RAFAEL()+"_"+com.getINTEGRATION_ID());
 		}else
 			subscription = new SimpleSubscription();
 
@@ -64,7 +66,7 @@ public class ComToSubscription extends MappingConstants{
 
 		subscription.setAppliedPrice(com.getPRIX_APPLIQUE_MANUEL());
 		subscription.setCatalogPrice(com.getPRIX_CATALOGUE());
-		subscription.setClientCommandRef(com.getCODE_CLIENT());
+		subscription.setClientCommandRef(com.getREF_COMMANDE_CLIENT());
 		subscription.setCommandId(com.getCODE_COMMANDE());
 		subscription.setDiscountAmount(com.getMONTANT_REMISE_MANUEL());
 		subscription.setDiscountPercent(com.getPOURCENT_REMISE_MANUEL());
@@ -89,7 +91,9 @@ public class ComToSubscription extends MappingConstants{
 
 		Subscription ecbCOM = createSouscription(com,false);
 
-		ecbCOM.setiCBValue(String.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT())));
+		ecbCOM.setiCBValue(BigDecimal.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT()))
+			    .setScale(2, RoundingMode.HALF_UP)
+			    .toString());
 		ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
 		return ecbCOM;
@@ -99,7 +103,9 @@ public class ComToSubscription extends MappingConstants{
 
 		Subscription ecbCOM = createSouscription(com,false);
 
-		ecbCOM.setiCBValue(String.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT())));
+		ecbCOM.setiCBValue(BigDecimal.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT()))
+			    .setScale(2, RoundingMode.HALF_UP)
+			    .toString());
 		ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
 		return ecbCOM;
@@ -109,13 +115,13 @@ public class ComToSubscription extends MappingConstants{
 
 		boolean gsub = false;
 		//TODO Replace with PARTAGE
-		
-		String NIVEAU_APPLICATION = null;
+
+		String PARTAGE = null;
 
 		if(com.getPARAM_PRODUIT_ADD()!=null || !com.getPARAM_PRODUIT_ADD().equals("")){
 			for(String param:com.getPARAM_PRODUIT_ADD().split(";")){
-				if(param.split("=")[0].equals("NIVEAU_APPLICATION")){
-					NIVEAU_APPLICATION = param.split("=")[1];
+				if(param.split("=")[0].equals("PARTAGE")){
+					PARTAGE = param.split("=")[1];
 					if(!param.split("=")[1].equals("N")){
 						gsub = true;
 						break;
@@ -123,12 +129,12 @@ public class ComToSubscription extends MappingConstants{
 				}
 			}
 		}
-		
+
 		//TODO Remove comments
-//		if(NIVEAU_APPLICATION==null) {
-//			errorCOM(com, "Aucune information de PARTAGE disponible");
-//			return null;
-//		}
+		if(PARTAGE==null) {
+			errorCOM(com, "Aucune information de PARTAGE disponible");
+			return null;
+		}
 
 		Subscription ecbCOM = createSouscription(com,gsub);
 		ecbCOM.setProductOfferingId("TETRA0001U");
@@ -143,7 +149,7 @@ public class ComToSubscription extends MappingConstants{
 		}
 
 
-		
+
 
 		return ecbCOM;
 	}
@@ -170,7 +176,7 @@ public class ComToSubscription extends MappingConstants{
 				}
 			}
 		}
-		
+
 		if(CREDIT_FORFAIT==null) {
 			errorCOM(com, "Aucun CREDIT_FORFAIT disponible");
 			return null;
@@ -199,16 +205,20 @@ public class ComToSubscription extends MappingConstants{
 				}
 			}
 		}
-		if(CREDIT_FORFAIT==null) {
-			errorCOM(com, "Aucun CREDIT_FORFAIT disponible");
-			return null;
-		}
-		
-		if(NIVEAU_APPLICATION==null) {
-			errorCOM(com, "Aucun NIVEAU_APPLICATION disponible");
+		if(CREDIT_FORFAIT==null || NIVEAU_APPLICATION==null) {
+
+			if(CREDIT_FORFAIT==null) {
+				errorCOM(com, "Aucun CREDIT_FORFAIT disponible");				
+			}
+
+			if(NIVEAU_APPLICATION==null) {
+				errorCOM(com, "Aucun NIVEAU_APPLICATION disponible");				
+			}
+			
 			return null;
 		}else
 			ecbCOM.setSharedBucketScope(NIVEAU_APPLICATION);
+
 
 		return ecbCOM;
 	}
@@ -232,7 +242,7 @@ public class ComToSubscription extends MappingConstants{
 				}
 			}
 		}
-		
+
 		if(DESTINATION==null) {
 			errorCOM(com, "Aucune DESTINATION disponible");
 			return null;
@@ -247,7 +257,7 @@ public class ComToSubscription extends MappingConstants{
 
 	public Subscription createRemisePiedDePage(Com com){
 		Subscription ecbCOM = createSouscription(com,false);
-		
+
 		String POURCENTAGE = new String();
 
 		if(com.getPARAM_PRODUIT_ADD()!=null || !com.getPARAM_PRODUIT_ADD().equals("")){
@@ -259,7 +269,7 @@ public class ComToSubscription extends MappingConstants{
 				}
 			}
 		}
-		
+
 		if(POURCENTAGE==null) {
 			errorCOM(com, "Aucun POURCENTAGE disponible");
 			return null;

@@ -56,7 +56,7 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 
 				if(com.getSERVICE_ID()!=null && !com.getSERVICE_ID().equals("")){				
 
-					
+
 					try {
 						endpoint = cliToEndpoint.createEndpoint(com);
 					} catch (EndpointException e) {
@@ -86,14 +86,14 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 					subscription = comToSubscription.createWifiRoam(com,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
 					subscription = comToSubscription.createIntercoIn(com,endpoint);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
+					subscription = comToSubscription.createForfaitPartage(com);
 				}else{
 					comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
 				}
 				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
 				//				ecbCom = createForfaitLigne(com);
-				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
-				//				ecbCom = createForfaitPartage(com);
-				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("DEST")){
+				//			else if(com.getCODE_PRODUIT_RAFAEL().startsWith("DEST")){
 				//				ecbCom = createSurcharge(com);
 				//			}else if(com.getCODE_PRODUIT_RAFAEL().equals("REMPP")){
 				//				ecbCom = createRemisePiedDePage(com);

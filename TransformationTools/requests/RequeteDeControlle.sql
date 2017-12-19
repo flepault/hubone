@@ -18,6 +18,9 @@ SELECT 'SOUSCRIPTION : '+ cast(count(id_sub) as varchar)
 FROM [dbo].[t_sub] 
 
 
+SELECT'PRICELIST : '+ cast(count(id_pricelist) as varchar)
+  FROM [dbo].[t_pricelist]
+
 SELECT 'GROUP SOUSCRIPTION : '+ cast(count(id_group) as varchar)
 FROM [dbo].[t_group_sub]  
 
