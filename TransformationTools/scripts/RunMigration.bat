@@ -88,6 +88,9 @@ echo "############ BME SQL LOADING ENDED ############"
 echo "###############################################"
 pause
 
+echo "###############################################"
+echo "########### MOVING MIGRATION REPORTS ##########"
+echo "###############################################"
 cd D:\\MigrationTools\\
 mkdir Reports
 cd D:\\MigrationTools\\Reports
@@ -95,4 +98,7 @@ mv D:\\MigrationTools\\TransformationTools\\reports\\technical\\*.xlsx .
 mv D:\\MigrationTools\\TransformationTools\\reports\\functional\\*.xlsx .
 mv D:\\MigrationTools\\TransformationTools\\reports\\transformation\\*.xlsx .
 mv D:\\MigrationTools\\LogReader\\report\\*.xlsx .
-
+echo "###############################################"
+echo "###### MOVING MIGRATION REPORTS FINISHED ######"
+echo "###############################################"
+pause
