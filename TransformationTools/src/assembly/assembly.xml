@@ -22,6 +22,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>${project.basedir}/LogReader</directory>
+			<outputDirectory>LogReader</outputDirectory>
+			<includes>
+				<include>*/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>${project.basedir}/scripts</directory>
 			<outputDirectory>TransformationTools</outputDirectory>
 			<includes>

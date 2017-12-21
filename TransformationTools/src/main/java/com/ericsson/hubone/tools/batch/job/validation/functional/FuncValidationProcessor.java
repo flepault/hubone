@@ -64,9 +64,9 @@ public class FuncValidationProcessor<T extends CesameRootBean> implements ItemPr
 					error = true;	
 					jdbcTemplate.update("update CLI set NO_PARENT_ERROR = 'Y' where CODE_CLIENT=?",cli.getCODE_CLIENT());
 					if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.RegroupCF.toString())){
-						FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le "+errorMessage+" ne possède pas de RegroupCF/Client parent valide"));
+						FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le compte parent "+cli.getCODE_CLIENT()+" du "+errorMessage+" n'est pas valide"));
 					}else if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.CF.toString())){
-						FunctionalReport.getIntance().increaseCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le "+errorMessage+" ne possède pas de RegroupCF/Client parent valide"));
+						FunctionalReport.getIntance().increaseCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le compte parent "+cli.getCODE_CLIENT()+" du "+errorMessage+" n'est pas valide"));
 					}					
 				}
 			}
@@ -82,7 +82,7 @@ public class FuncValidationProcessor<T extends CesameRootBean> implements ItemPr
 				return t;
 			} else if(rows.size()==0){
 				error = true;
-				FunctionalReport.getIntance().increaseSouscriptionError(new FunctionalReportLine("ERR-FUNC-03", com.getID_SIEBEL_LIGNE(), "Le produit ne possède pas de compte parent valide"));
+				FunctionalReport.getIntance().increaseSouscriptionError(new FunctionalReportLine("ERR-FUNC-03", com.getID_SIEBEL_LIGNE(), "Le compte parent "+com.getCODE_CLIENT()+" du produit n'est pas valide"));
 			}
 
 		}

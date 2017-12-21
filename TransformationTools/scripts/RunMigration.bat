@@ -70,6 +70,16 @@ echo "###############################################"
 pause
 
 echo "###############################################"
+echo "####### RUN ECB MIGRATION TOOLS REPORT ########"
+echo "###############################################"
+cd D:\\MigrationTools\\LogReader\\
+cmd /c RunLogReader.bat
+echo "###############################################"
+echo "###### ECB MIGRATION TOOLS REPORT ENDED #######"
+echo "###############################################"
+pause
+
+echo "###############################################"
 echo "############# RUN BME SQL LOADING #############"
 echo "###############################################"
 sqlcmd -Q "BULK INSERT NetMeter.dbo.t_be_hub_pdc_serviceidaudit FROM 'D:\MigrationTools\TransformationTools\output\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
@@ -77,4 +87,12 @@ echo "###############################################"
 echo "############ BME SQL LOADING ENDED ############"
 echo "###############################################"
 pause
+
+cd D:\\MigrationTools\\
+mkdir Reports
+cd D:\\MigrationTools\\Reports
+mv D:\\MigrationTools\\TransformationTools\\reports\\technical\\*.xlsx .
+mv D:\\MigrationTools\\TransformationTools\\reports\\functional\\*.xlsx .
+mv D:\\MigrationTools\\TransformationTools\\reports\\transformation\\*.xlsx .
+mv D:\\MigrationTools\\LogReader\\report\\*.xlsx .
 
