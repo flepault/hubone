@@ -7,7 +7,6 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.jms.JmsItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -48,46 +47,14 @@ public class TransformationJobConfiguration{
 	}
 	
 	@Autowired
-	@Qualifier("writerClient")
-    private ItemWriter<EcbRootBean> clientWriter;
-	
-	@Autowired
-	@Qualifier("writerRegroupCF")
-    private ItemWriter<EcbRootBean> regroupCFWriter;
-	
-	@Autowired
-	@Qualifier("writerCF")
-    private ItemWriter<EcbRootBean> cfWriter;
-	
-	@Autowired
-	@Qualifier("writerEP")
-    private ItemWriter<EcbRootBean> epWriter;
-	
-	@Autowired
-	@Qualifier("writerEPBME")
-    private ItemWriter<EcbRootBean> epBMEWriter;
-	
-	@Autowired
-	@Qualifier("writerOldSubscription")
-    private ItemWriter<EcbRootBean> oldSouscriptionWriter;
-	
-	@Autowired
-	@Qualifier("writerNewSubscription")
-    private ItemWriter<EcbRootBean> newSouscriptionWriter;
-	
-	@Autowired
-	@Qualifier("writerOldGroupSubscription")
-    private ItemWriter<EcbRootBean> oldGroupSouscriptionWriter;
-	
-	@Autowired
-	@Qualifier("writerNewGroupSubscription")
-    private ItemWriter<EcbRootBean> newGroupSouscriptionWriter;
+	private WriterConfiguration writerConfig;
 	
 
 	public ItemListWriter writer() {		
 		
-		return new ItemListWriter(clientWriter,regroupCFWriter,cfWriter,epWriter,epBMEWriter,oldSouscriptionWriter,newSouscriptionWriter,
-				oldGroupSouscriptionWriter,newGroupSouscriptionWriter);
+		return new ItemListWriter(writerConfig.writerClient(),writerConfig.writerRegroupCF(),writerConfig.writerCF(),writerConfig.writerEP(),writerConfig.writerEPBME()
+				,writerConfig.writerOldSubscription(),writerConfig.writerNewSubscription(),
+				writerConfig.writerOldGroupSubscription(),writerConfig.writerNewGroupSubscription());
 		
 	}
 
@@ -107,7 +74,7 @@ public class TransformationJobConfiguration{
 	public Step transformationJobStep() {
 
 		return stepBuilderFactory.get("TransformationJobStep")
-				.allowStartIfComplete(true)	
+				//.allowStartIfComplete(true)	
 				.<CesameRootBean, List<EcbRootBean>> chunk(1)		
 				.reader(reader())
 				.processor(transformationProcessor)

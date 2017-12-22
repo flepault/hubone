@@ -10,8 +10,6 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 
@@ -25,11 +23,7 @@ import com.ericsson.hubone.tools.batch.job.superjob.FilesNames;
 
 @Configuration
 public class WriterConfiguration {
-	
-	@Autowired
-	@Qualifier("retry")
-	private boolean retry;
-	
+		
 	@Autowired
 	public FilesNames filesNames;
 	
@@ -37,13 +31,9 @@ public class WriterConfiguration {
 
 		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
 
-		if(retry){		
-			writer.setShouldDeleteIfExists(false);		
-			writer.setAppendAllowed(true);
-		}else{
-			writer.setShouldDeleteIfExists(true);
-		}
-
+		
+		writer.setShouldDeleteIfExists(true);
+		
 		writer.setHeaderCallback(new FlatFileHeaderCallback() {
 
 			@Override
@@ -59,156 +49,16 @@ public class WriterConfiguration {
 		fieldExtractor.setNames(column);
 		delLineAgg.setFieldExtractor(fieldExtractor);
 		writer.setLineAggregator(delLineAgg);
+		try {
+			writer.afterPropertiesSet();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return writer;
 
 	}
 	
-
-//	private FlatFileItemWriter<EcbRootBean> writerCOM(String ouput) {
-//
-//		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
-//
-//		if(retry){		
-//			writer.setShouldDeleteIfExists(false);		
-//			writer.setAppendAllowed(true);
-//		}else{
-//			writer.setShouldDeleteIfExists(true);
-//		}
-//
-//		writer.setHeaderCallback(new FlatFileHeaderCallback() {
-//
-//			@Override
-//			public void writeHeader(Writer writer) throws IOException {
-//				writer.write(SimpleSubscription.header());
-//
-//			}
-//		});
-//		writer.setResource(new FileSystemResource(FilesNames.OUTPUT_FOLDER+ouput));
-//		DelimitedLineAggregator<EcbRootBean> delLineAgg = new DelimitedLineAggregator<EcbRootBean>();
-//		delLineAgg.setDelimiter("|");		
-//		BeanWrapperFieldExtractor<EcbRootBean> fieldExtractor = new BeanWrapperFieldExtractor<EcbRootBean>();
-//		fieldExtractor.setNames(SimpleSubscription.column);
-//		delLineAgg.setFieldExtractor(fieldExtractor);
-//		writer.setLineAggregator(delLineAgg);
-//		return writer;
-//
-//	}
-//
-//	private FlatFileItemWriter<EcbRootBean> writerGCOM(String ouput) {
-//
-//		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
-//		
-//		if(retry){		
-//			writer.setShouldDeleteIfExists(false);		
-//			writer.setAppendAllowed(true);
-//		}else{
-//			writer.setShouldDeleteIfExists(true);
-//		}
-//		
-//		writer.setHeaderCallback(new FlatFileHeaderCallback() {
-//
-//			@Override
-//			public void writeHeader(Writer writer) throws IOException {
-//				writer.write(GroupSubscription.header());
-//
-//			}
-//		});
-//		writer.setResource(new FileSystemResource(FilesNames.OUTPUT_FOLDER+ouput));
-//		DelimitedLineAggregator<EcbRootBean> delLineAgg = new DelimitedLineAggregator<EcbRootBean>();
-//		delLineAgg.setDelimiter("|");		
-//		BeanWrapperFieldExtractor<EcbRootBean> fieldExtractor = new BeanWrapperFieldExtractor<EcbRootBean>();
-//		fieldExtractor.setNames(GroupSubscription.column);
-//		delLineAgg.setFieldExtractor(fieldExtractor);
-//		writer.setLineAggregator(delLineAgg);
-//		return writer;
-//
-//	}
-//
-//	private FlatFileItemWriter<EcbRootBean> writerEP(String ouput) {
-//
-//		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
-//		if(retry){		
-//			writer.setShouldDeleteIfExists(false);		
-//			writer.setAppendAllowed(true);
-//		}else{
-//			writer.setShouldDeleteIfExists(true);
-//		}
-//		writer.setHeaderCallback(new FlatFileHeaderCallback() {
-//
-//			@Override
-//			public void writeHeader(Writer writer) throws IOException {
-//				writer.write(Endpoint.header());
-//
-//			}
-//		});
-//		writer.setResource(new FileSystemResource(FilesNames.OUTPUT_FOLDER+ouput));
-//		DelimitedLineAggregator<EcbRootBean> delLineAgg = new DelimitedLineAggregator<EcbRootBean>();
-//		delLineAgg.setDelimiter("|");		
-//		BeanWrapperFieldExtractor<EcbRootBean> fieldExtractor = new BeanWrapperFieldExtractor<EcbRootBean>();
-//		fieldExtractor.setNames(Endpoint.column);
-//		delLineAgg.setFieldExtractor(fieldExtractor);
-//		writer.setLineAggregator(delLineAgg);
-//		return writer;
-//
-//	}
-//	
-//	private FlatFileItemWriter<EcbRootBean> writerEPBME(String ouput) {
-//
-//		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
-//		if(retry){		
-//			writer.setShouldDeleteIfExists(false);		
-//			writer.setAppendAllowed(true);
-//		}else{
-//			writer.setShouldDeleteIfExists(true);
-//		}
-//		writer.setHeaderCallback(new FlatFileHeaderCallback() {
-//
-//			@Override
-//			public void writeHeader(Writer writer) throws IOException {
-//				writer.write(EndpointBME.header());
-//
-//			}
-//		});
-//		writer.setResource(new FileSystemResource(FilesNames.OUTPUT_FOLDER+ouput));
-//		DelimitedLineAggregator<EcbRootBean> delLineAgg = new DelimitedLineAggregator<EcbRootBean>();
-//		delLineAgg.setDelimiter("|");		
-//		BeanWrapperFieldExtractor<EcbRootBean> fieldExtractor = new BeanWrapperFieldExtractor<EcbRootBean>();
-//		fieldExtractor.setNames(EndpointBME.column);
-//		delLineAgg.setFieldExtractor(fieldExtractor);
-//		writer.setLineAggregator(delLineAgg);
-//		return writer;
-//
-//	}
-//
-//	private FlatFileItemWriter<EcbRootBean> writerCLI(String ouput) {
-//
-//		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
-//		if(retry){		
-//			writer.setShouldDeleteIfExists(false);		
-//			writer.setAppendAllowed(true);
-//		}else{
-//			writer.setShouldDeleteIfExists(true);
-//		}
-//		writer.setHeaderCallback(new FlatFileHeaderCallback() {
-//
-//			@Override
-//			public void writeHeader(Writer writer) throws IOException {
-//				writer.write(Account.header());
-//
-//			}
-//		});
-//		writer.setResource(new FileSystemResource(FilesNames.OUTPUT_FOLDER+ouput));
-//		DelimitedLineAggregator<EcbRootBean> delLineAgg = new DelimitedLineAggregator<EcbRootBean>();
-//		delLineAgg.setDelimiter("|");		
-//		BeanWrapperFieldExtractor<EcbRootBean> fieldExtractor = new BeanWrapperFieldExtractor<EcbRootBean>();
-//		fieldExtractor.setNames(Account.column);
-//		delLineAgg.setFieldExtractor(fieldExtractor);
-//		writer.setLineAggregator(delLineAgg);
-//		return writer;
-//
-//	}
-
-	@Bean(name="writerClient")
 	public ItemWriter<EcbRootBean> writerClient() {
 		
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.Client,Account.header(),Account.column);
@@ -218,7 +68,6 @@ public class WriterConfiguration {
 
 	}
 
-	@Bean(name="writerRegroupCF")
 	public ItemWriter<EcbRootBean> writerRegroupCF() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.RegroupCF,Account.header(),Account.column);
@@ -228,7 +77,6 @@ public class WriterConfiguration {
 
 	}
 
-	@Bean(name="writerCF")
 	public ItemWriter<EcbRootBean> writerCF() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.CF,Account.header(),Account.column);
@@ -238,7 +86,6 @@ public class WriterConfiguration {
 
 	}
 
-	@Bean(name="writerEP")
 	public ItemWriter<EcbRootBean> writerEP() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.EP,Endpoint.header(),Endpoint.column);
@@ -248,7 +95,6 @@ public class WriterConfiguration {
 
 	}
 	
-	@Bean(name="writerEPBME")
 	public ItemWriter<EcbRootBean> writerEPBME() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.EPBME,EndpointBME.header(),EndpointBME.column);
@@ -258,7 +104,6 @@ public class WriterConfiguration {
 
 	}
 
-	@Bean(name="writerOldSubscription")
 	public ItemWriter<EcbRootBean> writerOldSubscription() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionOld,SimpleSubscription.header(),SimpleSubscription.column);
@@ -268,7 +113,6 @@ public class WriterConfiguration {
 
 	}
 
-	@Bean(name="writerNewSubscription")
 	public ItemWriter<EcbRootBean> writerNewSubscription() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionNew,SimpleSubscription.header(),SimpleSubscription.column);
@@ -278,7 +122,6 @@ public class WriterConfiguration {
 
 	}
 
-	@Bean(name="writerOldGroupSubscription")
 	public ItemWriter<EcbRootBean> writerOldGroupSubscription() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.GroupSouscriptionOld,GroupSubscription.header(),GroupSubscription.column);
@@ -288,7 +131,6 @@ public class WriterConfiguration {
 
 	}
 
-	@Bean(name="writerNewGroupSubscription")
 	public ItemWriter<EcbRootBean> writerNewGroupSubscription() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.GroupSouscriptionNew,GroupSubscription.header(),GroupSubscription.column);

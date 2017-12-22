@@ -178,13 +178,7 @@ public class TechValidationJobConfiguration{
 				.build();		
 	}	
 
-	@Bean(name="technicalValidationJob")
-	@Profile({"functional","transform"})
-	public Job technicalCLIValidationJob(JobListener jobListener,StepListener stepListener) {
-
-		return technicalCLIValidationJob(jobListener,false,stepListener);								
-	}	
-
+	
 	public Job technicalCLIValidationJob(JobListener jobListener,Boolean complete,StepListener stepListener) {
 
 		JobBuilder builder = jobBuilderFactory.get("technicalValidationJob");

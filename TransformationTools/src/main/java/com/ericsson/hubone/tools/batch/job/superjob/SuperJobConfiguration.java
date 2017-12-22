@@ -45,29 +45,7 @@ public class SuperJobConfiguration {
 	@Qualifier("transformationJob")
 	private Job transformationJob;
 	
-	@Bean(name="superJob")
-	@Profile("functional")
-	public Job repriseSuperJobFunctional() {
 		
-		JobBuilder builder = jobBuilderFactory.get("superJob");
-		
-		return builder.start(launchTechValidationJob()).on("COMPLETED")
-		.to(launchStorageJob()).on("COMPLETED")
-		.to(launchFuncValidationJob()).on("COMPLETED")
-		.to(launchTransformationJob()).end().build();									
-	}
-	
-	@Bean(name="superJob")
-	@Profile("tranform")
-	public Job repriseSuperJobTransform() {
-		
-		JobBuilder builder = jobBuilderFactory.get("superJob");
-		
-		return builder.start(launchTechValidationJob()).on("COMPLETED")
-		.to(launchStorageJob()).on("COMPLETED")
-		.to(launchTransformationJob()).end().build();									
-	}
-	
 	@Bean(name="superJob")
 	@Profile({"full","fast"})
 	public Job fullSuperJob() {
@@ -213,15 +191,4 @@ public class SuperJobConfiguration {
 		
 	}
 	
-	@Bean("retry")
-	@Profile({"full","fast"})
-	public boolean noRetry(){
-		return false;
-	}
-	
-	@Bean("retry")
-	@Profile({"functional","transform"})
-	public boolean retry(){
-		return true;
-	}
 }

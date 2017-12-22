@@ -13,7 +13,6 @@ import com.ericsson.hubone.tools.batch.data.cesame.rules.Rules;
 import com.ericsson.hubone.tools.batch.data.cesame.types.Types;
 import com.ericsson.hubone.tools.report.tech.TechnicalReport;
 import com.ericsson.hubone.tools.report.tech.TechnicalReportLine;
-import com.ericsson.hubone.tools.report.transformation.CartoClient;
 
 public class TechValidationProcessor<T extends CesameRootBean> implements ItemProcessor<T, T>{	
 
