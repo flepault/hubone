@@ -94,10 +94,10 @@ echo "###############################################"
 cd D:\\MigrationTools\\
 mkdir Reports
 cd D:\\MigrationTools\\Reports
-mv D:\\MigrationTools\\TransformationTools\\reports\\technical\\*.xlsx .
-mv D:\\MigrationTools\\TransformationTools\\reports\\functional\\*.xlsx .
-mv D:\\MigrationTools\\TransformationTools\\reports\\transformation\\*.xlsx .
-mv D:\\MigrationTools\\LogReader\\report\\*.xlsx .
+for %%f in (D:\MigrationTools\TransformationTools\reports\technical\*.xlsx) do mv %%~f  .
+for %%f in (D:\MigrationTools\TransformationTools\reports\functional\*.xlsx) do mv %%~f  .
+for %%f in (D:\MigrationTools\TransformationTools\reports\transformation\*.xlsx) do mv %%~f  .
+for %%f in (D:\MigrationTools\LogReader\report\*.xlsx) do mv %%~f  .
 echo "###############################################"
 echo "###### MOVING MIGRATION REPORTS FINISHED ######"
 echo "###############################################"

@@ -85,7 +85,7 @@ public class Com extends CesameRootBean implements Serializable {
 		return CODE_PRODUIT_RAFAEL.getValue();
 	}
 	public void setCODE_PRODUIT_RAFAEL(String CODE_PRODUIT_RAFAEL) {
-		this.CODE_PRODUIT_RAFAEL = new CesameBeanField(CODE_PRODUIT_RAFAEL, true, new String[]{}, "STRING20");
+		this.CODE_PRODUIT_RAFAEL = new CesameBeanField(CODE_PRODUIT_RAFAEL, true, new String[]{}, "STRING30");
 	}
 	public String getMEDIA() {
 		return MEDIA.getValue();
