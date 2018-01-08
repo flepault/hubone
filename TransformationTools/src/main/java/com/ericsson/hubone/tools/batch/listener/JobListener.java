@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.ericsson.hubone.tools.report.func.FunctionalReport;
 import com.ericsson.hubone.tools.report.tech.TechnicalReport;
+import com.ericsson.hubone.tools.report.transformation.CartoClient;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 
 @Component
@@ -32,8 +33,7 @@ public class JobListener extends JobExecutionListenerSupport {
 			
 			if(!technicalReport && jobExecution.getJobInstance().getJobName().equals("technicalValidationJob")){
 				TechnicalReport.getIntance().printReport();
-				technicalReport=true;
-				//CartoClient.getIntance().printCarto();
+				technicalReport=true;				
 			}
 			
 			if(!functionalReport && jobExecution.getJobInstance().getJobName().equals("functionalValidationJob")){
@@ -44,6 +44,7 @@ public class JobListener extends JobExecutionListenerSupport {
 			if(!transformationReport && jobExecution.getJobInstance().getJobName().equals("TransformationJob")){
 				TransformationReport.getIntance().printReport();
 				transformationReport=true;
+				//CartoClient.getIntance().printCarto();
 			}
 					
 		

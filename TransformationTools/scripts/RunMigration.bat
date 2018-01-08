@@ -80,15 +80,6 @@ echo "###############################################"
 pause
 
 echo "###############################################"
-echo "############# RUN BME SQL LOADING #############"
-echo "###############################################"
-sqlcmd -Q "BULK INSERT NetMeter.dbo.t_be_hub_pdc_serviceidaudit FROM 'D:\MigrationTools\TransformationTools\output\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
-echo "###############################################"
-echo "############ BME SQL LOADING ENDED ############"
-echo "###############################################"
-pause
-
-echo "###############################################"
 echo "########### MOVING MIGRATION REPORTS ##########"
 echo "###############################################"
 cd D:\\MigrationTools\\

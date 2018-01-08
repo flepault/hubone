@@ -13,6 +13,7 @@ import com.ericsson.hubone.tools.batch.data.cesame.rules.Rules;
 import com.ericsson.hubone.tools.batch.data.cesame.types.Types;
 import com.ericsson.hubone.tools.report.tech.TechnicalReport;
 import com.ericsson.hubone.tools.report.tech.TechnicalReportLine;
+import com.ericsson.hubone.tools.report.transformation.CartoClient;
 
 public class TechValidationProcessor<T extends CesameRootBean> implements ItemProcessor<T, T>{	
 
@@ -44,17 +45,12 @@ public class TechValidationProcessor<T extends CesameRootBean> implements ItemPr
 			//			if( ((Cli)t).getSTATUT_CRM().equals("A supprimer"))
 			//				return null;
 
-			//CartoClient.getIntance().addAccount(((Cli)t).getCODE_CLIENT(),((Cli)t).getNIV_HIERARCHIE_CLIENT());
-
 			TechnicalReport.getIntance().increaseCLI();
+			CartoClient.getIntance().addAccount(((Cli)t).getCODE_CLIENT(),((Cli)t).getNIV_HIERARCHIE_CLIENT());		
 
 		}else{
 			id = ((Com)t).getID_SIEBEL_LIGNE();
-			TechnicalReport.getIntance().increaseCOM();
-
-//			String codeClient = ((Com)t).getCODE_CLIENT();
-//			if(codeClient!=null)				
-//				CartoClient.getIntance().addSub(((Com)t).getCODE_CLIENT());
+			TechnicalReport.getIntance().increaseCOM();			
 		}
 
 		boolean error = false;

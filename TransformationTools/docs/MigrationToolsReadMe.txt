@@ -13,6 +13,8 @@
 	- D:\MetraTech\RMP\Config\Logging\ActivityServices\logging.xml
 	- D:\MetraTech\RMP\Config\Logging\HighResolutionTimer\logging.xml
 	- D:\MetraTech\RMP\Config\Logging\ECBMigrationLogConfig\logging.xml ( And log path)
-6- Start Activity Service
-7- Run RunMigration.bat script
-8- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)
+5- Verify PartitionId,effective date and start date of PO 
+6- Verify PartitionId of Pricelist
+7- Start Activity Service
+8- Run RunMigration.bat script
+9- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)

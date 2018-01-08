@@ -17,6 +17,7 @@ import com.ericsson.hubone.tools.batch.job.transformation.exception.EndpointExce
 import com.ericsson.hubone.tools.batch.job.transformation.mapping.CliToAccount;
 import com.ericsson.hubone.tools.batch.job.transformation.mapping.CliToEndpoint;
 import com.ericsson.hubone.tools.batch.job.transformation.mapping.ComToSubscription;
+//import com.ericsson.hubone.tools.report.transformation.CartoClient;
 
 @Component
 public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootBean> implements ItemProcessor<T,List<EcbRootBean>> {
@@ -66,6 +67,8 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 					if(endpoint!=null && endpoint.getNewEP()){
 						list.add(endpoint);
 						list.add(cliToEndpoint.createEndpointBME(endpoint, com));
+						
+//						CartoClient.getIntance().addAccount(endpoint.getUserName(),"Endpoint");	
 					}
 
 				}

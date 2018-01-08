@@ -13,6 +13,7 @@ import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
 import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
+//import com.ericsson.hubone.tools.report.transformation.CartoClient;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 import com.ericsson.hubone.tools.report.transformation.TransformationReportLine;
 
@@ -95,6 +96,9 @@ public class ComToSubscription extends MappingConstants{
 			    .setScale(2, RoundingMode.HALF_UP)
 			    .toString());
 		ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
+		
+//		if(com.getCODE_CLIENT()!=null)				
+//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
 		return ecbCOM;
 	}
@@ -107,6 +111,9 @@ public class ComToSubscription extends MappingConstants{
 			    .setScale(2, RoundingMode.HALF_UP)
 			    .toString());
 		ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
+		
+//		if(com.getCODE_CLIENT()!=null)				
+//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
 		return ecbCOM;
 	}
@@ -130,7 +137,9 @@ public class ComToSubscription extends MappingConstants{
 			}
 		}
 
-		//TODO Remove comments
+//		if(endpoint!=null && endpoint.getUserName()!=null)				
+//			CartoClient.getIntance().addSub(endpoint.getUserName(),com.getCODE_PRODUIT_RAFAEL());
+//		
 		if(PARTAGE==null) {
 			errorCOM(com, "Aucune information de PARTAGE disponible");
 			return null;
@@ -162,6 +171,9 @@ public class ComToSubscription extends MappingConstants{
 			return null;
 		}else
 			ecbCOM.setAccountId(endpoint.getUserName());
+		
+//		if(endpoint.getUserName()!=null)				
+//			CartoClient.getIntance().addSub(endpoint.getUserName(),com.getCODE_PRODUIT_RAFAEL());
 
 		//ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
 		//ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
@@ -187,6 +199,9 @@ public class ComToSubscription extends MappingConstants{
 
 	public Subscription createForfaitPartage(Com com){
 		Subscription ecbCOM = createSouscription(com,false);
+		
+//		if(com.getCODE_CLIENT()!=null)				
+//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
 		//	Client/RegroupCF/CF	
 		//ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
@@ -257,6 +272,9 @@ public class ComToSubscription extends MappingConstants{
 
 	public Subscription createRemisePiedDePage(Com com){
 		Subscription ecbCOM = createSouscription(com,false);
+		
+//		if(com.getCODE_CLIENT()!=null)				
+//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
 		String POURCENTAGE = new String();
 
@@ -280,12 +298,18 @@ public class ComToSubscription extends MappingConstants{
 
 	public Subscription createRemiseVolume(Com com){
 		Subscription ecbCOM = createSouscription(com,false);
+		
+//		if(com.getCODE_CLIENT()!=null)				
+//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
 		return ecbCOM;
 	}
 
 	public Subscription createWifiRoam(Com com,Endpoint endpoint) {
 		Subscription ecbCOM = createSouscription(com,false);
+		
+//		if(endpoint!=null && endpoint.getUserName()!=null)				
+//			CartoClient.getIntance().addSub(endpoint.getUserName(),com.getCODE_PRODUIT_RAFAEL());
 
 		if(endpoint==null) {
 			errorCOM(com,"Aucun endpoint détecté pour la souscription de wifi roaming");
@@ -298,6 +322,10 @@ public class ComToSubscription extends MappingConstants{
 
 	public Subscription createIntercoIn(Com com,Endpoint endpoint) {
 		Subscription ecbCOM = createSouscription(com,false);
+		
+//		if(endpoint!=null && endpoint.getUserName()!=null)				
+//			CartoClient.getIntance().addSub(endpoint.getUserName(),com.getCODE_PRODUIT_RAFAEL());
+		
 		if(endpoint==null) {
 			errorCOM(com,"Aucun endpoint détecté pour la souscription d'interco in");
 			return null;
