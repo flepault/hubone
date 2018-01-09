@@ -57,13 +57,13 @@ public class TechValidationJobConfiguration{
 	}
 
 	@Autowired
-	@Qualifier("jmsTemplateFunctional")
-	private JmsTemplate jmsTemplateFunctional; 
+	@Qualifier("jmsTemplateFunctionalCOM")
+	private JmsTemplate jmsTemplateFunctionalCOM; 
 
 	public JmsItemWriter<CesameRootBean> writerCOM(){
 
 		JmsItemWriter<CesameRootBean> writer = new JmsItemWriter<CesameRootBean>();
-		writer.setJmsTemplate(jmsTemplateFunctional);		
+		writer.setJmsTemplate(jmsTemplateFunctionalCOM);		
 		return writer;
 	}
 

@@ -1,15 +1,6 @@
 @echo off
 
 echo "###############################################"
-echo "############### START ACTIVE MQ ###############"
-echo "###############################################"
-cd D:\\MigrationTools\\TransformationTools\\apache-activemq-5.15.0\\bin
-start activemq-admin.bat start
-echo "###############################################"
-echo "############## ACTIVE MQ STARTED ##############"
-echo "###############################################"
-
-echo "###############################################"
 echo "########## RUN TRANSFORMATION TOOLS ###########"
 echo "###############################################"
 cd D:\\MigrationTools\\TransformationTools\\

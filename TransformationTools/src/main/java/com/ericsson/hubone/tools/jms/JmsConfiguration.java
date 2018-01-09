@@ -15,7 +15,8 @@ public class JmsConfiguration {
 
 	public static final String TRANSFORM_JOB_QUEUE = "transform.job.queue";
 	public static final String STORAGE_JOB_QUEUE = "storage.job.queue";
-	public static final String FUNCTIONAL_JOB_QUEUE = "functional.job.queue";
+	public static final String CLI_FUNCTIONAL_JOB_QUEUE = "cli.functional.job.queue";
+	public static final String COM_FUNCTIONAL_JOB_QUEUE = "com.functional.job.queue";
 	
 	@Bean(name="jmsTemplateTransform")
 	public JmsTemplate jmsTemplateTransform() {
@@ -31,10 +32,17 @@ public class JmsConfiguration {
 		return jmsTemplate;
 	}
 
-	@Bean(name="jmsTemplateFunctional")
-	public JmsTemplate jmsTemplateFunctional() {
+	@Bean(name="jmsTemplateFunctionalCLI")
+	public JmsTemplate jmsTemplateFunctionalCLI() {
 		JmsTemplate jmsTemplate = configJmsTemplate();
-		jmsTemplate.setDefaultDestination(new ActiveMQQueue(FUNCTIONAL_JOB_QUEUE));
+		jmsTemplate.setDefaultDestination(new ActiveMQQueue(CLI_FUNCTIONAL_JOB_QUEUE));
+		return jmsTemplate;
+	}
+	
+	@Bean(name="jmsTemplateFunctionalCOM")
+	public JmsTemplate jmsTemplateFunctionalCOM() {
+		JmsTemplate jmsTemplate = configJmsTemplate();
+		jmsTemplate.setDefaultDestination(new ActiveMQQueue(COM_FUNCTIONAL_JOB_QUEUE));
 		return jmsTemplate;
 	}
 	

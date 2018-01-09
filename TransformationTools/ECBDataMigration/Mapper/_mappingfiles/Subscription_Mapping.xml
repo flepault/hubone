@@ -5,141 +5,169 @@
 		<PropertyName>ProductOfferingId</PropertyName>
 		<PropertyType>string</PropertyType>
 		<DynamicFieldsValues>
-			<!-- select '<DynymicFieldMapper>'+'<CurrentValue>'+nm_name+'</CurrentValue>'+
-    '<TargePropertyName>ProductOfferingId</TargePropertyName>'+
-	'<NewValue>'+CAST(id_prop AS VARCHAR)+'</NewValue>'+
-	'</DynymicFieldMapper>'
-   from t_po po join t_base_props 
+			<!-- select '<DynymicFieldMapper>'+'<CurrentValue>'+nm_name+'</CurrentValue>'+ 
+				'<TargePropertyName>ProductOfferingId</TargePropertyName>'+ '<NewValue>'+CAST(id_prop 
+				AS VARCHAR)+'</NewValue>'+ '</DynymicFieldMapper>' from t_po po join t_base_props 
 				props ON po.id_po = props.id_prop order by nm_name -->
 			<DynymicFieldMapper>
 				<CurrentValue>DEDPRE</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1335</NewValue>
+				<NewValue>145</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>DESTACT</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1342</NewValue>
+				<NewValue>153</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>DESTDUR</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1347</NewValue>
+				<NewValue>158</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>DESTVOL</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1352</NewValue>
+				<NewValue>163</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORLDUR_HUBSET</CurrentValue>
+				<CurrentValue>FORLDUR_TETRA</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1357</NewValue>
+				<NewValue>168</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORLDUR_NAT_TEST</CurrentValue>
+				<CurrentValue>FORLDUR_VOIX</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1362</NewValue>
+				<NewValue>176</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORLDUR_TETRAB</CurrentValue>
+				<CurrentValue>FORPDUR_TETRA</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1369</NewValue>
+				<NewValue>183</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORLDUR_TETRAX</CurrentValue>
+				<CurrentValue>FORPDUR_VOIX</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1374</NewValue>
+				<NewValue>190</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPACT</CurrentValue>
+				<CurrentValue>GT_INTERCO_FT</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1379</NewValue>
+				<NewValue>197</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_CARTIER</CurrentValue>
+				<CurrentValue>GT_TETRA_NAT2_MOB25_INT1</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1384</NewValue>
+				<NewValue>204</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_COLOMB</CurrentValue>
+				<CurrentValue>GT_TETRA_NAT2_MOB25_INT2</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1389</NewValue>
+				<NewValue>211</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_FIXE</CurrentValue>
+				<CurrentValue>GT_VOIX_NAT0_MOB0_INT1</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1394</NewValue>
+				<NewValue>218</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_FRANCE</CurrentValue>
+				<CurrentValue>GT_WIFIROAMING_F101305</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1399</NewValue>
+				<NewValue>225</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_MOBILE</CurrentValue>
+				<CurrentValue>GT_WIFIROAMING_F101306</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1404</NewValue>
+				<NewValue>235</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_NAT_TEST</CurrentValue>
+				<CurrentValue>GT_WIFIROAMING_F101309</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1409</NewValue>
+				<NewValue>245</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPDUR_POLO</CurrentValue>
+				<CurrentValue>GT_WIFIROAMING_F101321</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1416</NewValue>
+				<NewValue>255</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>FORPVOL</CurrentValue>
+				<CurrentValue>GT_WIFIROAMING_F101349</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1421</NewValue>
+				<NewValue>265</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
-				<CurrentValue>GT_TETRA_TEST</CurrentValue>
+				<CurrentValue>GT_WIFIROAMING_F101505</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1430</NewValue>
+				<NewValue>275</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>GT_WIFIROAMING_F101506</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>285</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>GT_WIFIROAMING_F101507</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>295</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>GT_WIFIROAMING_F102426</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>305</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>GT_WIFIROAMING_F124235</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>315</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>GT_WIFIROAMING_F124347</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>325</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>MINFAC</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>335</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>Operateurs</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1437</NewValue>
+				<NewValue>343</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>OrangeAbo</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1444</NewValue>
+				<NewValue>350</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>PONCT</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1121</NewValue>
+				<NewValue>357</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>REC</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1129</NewValue>
+				<NewValue>365</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>RECCA</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1137</NewValue>
+				<NewValue>373</NewValue>
+			</DynymicFieldMapper>
+			<DynymicFieldMapper>
+				<CurrentValue>REMPP</CurrentValue>
+				<TargePropertyName>ProductOfferingId</TargePropertyName>
+				<NewValue>381</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>REMV_NAT_TEST</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1451</NewValue>
-			</DynymicFieldMapper>
-			<DynymicFieldMapper>
-				<CurrentValue>TETRA0001U</CurrentValue>
-				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1145</NewValue>
+				<NewValue>389</NewValue>
 			</DynymicFieldMapper>
 			<DynymicFieldMapper>
 				<CurrentValue>VIDE</CurrentValue>
 				<TargePropertyName>ProductOfferingId</TargePropertyName>
-				<NewValue>1458</NewValue>
+				<NewValue>397</NewValue>
 			</DynymicFieldMapper>
 		</DynamicFieldsValues>
 	</FieldMapper>

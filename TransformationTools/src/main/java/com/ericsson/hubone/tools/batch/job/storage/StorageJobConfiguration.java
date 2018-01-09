@@ -32,8 +32,8 @@ public class StorageJobConfiguration {
 
 
 	@Autowired
-	@Qualifier("jmsTemplateFunctional")
-	private JmsTemplate jmsTemplateFunctional; 
+	@Qualifier("jmsTemplateFunctionalCLI")
+	private JmsTemplate jmsTemplateFunctionalCLI; 
 	
 	@Autowired
 	public TaskExecutorConfig taskExecutor;
@@ -53,7 +53,7 @@ public class StorageJobConfiguration {
 	public JmsItemWriter<CesameRootBean> writer() {
 		JmsItemWriter<CesameRootBean> writer = new JmsItemWriter<CesameRootBean>();	
 
-		writer.setJmsTemplate(jmsTemplateFunctional);
+		writer.setJmsTemplate(jmsTemplateFunctionalCLI);
 
 		return writer;
 	}

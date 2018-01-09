@@ -103,7 +103,7 @@ public class Com extends CesameRootBean implements Serializable {
 		return CODE_COMMANDE.getValue();
 	}
 	public void setCODE_COMMANDE(String CODE_COMMANDE) {
-		this.CODE_COMMANDE = new CesameBeanField(CODE_COMMANDE, true, new String[]{}, "STRING15");
+		this.CODE_COMMANDE = new CesameBeanField(CODE_COMMANDE, true, new String[]{}, "STRING30");
 	}
 	public String getROW_ID_SIEBEL_CLIENT() {
 		return ROW_ID_SIEBEL_CLIENT.getValue();
@@ -121,7 +121,7 @@ public class Com extends CesameRootBean implements Serializable {
 		return SERVICE_ID.getValue();
 	}
 	public void setSERVICE_ID(String SERVICE_ID) {
-		this.SERVICE_ID = new CesameBeanField(SERVICE_ID, false, new String[]{"RG19"}, "STRING16");
+		this.SERVICE_ID = new CesameBeanField(SERVICE_ID, false, new String[]{"RG19"}, "STRING50");
 	}
 	public String getQUANTITE_PRODUIT() {
 		return QUANTITE_PRODUIT.getValue();
