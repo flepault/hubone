@@ -16,7 +16,7 @@
 7- Modify log path in D:\MetraTech\RMP\Config\Logging\ECBMigrationLogConfig\logging.xml
 8- Verify PartitionId,effective date and start date of PO 
 9- Verify PartitionId of Pricelist
-10- Start Activity Service
+10- Start Activity Service, Pipeline Service, and Billing Service
 11- Run RunMigration.bat script
 12- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)
 13- After Loading Old Subscription, restart database.
