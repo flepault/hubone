@@ -17,9 +17,30 @@ echo "############ BME SQL LOADING ENDED ############"
 echo "###############################################"
 pause
 
+echo "###############################################"
+echo "#### CLOSE INTERVAL & INSTANT RC TO FALSE #####"
+echo "###############################################"
+sqlcmd -Q "update NetMeter.dbo.t_db_values set value='false' where parameter='Instantrc'"
+sqlcmd -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from NetMeter.dbo.t_usage_interval where dt_end < GETDATE() order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
+cmd /c MigrationCloseInterval.bat
+echo "###############################################"
+echo "#### INTERVAL CLOSED & INSTANT RC TO FALSE ####"
+echo "###############################################"
+pause
+
+
 cmd /c Subscriptions\\OldSubscriptions\\RunSubscriptionsLoader.bat
 
 cmd /c GroupSubscriptions\\OldGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
+
+echo "###############################################"
+echo "############## INSTANT RC TO TRUE #############"
+echo "###############################################"
+sqlcmd -Q "update NetMeter.dbo.t_db_values set value='true' where parameter='Instantrc'"
+echo "###############################################"
+echo "############## INSTANT RC TO TRUE #############"
+echo "###############################################"
+pause
 
 cmd /c Subscriptions\\NewSubscriptions\\RunSubscriptionsLoader.bat
 

@@ -58,23 +58,30 @@ public class FuncValidationProcessor<T extends CesameRootBean> implements ItemPr
 						FunctionalReport.getIntance().increaseCF();
 					}
 					return t;
-				}
-					
-				else if(rows.size()==0){
-					error = true;	
-					jdbcTemplate.update("update CLI set NO_PARENT_ERROR = 'Y' where CODE_CLIENT=?",cli.getCODE_CLIENT());
+				}else if(rows.size()==0) {
+					error = true;		
 					if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.RegroupCF.toString())){
 						FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le compte parent "+cli.getCODE_CLIENT()+" du "+errorMessage+" n'est pas valide"));
 					}else if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.CF.toString())){
 						FunctionalReport.getIntance().increaseCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le compte parent "+cli.getCODE_CLIENT()+" du "+errorMessage+" n'est pas valide"));
-					}					
+					}	
 				}
+				
 			}
-
+			
+			if(cli.getID_INTERLOCUTEUR().equals("No Match Row Id")) {
+				error = true;
+				errorCode = "ERR-FUNC-04";
+				errorMessage = "No Match Row Id";
+				FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "La valeur du champ ID_INTERLOCUTEUR n'est pas valide: "+errorMessage));
+			}
+			
+			if(error) {
+				jdbcTemplate.update("update CLI set NO_PARENT_ERROR = 'Y' where CODE_CLIENT=?",cli.getCODE_CLIENT());				
+			}
 
 		}else if(t instanceof Com){
 			Com com = (Com)t;
-
 
 			List<Map<String,Object>> rows = jdbcTemplate.queryForList("select * from CLI where CODE_CLIENT = ? and NO_PARENT_ERROR is NULL", com.getCODE_CLIENT());
 			if(rows.size()==1){
@@ -84,7 +91,11 @@ public class FuncValidationProcessor<T extends CesameRootBean> implements ItemPr
 				error = true;
 				FunctionalReport.getIntance().increaseSouscriptionError(new FunctionalReportLine("ERR-FUNC-03", com.getID_SIEBEL_LIGNE(), "Le compte parent "+com.getCODE_CLIENT()+" du produit n'est pas valide"));
 			}
-
+			
+			if(com.getADRESSE_ID().equals("No Match Row Id")) {
+				error = true;
+				FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine("ERR-FUNC-04", com.getID_SIEBEL_LIGNE(), "La valeur du champ ADRESSE_ID n'est pas valide: "+"No Match Row Id"));
+			}
 		}
 
 		if(error)
