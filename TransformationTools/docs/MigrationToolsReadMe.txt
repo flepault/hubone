@@ -16,7 +16,8 @@
 7- Modify log path in D:\MetraTech\RMP\Config\Logging\ECBMigrationLogConfig\logging.xml
 8- Verify PartitionId,effective date and start date of PO 
 9- Verify PartitionId of Pricelist
-10- Start Activity Service, Pipeline Service, and Billing Service
-11- Run RunMigration.bat script
-12- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)
-13- After Loading Old Subscription, restart database.
+10- Verify in MetraOffer if REC/RECCA/DEDPRE/PONCT have default ratescheduled to 0.
+11- Start Activity Service, Pipeline Service, and Billing Service
+12- Run RunMigration.bat script
+13- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)
+14- After Loading Old Subscription, restart database.
