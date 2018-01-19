@@ -27,7 +27,7 @@ public class Endpoint extends EcbRootBean{
 	String accountEndDate;
 	String payment_StartDate;
 	String payment_EndDate;
-	String dayOfMonth="1";
+	String dayOfMonth="31";
 	String firstDayOfMonth;
 	String secondDayOfMonth;
 	
