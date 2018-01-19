@@ -70,6 +70,10 @@ public class FunctionalReport{
 		errorList.add(functionalReportLine);						
 	}
 	
+	public void increaseWarning(FunctionalReportLine functionalReportLine){
+		increaseError(functionalReportLine);
+	}
+	
 	public void increaseRegroupCFError(FunctionalReportLine functionalReportLine){
 		errorTotalRegroupCF++;
 		increaseError(functionalReportLine);

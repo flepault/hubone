@@ -70,10 +70,10 @@ public class FuncValidationProcessor<T extends CesameRootBean> implements ItemPr
 			}
 			
 			if(cli.getID_INTERLOCUTEUR().equals("No Match Row Id")) {
-				error = true;
-				errorCode = "ERR-FUNC-04";
+				//error = true;
+				errorCode = "WARN-FUNC-04";
 				errorMessage = "No Match Row Id";
-				FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "La valeur du champ ID_INTERLOCUTEUR n'est pas valide: "+errorMessage));
+				FunctionalReport.getIntance().increaseWarning(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "La valeur du champ ID_INTERLOCUTEUR n'est pas valide: "+errorMessage));
 			}
 			
 			if(error) {
@@ -93,8 +93,8 @@ public class FuncValidationProcessor<T extends CesameRootBean> implements ItemPr
 			}
 			
 			if(com.getADRESSE_ID().equals("No Match Row Id")) {
-				error = true;
-				FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine("ERR-FUNC-04", com.getID_SIEBEL_LIGNE(), "La valeur du champ ADRESSE_ID n'est pas valide: "+"No Match Row Id"));
+				//error = true;
+				FunctionalReport.getIntance().increaseWarning(new FunctionalReportLine("WARN-FUNC-04", com.getID_SIEBEL_LIGNE(), "La valeur du champ ADRESSE_ID n'est pas valide: "+"No Match Row Id"));
 			}
 		}
 
