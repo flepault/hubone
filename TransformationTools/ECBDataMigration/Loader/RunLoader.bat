@@ -21,7 +21,7 @@ echo "###############################################"
 echo "#### CLOSE INTERVAL & INSTANT RC TO FALSE #####"
 echo "###############################################"
 sqlcmd -Q "update NetMeter.dbo.t_db_values set value='false' where parameter='Instantrc'"
-sqlcmd -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from NetMeter.dbo.t_usage_interval where dt_end < GETDATE() and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
+sqlcmd -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from NetMeter.dbo.t_usage_interval where dt_end < DATEADD(month, -1, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
 cmd /c MigrationCloseInterval.bat
 echo "###############################################"
 echo "#### INTERVAL CLOSED & INSTANT RC TO FALSE ####"

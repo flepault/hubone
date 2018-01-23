@@ -61,9 +61,9 @@ public class FuncValidationProcessor<T extends CesameRootBean> implements ItemPr
 				}else if(rows.size()==0) {
 					error = true;		
 					if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.RegroupCF.toString())){
-						FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le compte parent "+cli.getCODE_CLIENT()+" du "+errorMessage+" n'est pas valide"));
+						FunctionalReport.getIntance().increaseRegroupCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le compte parent "+cli.getCODE_CLIENT_PARENT()+" du "+errorMessage+" n'est pas valide"));
 					}else if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.CF.toString())){
-						FunctionalReport.getIntance().increaseCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le compte parent "+cli.getCODE_CLIENT()+" du "+errorMessage+" n'est pas valide"));
+						FunctionalReport.getIntance().increaseCFError(new FunctionalReportLine(errorCode, cli.getROW_ID_SIEBEL(), "Le compte parent "+cli.getCODE_CLIENT_PARENT()+" du "+errorMessage+" n'est pas valide"));
 					}	
 				}
 				
