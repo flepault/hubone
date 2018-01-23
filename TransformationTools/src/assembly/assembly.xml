@@ -22,6 +22,14 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>${project.basedir}/requests</directory>
+			<outputDirectory>Requests</outputDirectory>
+			<includes>
+				<include>RequeteDeControle.sql</include>
+				<include>StaticData.sql</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>${project.basedir}/LogReader</directory>
 			<outputDirectory>LogReader</outputDirectory>
 			<includes>

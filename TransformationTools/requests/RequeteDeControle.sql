@@ -30,18 +30,3 @@ SELECT'PRICELIST : '+ cast(count(id_pricelist) as varchar)
   
 SELECT 'GROUP SOUSCRIPTION : '+ cast(count(id_group) as varchar)
 FROM [dbo].[t_group_sub]  
-
-update t_db_values set value='false' where parameter='Instantrc'
-
-select * from  dbo.t_db_values  where parameter='Instantrc'
-
-USE [NetMeter]  
-GO  
-EXEC sp_updatestats;
-
-SELECT * FROM [dbo].[t_account_type]
-
-  11 CF ACCOUNT
-  12 CLIENT ACCOUNT
-  13 EP ACCOUNT
-  14 REGROUP CF ACCOUNT
