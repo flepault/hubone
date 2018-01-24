@@ -332,7 +332,7 @@ public class Cli extends CesameRootBean implements Serializable {
 	}
 
 	public void setID_ADRESSE_EXP(String ID_ADRESSE_EXP) {
-		this.ID_ADRESSE_EXP = new CesameBeanField(ID_ADRESSE_EXP,true,new String[]{"RG6"},"STRING15");
+		this.ID_ADRESSE_EXP = new CesameBeanField(ID_ADRESSE_EXP,false,new String[]{"RG6"},"STRING15");
 	}
 	
 	public void setCODE_CC(String CODE_CC) {
@@ -416,7 +416,7 @@ public class Cli extends CesameRootBean implements Serializable {
 	}
 
 	public void setGROUPE_FACTURATION(String GROUPE_FACTURATION) {
-		this.GROUPE_FACTURATION = new CesameBeanField(GROUPE_FACTURATION,true,new String[]{"RG6"},"STRING30");
+		this.GROUPE_FACTURATION = new CesameBeanField(GROUPE_FACTURATION,false,new String[]{"RG6"},"STRING30");
 	}	
 	
 }
