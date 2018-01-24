@@ -141,4 +141,17 @@ public class Rules {
 
 	}
 	
+	public static boolean RG20(String value,Cli cli){		
+		if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.Client.toString())) {
+			if(value == null)
+				return false;
+			else if (value.equals("Y"))
+				return true;
+			else
+				return false;
+		}else
+			return true;
+				
+	}
+	
 }

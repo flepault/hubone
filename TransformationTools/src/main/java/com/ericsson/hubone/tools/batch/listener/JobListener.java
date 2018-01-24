@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.ericsson.hubone.tools.report.func.FunctionalReport;
 import com.ericsson.hubone.tools.report.tech.TechnicalReport;
-import com.ericsson.hubone.tools.report.transformation.CartoClient;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 
 @Component
