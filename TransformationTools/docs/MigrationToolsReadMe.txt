@@ -34,20 +34,22 @@
 8- Verify PartitionId,effective date and start date of PO 
 9- Verify PartitionId of Pricelist
 10- Verify in MetraOffer if REC/RECCA/DEDPRE/PONCT have default ratescheduled to 0.
-11- VERIFIER D:\MetraTech\RMP\Config\pipeline\listener.xml
-12- VERIFIER D:\MetraTech\RMP\Config\meter\route.xml
+11- Verify D:\MetraTech\RMP\Config\pipeline\listener.xml
+12- Verify D:\MetraTech\RMP\Config\meter\route.xml
+13- To create missing table in NetMeter_VM_Migration :
+	In ICE -> ServiceDefinition -> hubone.fr/OrangeAbo -> Pipeline -> Meter Sessions
 ################################################
 
-13- Start Activity Service, Pipeline Service, and Billing Service
+14- Start Activity Service, Pipeline Service, and Billing Service
 
-14- Run RunMigration.bat script
+15- Run RunMigration.bat script
 
-15- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)
+16- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)
 
-16- After Loading EP BME,backup & restart database.
-17- After Loading Old Subscription, restart database.
+17- After Loading EP BME,backup & restart database.
+18- After Loading Old Subscription, restart database.
 
-18- After the end of subscription use D:\MigrationTools\Requests\RequeteDeControle.sql to check data migrated.
+19- After the end of subscription use D:\MigrationTools\Requests\RequeteDeControle.sql to check data migrated.
 
 
 ################ VALORISATION ###################
