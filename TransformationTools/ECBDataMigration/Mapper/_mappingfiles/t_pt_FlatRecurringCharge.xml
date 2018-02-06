@@ -1,0 +1,38 @@
+<ArrayOfFieldMapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<FieldMapper>
+		<FieldPossition>0</FieldPossition>
+		<PropertyName>ICBAccountId</PropertyName>
+		<PropertyType>string</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>1</FieldPossition>
+		<PropertyName>MigrationId</PropertyName>
+		<PropertyType>string</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>2</FieldPossition>
+		<PropertyName>PoName</PropertyName>
+		<PropertyType>string</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>3</FieldPossition>
+		<PropertyName>PiName</PropertyName>
+		<PropertyType>string</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>4</FieldPossition>
+		<PropertyName>RateType</PropertyName>
+		<PropertyType>string</PropertyType>
+		<!--Possible entries : ICBRate,DefaultPriceListRate -->
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>5</FieldPossition>
+		<PropertyName>PriceListName</PropertyName>
+		<PropertyType>string</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>6</FieldPossition>
+		<PropertyName>re.RCAmount</PropertyName>
+		<PropertyType>decimal</PropertyType>
+	</FieldMapper>
+</ArrayOfFieldMapper>

@@ -54,28 +54,38 @@ cmd /c Subscriptions\\OldSubscriptions\\RunSubscriptionsLoader.bat
 
 cmd /c GroupSubscriptions\\OldGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
 
-echo "###############################################"
-echo "#DB BACKUP WITH ACCOUNT AND OLD SUBS MIGRATED #"
-echo "###############################################"
-sqlcmd -Q "BACKUP DATABASE NetMeter TO DISK = 'D:\MigrationTools\DBBackUp\NetMeter_WithAccountsMigrated&WithOldSubscription.bak'"
-sqlcmd -Q "BACKUP DATABASE NetMeter_VM_Migration TO DISK = 'D:\MigrationTools\DBBackUp\NetMeter_VM_Migration_WithAccountsMigrated&WithOldSubscription.bak'"
-echo "###############################################"
-echo "### DB BACKUP WITH ACCOUNT AND OLD SUBS DONE ##"
-echo "###############################################"
-pause
-
-echo "###############################################"
-echo "############## INSTANT RC TO TRUE #############"
-echo "###############################################"
-sqlcmd -Q "update NetMeter.dbo.t_db_values set value='true' where parameter='Instantrc'"
-echo "###############################################"
-echo "############## INSTANT RC TO TRUE #############"
-echo "###############################################"
-pause
-
 cmd /c Subscriptions\\NewSubscriptions\\RunSubscriptionsLoader.bat
 
 cmd /c GroupSubscriptions\\NewGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
+
+echo "###############################################"
+echo "#   DB BACKUP ACCOUNT & SUBS/NO ICB MIGRATED  #"
+echo "###############################################"
+sqlcmd -Q "BACKUP DATABASE NetMeter TO DISK = 'D:\MigrationTools\DBBackUp\NetMeter_WithAccountsMigrated&WithSubscriptionsNoICBMigrated.bak'"
+sqlcmd -Q "BACKUP DATABASE NetMeter_VM_Migration TO DISK = 'D:\MigrationTools\DBBackUp\NetMeter_VM_Migration_WithAccountsMigrated&WithSubscriptionsNoICBMigrated.bak'"
+echo "###############################################"
+echo "#    DB BACKUP ACCOUNT & SUBS/NO ICB DONE     #"
+echo "###############################################"
+pause
+
+echo "Please update the following file D:\MetraTech\RMP\Bin\ECB.Loader.exe.config."
+echo "Change the 'MaxDegreeOfParallelismSize' properties from 4 to 1."
+echo "Do not continue before doing this update !!!"
+pause
+
+cmd /c Rates\\02ICBRates\\RunICBRatesLoader.bat
+
+echo "###############################################"
+echo "###### RUN SUBSCRIPTION BME SQL LOADING #######"
+echo "###############################################"
+sqlcmd -Q "BULK INSERT NetMeter.dbo.t_be_hub_cat_subscriptionin FROM 'D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
+sqlcmd -Q "update NetMeter.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from t_enum_data where nm_enum_data like '%applicationlevel/CG%') where c_SharedBucketScope = 0"
+sqlcmd -Q "update NetMeter.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from t_enum_data where nm_enum_data like '%applicationlevel/GCF%') where c_SharedBucketScope = 1"
+sqlcmd -Q "update NetMeter.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from t_enum_data where nm_enum_data like '%applicationlevel/CF%') where c_SharedBucketScope = 2"
+echo "###############################################"
+echo "######### SUBSCRIPTION BME SQL  ENDED #########"
+echo "###############################################"
+pause
 
 echo "###############################################"
 echo "#DB BACKUP WITH ACCOUNT AND ALL SUBS MIGRATED #"

@@ -48,7 +48,7 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 
 			Com com = (Com)t;
 
-			Subscription subscription = null;
+			
 
 			Boolean epNullorOk = true;
 			Endpoint endpoint = null;
@@ -75,22 +75,25 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 			}
 
 			if(epNullorOk) {
+				
+				List<EcbRootBean> ecbRootBeanList = null;
+				
 				if(com.getCODE_PRODUIT_RAFAEL().startsWith("REC") || 
 						com.getCODE_PRODUIT_RAFAEL().startsWith("RECCA") ){
-					subscription = comToSubscription.createAbonnement(com);
+					ecbRootBeanList = comToSubscription.createAbonnement(com);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("GT") ){					
-					subscription = comToSubscription.createGrilleTarifaire(com,endpoint);
+					ecbRootBeanList = comToSubscription.createGrilleTarifaire(com,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().equals("PONCT") || 
 						com.getCODE_PRODUIT_RAFAEL().equals("DEDPRE")){
-					subscription = comToSubscription.createFraisPonctuel(com);
+					ecbRootBeanList = comToSubscription.createFraisPonctuel(com);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
-					subscription = comToSubscription.createRemiseVolume(com);
+					ecbRootBeanList = comToSubscription.createRemiseVolume(com);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
-					subscription = comToSubscription.createWifiRoam(com,endpoint);
+					ecbRootBeanList = comToSubscription.createWifiRoam(com,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
-					subscription = comToSubscription.createIntercoIn(com,endpoint);
+					ecbRootBeanList = comToSubscription.createIntercoIn(com,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
-					subscription = comToSubscription.createForfaitPartage(com);
+					ecbRootBeanList = comToSubscription.createForfaitPartage(com);
 				}else{
 					comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
 				}
@@ -109,8 +112,8 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 				//			}
 
 
-				if(subscription!=null)
-					list.add(subscription);
+				if(ecbRootBeanList!=null && ecbRootBeanList.size()!=0)
+					list.addAll(ecbRootBeanList);
 			}
 
 			if(list.size()==0)

@@ -32,3 +32,11 @@ for %%f in (GroupSubscription.New.*.dat) do (
  cp %%~f ..\\..\\Loader\\GroupSubscriptions\\NewGroupSubscriptions\\%%~f 
 )
 
+for %%f in (t_pt_FlatRecurringCharge.*.dat) do ( 
+ cp %%~f ..\\..\\Loader\\Rates\\02ICBRates\\%%~f 
+)
+
+for %%f in (t_pt_NonRecurringCharge.*.dat) do ( 
+  cp %%~f ..\\..\\Loader\\Rates\\02ICBRates\\%%~f 
+)
+

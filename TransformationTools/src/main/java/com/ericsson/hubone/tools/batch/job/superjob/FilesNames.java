@@ -37,7 +37,9 @@ public class FilesNames {
 	public String SubscriptionNew ="Subscription.New.input.csv";
 	public String GroupSouscriptionOld = "GroupSubscription.Old.input.csv";
 	public String GroupSouscriptionNew = "GroupSubscription.New.input.csv";
-	
+	public String SubscriptionInfoBME = "SubscriptionInfoBME.csv";
+	public String FlatRecurringCharge = "t_pt_FlatRecurringCharge.input.csv";
+	public String NonRecurringCharge = "t_pt_NonRecurringCharge.input.csv";
 	
 
 }

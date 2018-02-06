@@ -1,0 +1,1 @@
+D:\MetraTech\RMP\Bin\ECB.Loader.exe -loadrates -folderlocation D:\MigrationTools\ECBDataMigration\Loader\Rates\02ICBRates\

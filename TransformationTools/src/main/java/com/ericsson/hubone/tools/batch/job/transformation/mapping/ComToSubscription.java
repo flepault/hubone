@@ -3,16 +3,23 @@ package com.ericsson.hubone.tools.batch.job.transformation.mapping;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
+import com.ericsson.hubone.tools.batch.data.ecb.EcbRootBean;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
+import com.ericsson.hubone.tools.batch.data.ecb.FlatRecurringCharge;
 import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
+import com.ericsson.hubone.tools.batch.data.ecb.NonRecurringCharge;
 import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
+import com.ericsson.hubone.tools.batch.data.ecb.SubscriptionInfoBME;
 //import com.ericsson.hubone.tools.report.transformation.CartoClient;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 import com.ericsson.hubone.tools.report.transformation.TransformationReportLine;
@@ -28,6 +35,47 @@ public class ComToSubscription extends MappingConstants{
 		c.add(Calendar.MONTH, -1);
 		firstDayOfMonthDate = c.getTime(); 
 	}
+
+	private SubscriptionInfoBME createSubcriptionInfoBME(Com com,String migrationID){
+
+		SubscriptionInfoBME subscriptionInfoBME = new SubscriptionInfoBME();
+
+		subscriptionInfoBME.setQuantity(com.getQUANTITE_PRODUIT());
+		subscriptionInfoBME.setCatalogPrice(com.getPRIX_CATALOGUE());
+		subscriptionInfoBME.setDiscountPercent(com.getPOURCENT_REMISE_MANUEL());
+		subscriptionInfoBME.setDiscountAmount(com.getMONTANT_REMISE_MANUEL());
+		subscriptionInfoBME.setIsOnDemand("N");		
+		subscriptionInfoBME.setAppliedPrice(com.getPRIX_APPLIQUE_MANUEL());
+		subscriptionInfoBME.setSiteAddressId(com.getADRESSE_ID());
+		subscriptionInfoBME.setProductIntegrationId(com.getINTEGRATION_ID());
+		subscriptionInfoBME.setProductId(com.getID_SIEBEL_LIGNE());
+		subscriptionInfoBME.setParentProductId(com.getID_SIEBEL_PRESTATION());
+		subscriptionInfoBME.setMedia(com.getMEDIA());
+		subscriptionInfoBME.setCommandId(com.getCODE_COMMANDE());
+		subscriptionInfoBME.setAttributs(com.getPARAM_PRODUIT_ADD());
+		subscriptionInfoBME.setServiceId(com.getSERVICE_ID());	
+		subscriptionInfoBME.setClientCommandRef(com.getREF_COMMANDE_CLIENT());
+		subscriptionInfoBME.setModifyAppliedDate("");		
+		subscriptionInfoBME.setResiliateAppliedDate("");
+		try {
+			Date lastBillApplicationDate = formatCOM.parse(com.getDATE_APPLI_FACTU());
+
+			if(migrationHubOneStartDate.after(lastBillApplicationDate))
+				lastBillApplicationDate = migrationHubOneStartDate;
+			
+			subscriptionInfoBME.setCreateAppliedDate(format.format(lastBillApplicationDate));
+		} catch (ParseException e) {
+			errorCOM(com,e.getMessage());
+			return null;
+		}
+
+
+		subscriptionInfoBME.setMigrationId("{"+migrationID+"}");		
+
+		return subscriptionInfoBME;
+
+	}
+
 
 	private Subscription createSouscription(Com com,boolean gsub){
 
@@ -65,23 +113,7 @@ public class ComToSubscription extends MappingConstants{
 		subscription.setEndDate("");
 		subscription.setCommercialProdCode(com.getCODE_PRODUIT_SIEBEL());
 		subscription.setProductOfferingId(com.getCODE_PRODUIT_RAFAEL());
-
-		subscription.setAppliedPrice(com.getPRIX_APPLIQUE_MANUEL());
-		subscription.setCatalogPrice(com.getPRIX_CATALOGUE());
-		subscription.setClientCommandRef(com.getREF_COMMANDE_CLIENT());
-		subscription.setCommandId(com.getCODE_COMMANDE());
-		subscription.setDiscountAmount(com.getMONTANT_REMISE_MANUEL());
-		subscription.setDiscountPercent(com.getPOURCENT_REMISE_MANUEL());
-		subscription.setIsOnDemand("N");
-
-		subscription.setMedia(com.getMEDIA());
-		subscription.setParentProductId(com.getID_SIEBEL_PRESTATION());
-		subscription.setProductId(com.getID_SIEBEL_LIGNE());
-		subscription.setProductIntegrationId(com.getINTEGRATION_ID());
-		subscription.setQuantity(com.getQUANTITE_PRODUIT());
-		subscription.setServiceId(com.getSERVICE_ID());
-
-		subscription.setSiteAddressId(com.getADRESSE_ID());		
+		subscription.setMigrationId(UUID.randomUUID().toString());		
 
 		TransformationReport.getIntance().increaseSouscription();
 
@@ -89,43 +121,77 @@ public class ComToSubscription extends MappingConstants{
 	}
 
 
-	public Subscription createFraisPonctuel(Com com){
+	public List<EcbRootBean> createFraisPonctuel(Com com){
 
+		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 		Subscription ecbCOM = createSouscription(com,false);
+		if(ecbCOM==null)
+			return null;
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return null;
+		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
 
 		BigDecimal icbValue = BigDecimal.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT()))
 				.setScale(2, RoundingMode.HALF_UP);
 
 		if(icbValue.doubleValue() > 0) {
-			ecbCOM.setiCBValue(icbValue.toString());
-			ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
+
+			NonRecurringCharge nonRecurringCharge = new NonRecurringCharge();
+			nonRecurringCharge.setiCBAccountId(ecbCOM.getAccountId());
+			nonRecurringCharge.setMigrationId(ecbCOM.getMigrationId());
+			nonRecurringCharge.setnRCAmount(icbValue.toString());
+			nonRecurringCharge.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
+			nonRecurringCharge.setPoName(com.getCODE_PRODUIT_RAFAEL());
+			nonRecurringCharge.setPriceListName("");
+			nonRecurringCharge.setRateType("ICBRate");
+
+			listEcbRootBeans.add(nonRecurringCharge);
 		}
 
 		//		if(com.getCODE_CLIENT()!=null)				
 		//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
-		return ecbCOM;
+		return listEcbRootBeans;
 	}
 
-	public Subscription createAbonnement(Com com){
+	public List<EcbRootBean> createAbonnement(Com com){
 
+		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 		Subscription ecbCOM = createSouscription(com,false);
+		if(ecbCOM==null)
+			return null;
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return null;
+		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
 
 		BigDecimal icbValue = BigDecimal.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT()))
 				.setScale(2, RoundingMode.HALF_UP);
 
 		if(icbValue.doubleValue() > 0) {
-			ecbCOM.setiCBValue(icbValue.toString());
-			ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
+
+			FlatRecurringCharge flatRecurringCharge = new FlatRecurringCharge();
+			flatRecurringCharge.setiCBAccountId(ecbCOM.getAccountId());
+			flatRecurringCharge.setMigrationId(ecbCOM.getMigrationId());
+			flatRecurringCharge.setrCAmount(icbValue.toString());
+			flatRecurringCharge.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
+			flatRecurringCharge.setPoName(com.getCODE_PRODUIT_RAFAEL());
+			flatRecurringCharge.setPriceListName("");
+			flatRecurringCharge.setRateType("ICBRate");
+
+			listEcbRootBeans.add(flatRecurringCharge);
 		}
 
 		//		if(com.getCODE_CLIENT()!=null)				
 		//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
-		return ecbCOM;
+		return listEcbRootBeans;
 	}
 
-	public Subscription createGrilleTarifaire(Com com,Endpoint endpoint){
+	public List<EcbRootBean> createGrilleTarifaire(Com com,Endpoint endpoint){
 
 		boolean gsub = false;
 		//TODO Replace with PARTAGE
@@ -152,38 +218,54 @@ public class ComToSubscription extends MappingConstants{
 			return null;
 		}
 
+		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 		Subscription ecbCOM = createSouscription(com,gsub);
-		//ecbCOM.setProductOfferingId("TETRA0001U");
+		if(ecbCOM==null)
+				return null;
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return  null;
+
 		if(!gsub) {
 			if(endpoint==null) {
 				errorCOM(com,"Aucun endpoint détecté pour la souscription de la grille tarifaire");
 				return null;
-			}else
+			}else {
 				ecbCOM.setAccountId(endpoint.getUserName());
+				//subscriptionInfoBME.setGroupId(groupId);
+			}
+
 		}else {
-			ecbCOM.setIsSharedTariffGrid("Y");		
+			subscriptionInfoBME.setIsSharedTariffGrid("Y");		
 		}
 
+		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
 
 
-
-		return ecbCOM;
+		return listEcbRootBeans;
 	}
 
-	public Subscription createForfaitLigne(Com com,Endpoint endpoint) {
-		Subscription ecbCOM = createSouscription(com,false);
-
+	public List<EcbRootBean> createForfaitLigne(Com com,Endpoint endpoint) {
+		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
+		Subscription ecbCOM = createSouscription(com,false);		
+		if(ecbCOM==null)
+			return null;
+		
 		if(endpoint==null) {
 			errorCOM(com,"Aucun endpoint détecté pour le forfait ligne");
 			return null;
 		}else
 			ecbCOM.setAccountId(endpoint.getUserName());
 
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return null;
+		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
+
 		//		if(endpoint.getUserName()!=null)				
 		//			CartoClient.getIntance().addSub(endpoint.getUserName(),com.getCODE_PRODUIT_RAFAEL());
-
-		//ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
-		//ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
 
 		String CREDIT_FORFAIT = null;
 
@@ -201,18 +283,25 @@ public class ComToSubscription extends MappingConstants{
 			return null;
 		}
 
-		return ecbCOM;
-	}
-
-	public Subscription createForfaitPartage(Com com){
-		Subscription ecbCOM = createSouscription(com,false);
-
-		//		if(com.getCODE_CLIENT()!=null)				
-		//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
-
-		//	Client/RegroupCF/CF	
+		//ICB
 		//ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
 		//ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");
+
+		return listEcbRootBeans;
+	}
+
+	public List<EcbRootBean> createForfaitPartage(Com com){
+
+		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
+		Subscription ecbCOM = createSouscription(com,false);
+		if(ecbCOM==null)
+			return null;
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());				
+		if(subscriptionInfoBME==null)
+			return null;
+		
+		//		if(com.getCODE_CLIENT()!=null)				
+		//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
 		String CREDIT_FORFAIT = null;
 		String NIVEAU_APPLICATION = null;
@@ -238,16 +327,35 @@ public class ComToSubscription extends MappingConstants{
 			}
 
 			return null;
-		}else
-			ecbCOM.setSharedBucketScope(NIVEAU_APPLICATION);
+		}else {
+			if(NIVEAU_APPLICATION=="CG")
+				subscriptionInfoBME.setSharedBucketScope("0");
+			else if(NIVEAU_APPLICATION=="GCF")
+				subscriptionInfoBME.setSharedBucketScope("1");
+			else if(NIVEAU_APPLICATION=="CF")
+				subscriptionInfoBME.setSharedBucketScope("2");
+			else {
+				errorCOM(com, "NIVEAU_APPLICATION incorrecte");	
+				return null;
+			}
+		}
 
+		//ICB
+		//	Client/RegroupCF/CF	
+		//ecbCOM.setiCBValue(com.getPRIX_APPLIQUE_MANUEL());
+		//ecbCOM.setPiName(com.getCODE_PRODUIT_RAFAEL()+"_PI");		
 
-		return ecbCOM;
+		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
+
+		return listEcbRootBeans;
 	}
 
 	public Subscription createSurcharge(Com com,boolean gsub){
 
 		Subscription ecbCOM = createSouscription(com,false);
+		if(ecbCOM==null)
+			return null;
 		//subscription.setAccountId(com.getCODE_CLIENT());
 
 		//ecbCOM.setTargetTariffGridId(targetTariffGridId);
@@ -279,7 +387,8 @@ public class ComToSubscription extends MappingConstants{
 
 	public Subscription createRemisePiedDePage(Com com){
 		Subscription ecbCOM = createSouscription(com,false);
-
+		if(ecbCOM==null)
+			return null;
 		//		if(com.getCODE_CLIENT()!=null)				
 		//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
@@ -303,18 +412,28 @@ public class ComToSubscription extends MappingConstants{
 		return ecbCOM;
 	}
 
-	public Subscription createRemiseVolume(Com com){
+	public List<EcbRootBean> createRemiseVolume(Com com){
+		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 		Subscription ecbCOM = createSouscription(com,false);
+		if(ecbCOM==null)
+			return null;
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return null;
+		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
 
 		//		if(com.getCODE_CLIENT()!=null)				
 		//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
 
-		return ecbCOM;
+		return listEcbRootBeans;
 	}
 
-	public Subscription createWifiRoam(Com com,Endpoint endpoint) {
+	public List<EcbRootBean> createWifiRoam(Com com,Endpoint endpoint) {
+		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 		Subscription ecbCOM = createSouscription(com,false);
-
+		if(ecbCOM==null)
+			return null;
 		//		if(endpoint!=null && endpoint.getUserName()!=null)				
 		//			CartoClient.getIntance().addSub(endpoint.getUserName(),com.getCODE_PRODUIT_RAFAEL());
 
@@ -324,12 +443,20 @@ public class ComToSubscription extends MappingConstants{
 		}else
 			ecbCOM.setAccountId(endpoint.getUserName());
 
-		return ecbCOM;
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return null;
+		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
+
+		return listEcbRootBeans;
 	}
 
-	public Subscription createIntercoIn(Com com,Endpoint endpoint) {
+	public List<EcbRootBean> createIntercoIn(Com com,Endpoint endpoint) {
+		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 		Subscription ecbCOM = createSouscription(com,false);
-
+		if(ecbCOM==null)
+			return null;
 		//		if(endpoint!=null && endpoint.getUserName()!=null)				
 		//			CartoClient.getIntance().addSub(endpoint.getUserName(),com.getCODE_PRODUIT_RAFAEL());
 
@@ -338,7 +465,13 @@ public class ComToSubscription extends MappingConstants{
 			return null;
 		}else
 			ecbCOM.setAccountId(endpoint.getUserName());
-		return ecbCOM;
+
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return null;
+		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
+		return listEcbRootBeans;
 	}
 
 	public void errorCOM(Com com,String str){

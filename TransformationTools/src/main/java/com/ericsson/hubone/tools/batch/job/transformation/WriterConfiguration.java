@@ -17,8 +17,11 @@ import com.ericsson.hubone.tools.batch.data.ecb.Account;
 import com.ericsson.hubone.tools.batch.data.ecb.EcbRootBean;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
 import com.ericsson.hubone.tools.batch.data.ecb.EndpointBME;
+import com.ericsson.hubone.tools.batch.data.ecb.FlatRecurringCharge;
 import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
+import com.ericsson.hubone.tools.batch.data.ecb.NonRecurringCharge;
 import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
+import com.ericsson.hubone.tools.batch.data.ecb.SubscriptionInfoBME;
 import com.ericsson.hubone.tools.batch.job.superjob.FilesNames;
 
 @Configuration
@@ -27,7 +30,7 @@ public class WriterConfiguration {
 	@Autowired
 	public FilesNames filesNames;
 	
-	private FlatFileItemWriter<EcbRootBean> writer(String ouput,String header, String[] column) {
+	private FlatFileItemWriter<EcbRootBean> writer(String ouput,String header, String[] column,String encoding) {
 
 		FlatFileItemWriter<EcbRootBean> writer = new FlatFileItemWriter<EcbRootBean>();
 
@@ -55,13 +58,16 @@ public class WriterConfiguration {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(encoding!=null)
+			writer.setEncoding(encoding);
+		
 		return writer;
 
 	}
 	
 	public ItemWriter<EcbRootBean> writerClient() {
 		
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.Client,Account.header(),Account.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.Client,Account.header(),Account.column,null);
 		writer.open(new ExecutionContext());	
 
 		return writer;
@@ -70,7 +76,7 @@ public class WriterConfiguration {
 
 	public ItemWriter<EcbRootBean> writerRegroupCF() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.RegroupCF,Account.header(),Account.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.RegroupCF,Account.header(),Account.column,null);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -79,7 +85,7 @@ public class WriterConfiguration {
 
 	public ItemWriter<EcbRootBean> writerCF() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.CF,Account.header(),Account.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.CF,Account.header(),Account.column,null);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -88,7 +94,7 @@ public class WriterConfiguration {
 
 	public ItemWriter<EcbRootBean> writerEP() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.EP,Endpoint.header(),Endpoint.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.EP,Endpoint.header(),Endpoint.column,null);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -97,7 +103,7 @@ public class WriterConfiguration {
 	
 	public ItemWriter<EcbRootBean> writerEPBME() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.EPBME,EndpointBME.header(),EndpointBME.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.EPBME,EndpointBME.header(),EndpointBME.column,"Cp1252");
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -106,7 +112,7 @@ public class WriterConfiguration {
 
 	public ItemWriter<EcbRootBean> writerOldSubscription() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionOld,SimpleSubscription.header(),SimpleSubscription.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionOld,SimpleSubscription.header(),SimpleSubscription.column,null);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -115,7 +121,7 @@ public class WriterConfiguration {
 
 	public ItemWriter<EcbRootBean> writerNewSubscription() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionNew,SimpleSubscription.header(),SimpleSubscription.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionNew,SimpleSubscription.header(),SimpleSubscription.column,null);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -124,7 +130,7 @@ public class WriterConfiguration {
 
 	public ItemWriter<EcbRootBean> writerOldGroupSubscription() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.GroupSouscriptionOld,GroupSubscription.header(),GroupSubscription.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.GroupSouscriptionOld,GroupSubscription.header(),GroupSubscription.column,null);
 		writer.open(new ExecutionContext());
 
 		return writer;
@@ -133,7 +139,34 @@ public class WriterConfiguration {
 
 	public ItemWriter<EcbRootBean> writerNewGroupSubscription() {
 
-		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.GroupSouscriptionNew,GroupSubscription.header(),GroupSubscription.column);
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.GroupSouscriptionNew,GroupSubscription.header(),GroupSubscription.column,null);
+		writer.open(new ExecutionContext());
+
+		return writer;
+
+	}
+	
+	public ItemWriter<EcbRootBean> writerSubscriptionInfoBME() {
+
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.SubscriptionInfoBME,SubscriptionInfoBME.header(),SubscriptionInfoBME.column,"Cp1252");
+		writer.open(new ExecutionContext());
+
+		return writer;
+
+	}
+	
+	public ItemWriter<EcbRootBean> writerFlatRecurringCharge() {
+
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.FlatRecurringCharge,FlatRecurringCharge.header(),FlatRecurringCharge.column,null);
+		writer.open(new ExecutionContext());
+
+		return writer;
+
+	}
+	
+	public ItemWriter<EcbRootBean> writerNonRecurringCharge() {
+
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.NonRecurringCharge,NonRecurringCharge.header(),NonRecurringCharge.column,null);
 		writer.open(new ExecutionContext());
 
 		return writer;

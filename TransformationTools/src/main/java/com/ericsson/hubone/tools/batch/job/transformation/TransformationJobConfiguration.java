@@ -54,7 +54,8 @@ public class TransformationJobConfiguration{
 		
 		return new ItemListWriter(writerConfig.writerClient(),writerConfig.writerRegroupCF(),writerConfig.writerCF(),writerConfig.writerEP(),writerConfig.writerEPBME()
 				,writerConfig.writerOldSubscription(),writerConfig.writerNewSubscription(),
-				writerConfig.writerOldGroupSubscription(),writerConfig.writerNewGroupSubscription());
+				writerConfig.writerOldGroupSubscription(),writerConfig.writerNewGroupSubscription(),
+				writerConfig.writerSubscriptionInfoBME(),writerConfig.writerFlatRecurringCharge(),writerConfig.writerNonRecurringCharge());
 		
 	}
 

@@ -8,29 +8,9 @@ public class Subscription extends EcbRootBean{
 	String endDate;
 
 	String commercialProdCode;
-
-	String appliedPrice;
-	String catalogPrice;
-	String clientCommandRef;
-	String commandId;
-	String discountAmount;
-	String discountPercent;
-	String isOnDemand;
-	String isSharedTariffGrid;
-	String media;
-	String parentProductId;
-	String productId;
-	String productIntegrationId;
-	String quantity;
-	String serviceId;
-	String sharedBucketScope;
-	String siteAddressId;
-	String targetTariffGridId;
+	String migrationId;	
 
 	Boolean newCOM;
-
-	String iCBValue;
-	String piName;
 
 	public String getProductOfferingId() {
 		return productOfferingId;
@@ -68,122 +48,10 @@ public class Subscription extends EcbRootBean{
 	public void setCommercialProdCode(String commercialProdCode) {
 		this.commercialProdCode = commercialProdCode;
 	}
-	
-	public String getAppliedPrice() {
-		return appliedPrice;
+	public String getMigrationId() {
+		return migrationId;
 	}
-	public void setAppliedPrice(String appliedPrice) {
-		this.appliedPrice = appliedPrice;
+	public void setMigrationId(String migrationId) {
+		this.migrationId = migrationId;
 	}
-	public String getCatalogPrice() {
-		return catalogPrice;
-	}
-	public void setCatalogPrice(String catalogPrice) {
-		this.catalogPrice = catalogPrice;
-	}
-	public String getClientCommandRef() {
-		return clientCommandRef;
-	}
-	public void setClientCommandRef(String clientCommandRef) {
-		this.clientCommandRef = clientCommandRef;
-	}
-	public String getCommandId() {
-		return commandId;
-	}
-	public void setCommandId(String commandId) {
-		this.commandId = commandId;
-	}
-	public String getDiscountAmount() {
-		return discountAmount;
-	}
-	public void setDiscountAmount(String discountAmount) {
-		this.discountAmount = discountAmount;
-	}
-	public String getDiscountPercent() {
-		return discountPercent;
-	}
-	public void setDiscountPercent(String discountPercent) {
-		this.discountPercent = discountPercent;
-	}
-	public String getIsOnDemand() {
-		return isOnDemand;
-	}
-	public void setIsOnDemand(String isOnDemand) {
-		this.isOnDemand = isOnDemand;
-	}
-	public String getIsSharedTariffGrid() {
-		return isSharedTariffGrid;
-	}
-	public void setIsSharedTariffGrid(String isSharedTariffGrid) {
-		this.isSharedTariffGrid = isSharedTariffGrid;
-	}
-	public String getMedia() {
-		return media;
-	}
-	public void setMedia(String media) {
-		this.media = media;
-	}
-	public String getParentProductId() {
-		return parentProductId;
-	}
-	public void setParentProductId(String parentProductId) {
-		this.parentProductId = parentProductId;
-	}
-	public String getProductId() {
-		return productId;
-	}
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-	public String getProductIntegrationId() {
-		return productIntegrationId;
-	}
-	public void setProductIntegrationId(String productIntegrationId) {
-		this.productIntegrationId = productIntegrationId;
-	}
-	public String getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
-	}
-	public String getServiceId() {
-		return serviceId;
-	}
-	public void setServiceId(String serviceId) {
-		this.serviceId = serviceId;
-	}
-	public String getSharedBucketScope() {
-		return sharedBucketScope;
-	}
-	public void setSharedBucketScope(String sharedBucketScope) {
-		this.sharedBucketScope = sharedBucketScope;
-	}
-	public String getSiteAddressId() {
-		return siteAddressId;
-	}
-	public void setSiteAddressId(String siteAddressId) {
-		this.siteAddressId = siteAddressId;
-	}
-	public String getTargetTariffGridId() {
-		return targetTariffGridId;
-	}
-	public void setTargetTariffGridId(String targetTariffGridId) {
-		this.targetTariffGridId = targetTariffGridId;
-	}
-	public String getiCBValue() {
-		return iCBValue;
-	}
-	public void setiCBValue(String iCBValue) {
-		this.iCBValue = iCBValue;
-	}
-	public String getPiName() {
-		return piName;
-	}
-	public void setPiName(String piName) {
-		this.piName = piName;
-	}
-	
-	
-
 }

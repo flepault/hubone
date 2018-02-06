@@ -33,10 +33,12 @@ public class MapperLogReader {
 	}
 	
 	private void extractSubError(String path) {
-		extract(path+"/Mapper/rejected/Subscription.Old.input_rejected.csv","ERR-MAP-SUB",15);
-		extract(path+"/Mapper/rejected/Subscription.New.input_rejected.csv","ERR-MAP-SUB",15);
-		extract(path+"/Mapper/rejected/GroupSubscription.Old.input_rejected.csv","ERR-MAP-SUB",15);
-		extract(path+"/Mapper/rejected/GroupSubscription.New.input_rejected.csv","ERR-MAP-SUB",15);
+		extract(path+"/Mapper/rejected/Subscription.Old.input_rejected.csv","ERR-MAP-SUB",1);
+		extract(path+"/Mapper/rejected/Subscription.New.input_rejected.csv","ERR-MAP-SUB",1);
+		extract(path+"/Mapper/rejected/GroupSubscription.Old.input_rejected.csv","ERR-MAP-SUB",1);
+		extract(path+"/Mapper/rejected/GroupSubscription.New.input_rejected.csv","ERR-MAP-SUB",1);
+		extract(path+"/Mapper/rejected/t_pt_FlatRecurringCharge.input_rejected.csv","ERR-MAP-SUB",0);
+		extract(path+"/Mapper/rejected/t_pt_NonRecurringCharge.input_rejected.csv","ERR-MAP-SUB",0);	
 	}
 	
 
