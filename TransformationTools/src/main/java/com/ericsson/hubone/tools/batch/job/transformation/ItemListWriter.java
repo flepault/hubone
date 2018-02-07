@@ -27,7 +27,7 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 	private ItemWriter<EcbRootBean> cfWriter;
 
 	private ItemWriter<EcbRootBean> epWriter;
-	
+
 	private ItemWriter<EcbRootBean> epBMEWriter;
 
 	private ItemWriter<EcbRootBean> oldSouscriptionWriter;
@@ -37,11 +37,11 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 	private ItemWriter<EcbRootBean> oldGroupSouscriptionWriter;
 
 	private ItemWriter<EcbRootBean> newGroupSouscriptionWriter;
-	
+
 	private ItemWriter<EcbRootBean> subscriptionInfoBMEWriter;
-	
+
 	private ItemWriter<EcbRootBean> flatRecurringChargeWriter;
-	
+
 	private ItemWriter<EcbRootBean> nonRecurringChargeWriter;
 
 	public ItemListWriter(ItemWriter<EcbRootBean> clientWriter, ItemWriter<EcbRootBean> regroupCFWriter,
@@ -70,61 +70,67 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 
 		for (List<EcbRootBean> listEcbCliCom : items) {			 
 
-			if(listEcbCliCom.get(0) instanceof Account){					
-				if(((Account)listEcbCliCom.get(0)).getAccountType().equals(HierarchieClient.Client.toString())){
-					clientWriter.write(listEcbCliCom);
-				}else if(((Account)listEcbCliCom.get(0)).getAccountType().equals(HierarchieClient.RegroupCF.toString())){
-					regroupCFWriter.write(listEcbCliCom);
-				}else if(((Account)listEcbCliCom.get(0)).getAccountType().equals(HierarchieClient.CF.toString()))
-					cfWriter.write(listEcbCliCom);			
-			}else {
 
-				List<EcbRootBean> epList = new ArrayList<EcbRootBean>();
-				List<EcbRootBean> epBMEList = new ArrayList<EcbRootBean>();
-				List<EcbRootBean> newSubList = new ArrayList<EcbRootBean>();
-				List<EcbRootBean> oldSubList = new ArrayList<EcbRootBean>();
-				List<EcbRootBean> newGSubList = new ArrayList<EcbRootBean>();
-				List<EcbRootBean> oldGSubList = new ArrayList<EcbRootBean>();
-				List<EcbRootBean> subBMEList = new ArrayList<EcbRootBean>();
-				List<EcbRootBean> recICBList = new ArrayList<EcbRootBean>();
-				List<EcbRootBean> nonRecICBList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> clientList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> regroupCFList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> cfList = new ArrayList<EcbRootBean>();
 
-				for(EcbRootBean ecbCliCom : listEcbCliCom){
-					if(ecbCliCom instanceof Endpoint)
-						epList.add(ecbCliCom);
-					else if(ecbCliCom instanceof EndpointBME)
-						epBMEList.add(ecbCliCom);
-					else if(ecbCliCom instanceof SimpleSubscription){
-						if(((Subscription)ecbCliCom).getNewCOM())
-								newSubList.add(ecbCliCom);
-							else
-								oldSubList.add(ecbCliCom);
-					}else if(ecbCliCom instanceof GroupSubscription){
-						if(((Subscription)ecbCliCom).getNewCOM())
-							newGSubList.add(ecbCliCom);
-						else
-							oldGSubList.add(ecbCliCom);
-					}else if(ecbCliCom instanceof SubscriptionInfoBME) {
-						subBMEList.add(ecbCliCom);
-					}else if(ecbCliCom instanceof FlatRecurringCharge) {
-						recICBList.add(ecbCliCom);
-					}else if(ecbCliCom instanceof NonRecurringCharge) {
-						nonRecICBList.add(ecbCliCom);
-					}
+			List<EcbRootBean> epList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> epBMEList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> newSubList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> oldSubList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> newGSubList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> oldGSubList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> subBMEList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> recICBList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> nonRecICBList = new ArrayList<EcbRootBean>();
 
-
+			for(EcbRootBean ecbCliCom : listEcbCliCom){
+				if(ecbCliCom instanceof Account){					
+					if(((Account)ecbCliCom).getAccountType().equals(HierarchieClient.Client.toString())){
+						clientList.add(ecbCliCom);
+					}else if(((Account)ecbCliCom).getAccountType().equals(HierarchieClient.RegroupCF.toString())){
+						regroupCFList.add(ecbCliCom);
+					}else if(((Account)ecbCliCom).getAccountType().equals(HierarchieClient.CF.toString()))
+						cfList.add(ecbCliCom);	
+				}else if(ecbCliCom instanceof Endpoint)
+					epList.add(ecbCliCom);
+				else if(ecbCliCom instanceof EndpointBME)
+					epBMEList.add(ecbCliCom);
+				else if(ecbCliCom instanceof SimpleSubscription){
+					if(((Subscription)ecbCliCom).getNewCOM())
+						newSubList.add(ecbCliCom);
+					else
+						oldSubList.add(ecbCliCom);
+				}else if(ecbCliCom instanceof GroupSubscription){
+					if(((Subscription)ecbCliCom).getNewCOM())
+						newGSubList.add(ecbCliCom);
+					else
+						oldGSubList.add(ecbCliCom);
+				}else if(ecbCliCom instanceof SubscriptionInfoBME) {
+					subBMEList.add(ecbCliCom);
+				}else if(ecbCliCom instanceof FlatRecurringCharge) {
+					recICBList.add(ecbCliCom);
+				}else if(ecbCliCom instanceof NonRecurringCharge) {
+					nonRecICBList.add(ecbCliCom);
 				}
 
-				epWriter.write(epList);
-				epBMEWriter.write(epBMEList);
-				newSouscriptionWriter.write(newSubList);
-				oldSouscriptionWriter.write(oldSubList);
-				newGroupSouscriptionWriter.write(newGSubList);
-				oldGroupSouscriptionWriter.write(oldGSubList);
-				subscriptionInfoBMEWriter.write(subBMEList);
-				flatRecurringChargeWriter.write(recICBList);
-				nonRecurringChargeWriter.write(nonRecICBList);
+
 			}
+
+			clientWriter.write(clientList);
+			regroupCFWriter.write(regroupCFList);
+			cfWriter.write(cfList);						
+			epWriter.write(epList);
+			epBMEWriter.write(epBMEList);
+			newSouscriptionWriter.write(newSubList);
+			oldSouscriptionWriter.write(oldSubList);
+			newGroupSouscriptionWriter.write(newGSubList);
+			oldGroupSouscriptionWriter.write(oldGSubList);
+			subscriptionInfoBMEWriter.write(subBMEList);
+			flatRecurringChargeWriter.write(recICBList);
+			nonRecurringChargeWriter.write(nonRecICBList);
+
 
 		}
 
