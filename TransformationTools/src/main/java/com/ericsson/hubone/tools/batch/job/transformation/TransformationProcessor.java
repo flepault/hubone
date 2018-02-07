@@ -12,7 +12,6 @@ import com.ericsson.hubone.tools.batch.data.cesame.bean.Cli;
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
 import com.ericsson.hubone.tools.batch.data.ecb.EcbRootBean;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
-import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
 import com.ericsson.hubone.tools.batch.job.transformation.exception.EndpointException;
 import com.ericsson.hubone.tools.batch.job.transformation.mapping.CliToAccount;
 import com.ericsson.hubone.tools.batch.job.transformation.mapping.CliToEndpoint;
@@ -42,21 +41,19 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 
 		if(t instanceof Cli){
 			list.add(cliToAccount.createAccount((Cli)t));
+			if(((Cli)t).getCLIENT_FACTURE()!=null && ((Cli)t).getCLIENT_FACTURE().equals("Y"))
+				list.add(cliToAccount.createMinFactSouscription((Cli)t));
 			return list;
-
 		}else if (t instanceof Com){
 
-			Com com = (Com)t;
-
-			
+			Com com = (Com)t;			
 
 			Boolean epNullorOk = true;
 			Endpoint endpoint = null;
 
 			if(com.getMEDIA()!=null && !com.getMEDIA().equals("")){				
 
-				if(com.getSERVICE_ID()!=null && !com.getSERVICE_ID().equals("")){				
-
+				if(com.getSERVICE_ID()!=null && !com.getSERVICE_ID().equals("")){	
 
 					try {
 						endpoint = cliToEndpoint.createEndpoint(com);

@@ -25,6 +25,9 @@ echo "##### DEPLOY ECB MIGRATION TOOLS BINARIES #####"
 echo "###############################################"
 cd D:\\MigrationTools\\ECBDataMigration\\Bin\\
 cmd /c DeployBin.bat
+
+cd D:\\MigrationTools\\ECBDataMigration\\Scripts\\
+cmd /c DeployScript.bat
 echo "###############################################"
 echo "#### ECB MIGRATION TOOLS BINARIES DEPLOYED ####"
 echo "###############################################"

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Cli;
 import com.ericsson.hubone.tools.batch.data.cesame.enumeration.HierarchieClient;
 import com.ericsson.hubone.tools.batch.data.ecb.Account;
+import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
+import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
 import com.ericsson.hubone.tools.report.transformation.TransformationReport;
 import com.ericsson.hubone.tools.report.transformation.TransformationReportLine;
 
@@ -18,6 +20,24 @@ public class CliToAccount extends MappingConstants{
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	public Subscription createMinFactSouscription(Cli cli){
+
+		Subscription subscription = new SimpleSubscription();
+
+		subscription.setAccountId(cli.getCODE_CLIENT());
+		subscription.setStartDate(format.format(migrationHubOneStartDate));
+		subscription.setNewCOM(true);
+		subscription.setEndDate("");
+		subscription.setCommercialProdCode("");
+		subscription.setProductOfferingId("MINFAC");
+		subscription.setMigrationId("");		
+
+		TransformationReport.getIntance().increaseSouscription();
+
+		return subscription;
+	}
+	
 
 	public Account createAccount(Cli cli){		
 
