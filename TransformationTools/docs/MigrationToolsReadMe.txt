@@ -29,27 +29,30 @@
 	
 7- Modify log path in D:\MetraTech\RMP\Config\Logging\ECBMigrationLogConfig\logging.xml
    to D:\MigrationTools\ECBDataMigration\Loader\ECBMigrationAPILog.txt
+   
+8- Update DB Server Name, DB instance Name, backup folder and cp command for BME csv file
+in  D:\MigrationTools\ECBDataMigration\Loader\RunLoader.bat 
 
 #### OPTIONAL IF INSTALLATION IS CORRECT :) ####
-8- Verify PartitionId,effective date and start date of PO 
-9- Verify PartitionId of Pricelist
-10- Verify in MetraOffer if REC/RECCA/DEDPRE/PONCT have default ratescheduled to 0.
-11- Verify D:\MetraTech\RMP\Config\pipeline\listener.xml
-12- Verify D:\MetraTech\RMP\Config\meter\route.xml
-13- To create missing table in NetMeter_VM_Migration :
+9- Verify PartitionId,effective date and start date of PO 
+10- Verify PartitionId of Pricelist
+11- Verify in MetraOffer if REC/RECCA/DEDPRE/PONCT have default ratescheduled to 0.
+12- Verify D:\MetraTech\RMP\Config\pipeline\listener.xml
+13- Verify D:\MetraTech\RMP\Config\meter\route.xml
+14- To create missing table in NetMeter_VM_Migration :
 	In ICE -> ServiceDefinition -> hubone.fr/OrangeAbo -> Pipeline -> Meter Sessions
 ################################################
 
-14- Start Activity Service, Pipeline Service, and Billing Service
+15- Start Activity Service, Pipeline Service, and Billing Service
 
-15- Run RunMigration.bat script
+16- Run RunMigration.bat script
 
-16- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)
+17- During Transformation step follow progress here : http://localhost:8161/admin/queues.jsp (admin/admin)
 
-17- After Loading EP BME,backup & restart database.
-18- After Loading Old Subscription, restart database.
+18- After Loading EP BME,backup & restart database.
+19- After Loading Old Subscription, restart database.
 
-19- After the end of subscription use D:\MigrationTools\Requests\RequeteDeControle.sql to check data migrated.
+20- After the end of subscription use D:\MigrationTools\Requests\RequeteDeControle.sql to check data migrated.
 
 
 ################ VALORISATION ###################
