@@ -36,11 +36,11 @@ import com.ericsson.hubone.tools.report.transformation.TransformationReportLine;
 public class ComToSubscription extends MappingConstants{	
 
 	private Date firstDayOfMonthDate; 
-	
+
 	private HashMap<String,String> tariffCodeMap = new HashMap<String,String>();
-	
+
 	private HashMap<String,String> destZoneIdtariffCodeMap = new HashMap<String,String>();
-	
+
 	private HashMap<String,HashMap<String,String[]>> xpcmsMap = new HashMap<String,HashMap<String,String[]>>();
 
 	public ComToSubscription() {
@@ -50,61 +50,56 @@ public class ComToSubscription extends MappingConstants{
 		firstDayOfMonthDate = c.getTime(); 
 		init();
 	}
-	
+
 	private void init() {
-        BufferedReader br = null;
-        String line = "";
+		BufferedReader br = null;
+		String line = "";
 
-        try {
+		try {
 
-            br = new BufferedReader(new FileReader(FilesNames.INPUT_FOLDER+"/"+"RampBucketMapping.csv"));          
-            //first line
-            br.readLine();            
-            while ((line = br.readLine()) != null) {            	
-            	tariffCodeMap.put(line.split("|")[0], line.split("|")[1]);   
-            }
-            br.close();
-            
-            
-            br = new BufferedReader(new FileReader(FilesNames.INPUT_FOLDER+"/"+"DesZoneIdTariffCodeMapping.csv"));            
-            //first line
-            br.readLine();            
-            while ((line = br.readLine()) != null) {            	
-            	destZoneIdtariffCodeMap.put(line.split("|")[0], line.split("|")[1]);
-            }
-            br.close();
-            
-            br = new BufferedReader(new FileReader(FilesNames.INPUT_FOLDER+"/"+"XPCMSMapping.csv"));            
-            //first line
-            br.readLine();            
-            while ((line = br.readLine()) != null) {  
-            	
-            	if(xpcmsMap.get(line.split("|")[0])==null) {            		
-            		HashMap<String,String[]> map = new HashMap<String,String[]>();
-            		map.put(line.split("|")[1], new String[]{line.split("|")[2],line.split("|")[3],line.split("|")[4],line.split("|")[5],line.split("|")[6]});
-            		xpcmsMap.put(line.split("|")[0], map);
-            	}else {
-            		xpcmsMap.get(line.split("|")[0]).put(line.split("|")[1], new String[]{line.split("|")[2],line.split("|")[3],line.split("|")[4],line.split("|")[5],line.split("|")[6]});
-            	}
-            	
-            }
-            br.close();
+			br = new BufferedReader(new FileReader(FilesNames.INPUT_FOLDER+"/"+"RampBucketMapping.csv"));              
+			while ((line = br.readLine()) != null) {   
+				String[] strLine = line.split("\\|");
+				tariffCodeMap.put(strLine[0], strLine[1]);   
+			}
+			br.close();
+			
+			br = new BufferedReader(new FileReader(FilesNames.INPUT_FOLDER+"/"+"DesZoneIdTariffCodeMapping.csv"));                
+			while ((line = br.readLine()) != null) {     
+				String[] strLine = line.split("\\|");
+				destZoneIdtariffCodeMap.put(strLine[0], strLine[1]);
+			}
+			br.close();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }		
+			br = new BufferedReader(new FileReader(FilesNames.INPUT_FOLDER+"/"+"XPCMSMapping.csv"));  
+			while ((line = br.readLine()) != null) {  
+				String[] strLine = line.split("\\|");
+				if(xpcmsMap.get(strLine[0])==null) {            		
+					HashMap<String,String[]> map = new HashMap<String,String[]>();
+					map.put(strLine[1], new String[]{strLine[2],strLine[3],strLine[4],strLine[5],strLine[6]});
+					xpcmsMap.put(strLine[0], map);
+				}else {
+					xpcmsMap.get(strLine[0]).put(strLine[1], new String[]{strLine[2],strLine[3],strLine[4],strLine[5],strLine[6]});
+				}
+
+			}
+			br.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}		
 	}
-	
+
 	private SubscriptionInfoBME createSubcriptionInfoBME(Com com,String migrationID){
 
 		SubscriptionInfoBME subscriptionInfoBME = new SubscriptionInfoBME();
@@ -194,7 +189,8 @@ public class ComToSubscription extends MappingConstants{
 		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 		Subscription ecbCOM = createSouscription(com,false);
 		if(ecbCOM==null)
-			return null;		
+			return null;	
+		ecbCOM.setMigrationId("");
 		listEcbRootBeans.add(ecbCOM);
 
 		//		if(com.getCODE_CLIENT()!=null)				
@@ -371,10 +367,10 @@ public class ComToSubscription extends MappingConstants{
 			rampBucket.setPriceListName("");
 			rampBucket.setAccQualGroup("Self");
 
-			if(com.getCODE_PRODUIT_RAFAEL().contains("VOIX"))
-				rampBucket.setUsgQualGroup("Voix_UQG");
-			else if (com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
+			if(com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
 				rampBucket.setUsgQualGroup("Tetra_UQG");
+			else
+				rampBucket.setUsgQualGroup("Voix_UQG");
 
 			rampBucket.setItemsToAggregate("units");
 			rampBucket.setTierId("T01");
@@ -382,12 +378,17 @@ public class ComToSubscription extends MappingConstants{
 			rampBucket.setStartOfUnitRange("0");
 			rampBucket.setEndOfUnitRange(CREDIT_FORFAIT);
 			rampBucket.setPriority("1");
-			rampBucket.setTariffCodesList(tariffCodeMap.get(com.getCODE_PRODUIT_RAFAEL()));
+			String tariffCodeList = tariffCodeMap.get(com.getCODE_PRODUIT_RAFAEL());
+			if(tariffCodeList==null) {
+				errorCOM(com, "le FORFAIT ne possède pas de liste de code tarif");	
+				return null;
+			}else			
+				rampBucket.setTariffCodesList(tariffCodeList);
 			rampBucket.setNewRate("0");
 
 			listEcbRootBeans.add(rampBucket);
 		}
-		
+
 		listEcbRootBeans.add(ecbCOM);
 		listEcbRootBeans.add(subscriptionInfoBME);
 
@@ -432,11 +433,11 @@ public class ComToSubscription extends MappingConstants{
 
 			return null;
 		}else {
-			if(NIVEAU_APPLICATION=="CG")
+			if(NIVEAU_APPLICATION.equals("CG"))
 				subscriptionInfoBME.setSharedBucketScope("0");
-			else if(NIVEAU_APPLICATION=="GCF")
+			else if(NIVEAU_APPLICATION.equals("GCF"))
 				subscriptionInfoBME.setSharedBucketScope("1");
-			else if(NIVEAU_APPLICATION=="CF")
+			else if(NIVEAU_APPLICATION.equals("CF"))
 				subscriptionInfoBME.setSharedBucketScope("2");
 			else {
 				errorCOM(com, "NIVEAU_APPLICATION incorrecte");	
@@ -452,10 +453,10 @@ public class ComToSubscription extends MappingConstants{
 			rampBucket.setPriceListName("");
 			rampBucket.setAccQualGroup("Payees");
 
-			if(com.getCODE_PRODUIT_RAFAEL().contains("VOIX"))
-				rampBucket.setUsgQualGroup("Voix_UQG");
-			else if (com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
+			if(com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
 				rampBucket.setUsgQualGroup("Tetra_UQG");
+			else
+				rampBucket.setUsgQualGroup("Voix_UQG");
 
 			rampBucket.setItemsToAggregate("units");
 			rampBucket.setTierId("T01");
@@ -463,7 +464,13 @@ public class ComToSubscription extends MappingConstants{
 			rampBucket.setStartOfUnitRange("0");
 			rampBucket.setEndOfUnitRange(CREDIT_FORFAIT);
 			rampBucket.setPriority("10");
-			rampBucket.setTariffCodesList(tariffCodeMap.get(com.getCODE_PRODUIT_RAFAEL()));
+
+			String tariffCodeList = tariffCodeMap.get(com.getCODE_PRODUIT_RAFAEL());
+			if(tariffCodeList==null) {
+				errorCOM(com, "le FORFAIT ne possède pas de liste de code tarif");	
+				return null;
+			}else			
+				rampBucket.setTariffCodesList(tariffCodeList);
 			rampBucket.setNewRate("0");
 
 			listEcbRootBeans.add(rampBucket);
@@ -477,7 +484,7 @@ public class ComToSubscription extends MappingConstants{
 	}
 
 	public List<EcbRootBean> createSurcharge(Com com){
-		
+
 		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 
 		Subscription ecbCOM = createSouscription(com,false);
@@ -515,15 +522,15 @@ public class ComToSubscription extends MappingConstants{
 			errorCOM(com, "Aucune information sur la GRILLE surchargé disponible");
 			return null;
 		}else {
-			
+
 			XPCMS xpcms = new XPCMS();
 			xpcms.setiCBAccountId(ecbCOM.getAccountId());
 			xpcms.setMigrationId(ecbCOM.getMigrationId());
 			xpcms.setPoName(GRILLE);
-			if(com.getCODE_PRODUIT_RAFAEL().contains("VOIX"))
-				xpcms.setPiName("Voix_PI");
-			else if (com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
+			if(com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
 				xpcms.setPiName("Tetra_PI");
+			else
+				xpcms.setPiName("Voix_PI");
 			xpcms.setRateType("ICBRate");
 			xpcms.setOriginZoneId("");
 			if(DESTINATION.startsWith("CT_")) {
@@ -531,17 +538,40 @@ public class ComToSubscription extends MappingConstants{
 				xpcms.setTariffCode(DESTINATION);
 			}else {
 				xpcms.setDestZoneId(DESTINATION);
-				xpcms.setTariffCode(destZoneIdtariffCodeMap.get(DESTINATION));
-			}
-			xpcms.setUnitPrice(PRIX);
-			xpcms.setTimeCredit(xpcmsMap.get(GRILLE).get(xpcms.getDestZoneId())[0]);
-			xpcms.setUndividedPeriod(xpcmsMap.get(GRILLE).get(xpcms.getDestZoneId())[1]);
-			xpcms.setConnectionPrice(xpcmsMap.get(GRILLE).get(xpcms.getDestZoneId())[2]);
-			xpcms.setCodeGL(xpcmsMap.get(GRILLE).get(xpcms.getDestZoneId())[3]);
-			xpcms.setAnalysisCode(xpcmsMap.get(GRILLE).get(xpcms.getDestZoneId())[4]);
 
+				String tariffCode = destZoneIdtariffCodeMap.get(DESTINATION);
+				if(tariffCode==null) {
+					errorCOM(com, "La DESTINATION fourni est non défini dans le catalogue");
+					return null;
+				}
+
+				xpcms.setTariffCode(tariffCode);
+			}
+			xpcms.setUnitPrice(PRIX);			
+
+			HashMap<String,String[]> grilleMap = xpcmsMap.get(GRILLE);			
+			if(grilleMap==null) {
+				errorCOM(com, "La GRILLE fourni est non défini dans le catalogue");
+				return null;
+			}else {
+				String[] infoXpcmsTab = null;
+				if(DESTINATION.startsWith("CT_")) 
+					infoXpcmsTab = grilleMap.get(DESTINATION);
+				else
+					infoXpcmsTab = grilleMap.get(destZoneIdtariffCodeMap.get(DESTINATION));
+				if(infoXpcmsTab==null) {
+					errorCOM(com, "La DESTINATION fourni n'est pas utilisé par la GRILLE surchargé");
+					return null;
+				}else {			
+					xpcms.setTimeCredit(infoXpcmsTab[0]);
+					xpcms.setUndividedPeriod(infoXpcmsTab[1]);
+					xpcms.setConnectionPrice(infoXpcmsTab[2]);
+					xpcms.setCodeGL(infoXpcmsTab[3]);
+					xpcms.setAnalysisCode(infoXpcmsTab[4]);
+				}
+			}
 			listEcbRootBeans.add(xpcms);
-			
+
 		}
 
 		listEcbRootBeans.add(ecbCOM);

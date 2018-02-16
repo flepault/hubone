@@ -70,10 +70,8 @@
 			<includes>
 				<include>DesZoneIdTariffCodeMapping.csv</include>
 				<include>RampBucketMapping.csv</include>
+				<include>XPCMSMapping.csv</include>
 			</includes>
-			<excludes>
-				<exclude>*/**</exclude>
-			</excludes>
 		</fileSet>
 		<fileSet>
 			<directory>${project.basedir}/output</directory>

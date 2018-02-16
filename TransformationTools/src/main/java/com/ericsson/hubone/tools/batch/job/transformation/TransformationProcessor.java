@@ -97,12 +97,11 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 					ecbRootBeanList = comToSubscription.createForfaitPartage(com);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
 					ecbRootBeanList = comToSubscription.createForfaitLigne(com,endpoint);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("DEST")){
+					ecbRootBeanList = comToSubscription.createSurcharge(com);
 				}else{
 					comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
 				}
-//				else if(com.getCODE_PRODUIT_RAFAEL().startsWith("SURCHG")){
-//					ecbRootBeanList = comToSubscription.createSurcharge(com);
-//				}
 				//			else if(com.getCODE_PRODUIT_RAFAEL().equals("REMPP")){
 				//				ecbCom = createRemisePiedDePage(com);
 

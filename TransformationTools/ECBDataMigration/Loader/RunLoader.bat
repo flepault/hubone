@@ -26,6 +26,7 @@ rem cp D:\MigrationTools\TransformationTools\output\EPBME.csv \\SV652HTRAFECB1\h
 rem echo "On DB Server copy manually \\SV652HTRAFECB1\hshare\EPBME.csv to E: Drive"
 rem pause
 sqlcmd -S VM_Migration -Q "BULK INSERT NetMeter.dbo.t_be_hub_pdc_serviceidaudit FROM 'D:\MigrationTools\TransformationTools\output\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
+sqlcmd -S VM_Migration -Q "update NetMeter.dbo.sidaudit set c_EPAccountId = am.id_acc from NetMeter.dbo.t_be_hub_pdc_serviceidaudit sidaudit join NetMeter.dbo.t_account_mapper am on am.nm_login = sidaudit.c_Username"
 echo "###############################################"
 echo "############ BME SQL LOADING ENDED ############"
 echo "###############################################"
