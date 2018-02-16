@@ -10,12 +10,12 @@ public class EndpointBME extends EcbRootBean{
 	protected static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public static String[] column = new String[] {"serviceIdAudit","version","internalKey","creationDate","updateDate",			
-			"uID","endDate","startDate","userName","serviceId","parentAccountName"};
+			"uID","endDate","startDate","userName","serviceId","parentAccountName","ePAccountId"};
 	
 	public static String header(){
 		
 		return "ServiceIdAudit|Version|InternalKey|CreationDate|UpdateDate|"
-				+ "UID|EndDate|StartDate|UserName|ServiceId|ParentAccountName";
+				+ "UID|EndDate|StartDate|UserName|ServiceId|ParentAccountName|EPAccountId";
 		
 	}
 	
@@ -30,6 +30,7 @@ public class EndpointBME extends EcbRootBean{
 		this.creationDate = format.format(now);
 		this.updateDate =  format.format(now);
 		this.uID=new String("137");
+		this.ePAccountId="";
 	}
 
 	String serviceIdAudit;
@@ -43,6 +44,7 @@ public class EndpointBME extends EcbRootBean{
 	String startDate;
 	String userName;
 	String serviceId;
+	String ePAccountId;
 
 	public String getServiceIdAudit() {
 		return serviceIdAudit;
@@ -109,6 +111,19 @@ public class EndpointBME extends EcbRootBean{
 	}
 	public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
+	}
+
+
+
+	public String getePAccountId() {
+		return ePAccountId;
+	}
+
+
+
+	public void setePAccountId(String ePAccountId) {
+		this.ePAccountId = ePAccountId;
 	}	
+	
 	
 }

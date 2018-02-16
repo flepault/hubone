@@ -40,6 +40,8 @@ public class FilesNames {
 	public String SubscriptionInfoBME = "SubscriptionInfoBME.csv";
 	public String FlatRecurringCharge = "t_pt_FlatRecurringCharge.input.csv";
 	public String NonRecurringCharge = "t_pt_NonRecurringCharge.input.csv";
+	public String RampBucket = "t_pt_RampBucket.input.csv";
+	public String XPCMS = "t_pt_XPCMS.input.csv";
 	
 
 }

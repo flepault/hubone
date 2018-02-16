@@ -20,7 +20,7 @@ import com.ericsson.hubone.tools.batch.job.transformation.mapping.ComToSubscript
 
 @Component
 public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootBean> implements ItemProcessor<T,List<EcbRootBean>> {
-
+	
 	@Autowired
 	private CliToEndpoint cliToEndpoint;
 
@@ -29,6 +29,8 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 
 	@Autowired
 	private CliToAccount cliToAccount;
+		
+	
 
 	@Override
 	public List<EcbRootBean> process(T t) throws Exception {		
@@ -75,7 +77,9 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 				
 				List<EcbRootBean> ecbRootBeanList = null;
 				
-				if(com.getCODE_PRODUIT_RAFAEL().startsWith("REC") || 
+				if(com.getCODE_PRODUIT_RAFAEL().startsWith("VIDE") ){
+					ecbRootBeanList = comToSubscription.createBriqueVide(com);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REC") || 
 						com.getCODE_PRODUIT_RAFAEL().startsWith("RECCA") ){
 					ecbRootBeanList = comToSubscription.createAbonnement(com);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("GT") ){					
@@ -91,22 +95,17 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 					ecbRootBeanList = comToSubscription.createIntercoIn(com,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
 					ecbRootBeanList = comToSubscription.createForfaitPartage(com);
+				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
+					ecbRootBeanList = comToSubscription.createForfaitLigne(com,endpoint);
 				}else{
 					comToSubscription.errorCOM(com, "Code produit RAFAEL non connu :"+com.getCODE_PRODUIT_RAFAEL());
 				}
-				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
-				//				ecbCom = createForfaitLigne(com);
-				//			else if(com.getCODE_PRODUIT_RAFAEL().startsWith("DEST")){
-				//				ecbCom = createSurcharge(com);
-				//			}else if(com.getCODE_PRODUIT_RAFAEL().equals("REMPP")){
+//				else if(com.getCODE_PRODUIT_RAFAEL().startsWith("SURCHG")){
+//					ecbRootBeanList = comToSubscription.createSurcharge(com);
+//				}
+				//			else if(com.getCODE_PRODUIT_RAFAEL().equals("REMPP")){
 				//				ecbCom = createRemisePiedDePage(com);
-				//			}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("REMV")){
-				//				ecbCom = createRemiseVolume(com);
-				//			}}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
-				//				ecbCom = createRemiseVolume(com);
-				//			}}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
-				//				ecbCom = createRemiseVolume(com);
-				//			}
+
 
 
 				if(ecbRootBeanList!=null && ecbRootBeanList.size()!=0)

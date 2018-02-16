@@ -41,19 +41,27 @@ echo "###############################################"
 pause
 
 echo "###############################################"
-echo "#### CLOSE INTERVAL & INSTANT RC TO FALSE #####"
+echo "############# INSTANT RC TO FALSE #############"
 echo "###############################################"
 sqlcmd -S VM_Migration -Q "update NetMeter.dbo.t_db_values set value='false' where parameter='Instantrc'"
-sqlcmd -S VM_Migration -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from NetMeter.dbo.t_usage_interval where dt_end < DATEADD(month, -1, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
-cmd /c MigrationCloseInterval.bat
 echo "###############################################"
-echo "#### INTERVAL CLOSED & INSTANT RC TO FALSE ####"
+echo "############# INSTANT RC TO FALSE #############"
 echo "###############################################"
 pause
 
 cmd /c Subscriptions\\OldSubscriptions\\RunSubscriptionsLoader.bat
 
 cmd /c GroupSubscriptions\\OldGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
+
+echo "###############################################"
+echo "############### CLOSE INTERVAL  ###############"
+echo "###############################################"
+sqlcmd -S VM_Migration -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from NetMeter.dbo.t_usage_interval where dt_end < DATEADD(month, -1, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
+cmd /c MigrationCloseInterval.bat
+echo "###############################################"
+echo "############### INTERVAL CLOSED  ##############"
+echo "###############################################"
+pause
 
 cmd /c Subscriptions\\NewSubscriptions\\RunSubscriptionsLoader.bat
 
@@ -68,10 +76,10 @@ echo "#    DB BACKUP ACCOUNT & SUBS/NO ICB DONE     #"
 echo "###############################################"
 pause
 
-echo "Please update the following file D:\MetraTech\RMP\Bin\ECB.Loader.exe.config."
-echo "Change the 'MaxDegreeOfParallelismSize' properties from 4 to 1."
-echo "Do not continue before doing this update !!!"
-pause
+rem echo "Please update the following file D:\MetraTech\RMP\Bin\ECB.Loader.exe.config."
+rem echo "Change the 'MaxDegreeOfParallelismSize' properties from 4 to 1."
+rem echo "Do not continue before doing this update !!!"
+rem pause
 
 cmd /c Rates\\02ICBRates\\RunICBRatesLoader.bat
 

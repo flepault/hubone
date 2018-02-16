@@ -13,9 +13,11 @@ import com.ericsson.hubone.tools.batch.data.ecb.EndpointBME;
 import com.ericsson.hubone.tools.batch.data.ecb.FlatRecurringCharge;
 import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.NonRecurringCharge;
+import com.ericsson.hubone.tools.batch.data.ecb.RampBucket;
 import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.Subscription;
 import com.ericsson.hubone.tools.batch.data.ecb.SubscriptionInfoBME;
+import com.ericsson.hubone.tools.batch.data.ecb.XPCMS;
 
 
 public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
@@ -43,11 +45,16 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 	private ItemWriter<EcbRootBean> flatRecurringChargeWriter;
 
 	private ItemWriter<EcbRootBean> nonRecurringChargeWriter;
+	
+	private ItemWriter<EcbRootBean> rampBucketWriter;
+
+	private ItemWriter<EcbRootBean> xpcmsWriter;
 
 	public ItemListWriter(ItemWriter<EcbRootBean> clientWriter, ItemWriter<EcbRootBean> regroupCFWriter,
 			ItemWriter<EcbRootBean> cfWriter,ItemWriter<EcbRootBean> epWriter,ItemWriter<EcbRootBean> epBMEWriter,ItemWriter<EcbRootBean> oldSouscriptionWriter,ItemWriter<EcbRootBean> newSouscriptionWriter,
 			ItemWriter<EcbRootBean> oldGroupSouscriptionWriter,ItemWriter<EcbRootBean> newGroupSouscriptionWriter,
-			ItemWriter<EcbRootBean> subscriptionInfoBMEWriter,ItemWriter<EcbRootBean> flatRecurringChargeWriter,ItemWriter<EcbRootBean> nonRecurringChargeWriter) {
+			ItemWriter<EcbRootBean> subscriptionInfoBMEWriter,ItemWriter<EcbRootBean> flatRecurringChargeWriter,ItemWriter<EcbRootBean> nonRecurringChargeWriter,
+			ItemWriter<EcbRootBean> rampBucketWriter,ItemWriter<EcbRootBean> xpcmsWriter) {
 		super();
 		this.clientWriter = clientWriter;
 		this.regroupCFWriter = regroupCFWriter;
@@ -61,6 +68,8 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 		this.subscriptionInfoBMEWriter = subscriptionInfoBMEWriter;
 		this.flatRecurringChargeWriter = flatRecurringChargeWriter;
 		this.nonRecurringChargeWriter = nonRecurringChargeWriter;
+		this.rampBucketWriter = rampBucketWriter;
+		this.xpcmsWriter = xpcmsWriter;
 	}
 
 
@@ -84,6 +93,8 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 			List<EcbRootBean> subBMEList = new ArrayList<EcbRootBean>();
 			List<EcbRootBean> recICBList = new ArrayList<EcbRootBean>();
 			List<EcbRootBean> nonRecICBList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> rampBucketICBList = new ArrayList<EcbRootBean>();
+			List<EcbRootBean> xpcmsICBList = new ArrayList<EcbRootBean>();
 
 			for(EcbRootBean ecbCliCom : listEcbCliCom){
 				if(ecbCliCom instanceof Account){					
@@ -113,6 +124,10 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 					recICBList.add(ecbCliCom);
 				}else if(ecbCliCom instanceof NonRecurringCharge) {
 					nonRecICBList.add(ecbCliCom);
+				}else if(ecbCliCom instanceof RampBucket) {
+					rampBucketICBList.add(ecbCliCom);
+				}else if(ecbCliCom instanceof XPCMS) {
+					xpcmsICBList.add(ecbCliCom);
 				}
 
 
@@ -130,7 +145,8 @@ public class ItemListWriter implements ItemWriter<List<EcbRootBean>> {
 			subscriptionInfoBMEWriter.write(subBMEList);
 			flatRecurringChargeWriter.write(recICBList);
 			nonRecurringChargeWriter.write(nonRecICBList);
-
+			rampBucketWriter.write(rampBucketICBList);
+			xpcmsWriter.write(xpcmsICBList);
 
 		}
 

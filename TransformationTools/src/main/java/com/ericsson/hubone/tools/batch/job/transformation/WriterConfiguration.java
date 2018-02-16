@@ -20,8 +20,10 @@ import com.ericsson.hubone.tools.batch.data.ecb.EndpointBME;
 import com.ericsson.hubone.tools.batch.data.ecb.FlatRecurringCharge;
 import com.ericsson.hubone.tools.batch.data.ecb.GroupSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.NonRecurringCharge;
+import com.ericsson.hubone.tools.batch.data.ecb.RampBucket;
 import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
 import com.ericsson.hubone.tools.batch.data.ecb.SubscriptionInfoBME;
+import com.ericsson.hubone.tools.batch.data.ecb.XPCMS;
 import com.ericsson.hubone.tools.batch.job.superjob.FilesNames;
 
 @Configuration
@@ -167,6 +169,24 @@ public class WriterConfiguration {
 	public ItemWriter<EcbRootBean> writerNonRecurringCharge() {
 
 		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.NonRecurringCharge,NonRecurringCharge.header(),NonRecurringCharge.column,null);
+		writer.open(new ExecutionContext());
+
+		return writer;
+
+	}
+	
+	public ItemWriter<EcbRootBean> writerRampBucket() {
+
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.RampBucket,RampBucket.header(),RampBucket.column,null);
+		writer.open(new ExecutionContext());
+
+		return writer;
+
+	}
+	
+	public ItemWriter<EcbRootBean> writerXPCMS() {
+
+		FlatFileItemWriter<EcbRootBean> writer = writer(filesNames.XPCMS,XPCMS.header(),XPCMS.column,null);
 		writer.open(new ExecutionContext());
 
 		return writer;

@@ -67,6 +67,10 @@
 		<fileSet>
 			<directory>${project.basedir}/input</directory>
 			<outputDirectory>TransformationTools/input</outputDirectory>
+			<includes>
+				<include>DesZoneIdTariffCodeMapping.csv</include>
+				<include>RampBucketMapping.csv</include>
+			</includes>
 			<excludes>
 				<exclude>*/**</exclude>
 			</excludes>
