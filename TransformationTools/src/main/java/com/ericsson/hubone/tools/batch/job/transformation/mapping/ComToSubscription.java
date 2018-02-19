@@ -63,7 +63,7 @@ public class ComToSubscription extends MappingConstants{
 				tariffCodeMap.put(strLine[0], strLine[1]);   
 			}
 			br.close();
-			
+
 			br = new BufferedReader(new FileReader(FilesNames.INPUT_FOLDER+"/"+"DesZoneIdTariffCodeMapping.csv"));                
 			while ((line = br.readLine()) != null) {     
 				String[] strLine = line.split("\\|");
@@ -462,7 +462,20 @@ public class ComToSubscription extends MappingConstants{
 			rampBucket.setTierId("T01");
 			rampBucket.setTierName("");
 			rampBucket.setStartOfUnitRange("0");
-			rampBucket.setEndOfUnitRange(CREDIT_FORFAIT);
+			
+			if(com.CODE_PRODUIT_RAFAEL.getValue().contains("DUR")) {
+				BigDecimal icbValue = BigDecimal.valueOf(new Double(CREDIT_FORFAIT)*new Double(3600))
+						.setScale(10, RoundingMode.HALF_UP);
+				rampBucket.setEndOfUnitRange(icbValue.toString());
+			}else if(com.CODE_PRODUIT_RAFAEL.getValue().contains("VOL")) {
+				BigDecimal icbValue = BigDecimal.valueOf(new Double(CREDIT_FORFAIT)*new Double(1000000))
+						.setScale(10, RoundingMode.HALF_UP);
+				rampBucket.setEndOfUnitRange(icbValue.toString());
+			}if(com.CODE_PRODUIT_RAFAEL.getValue().contains("ACT")) {
+				rampBucket.setEndOfUnitRange(CREDIT_FORFAIT);
+			}
+			
+			
 			rampBucket.setPriority("10");
 
 			String tariffCodeList = tariffCodeMap.get(com.getCODE_PRODUIT_RAFAEL());
@@ -547,7 +560,21 @@ public class ComToSubscription extends MappingConstants{
 
 				xpcms.setTariffCode(tariffCode);
 			}
-			xpcms.setUnitPrice(PRIX);			
+
+			if(com.CODE_PRODUIT_RAFAEL.getValue().equals("DESTDUR")) {
+				BigDecimal icbValue = BigDecimal.valueOf(new Double(PRIX)/new Double(60))
+						.setScale(10, RoundingMode.HALF_UP);
+				xpcms.setUnitPrice(icbValue.toString());	
+			}else if(com.CODE_PRODUIT_RAFAEL.getValue().equals("DESTDUR")) {
+				BigDecimal icbValue = BigDecimal.valueOf(new Double(PRIX)/new Double(1000))
+						.setScale(10, RoundingMode.HALF_UP);
+				xpcms.setUnitPrice(icbValue.toString());
+			}else if(com.CODE_PRODUIT_RAFAEL.getValue().equals("DESTACT")) 
+				xpcms.setUnitPrice(PRIX);	
+			else {
+				errorCOM(com, "Le code produit RAFAEL "+com.CODE_PRODUIT_RAFAEL.getValue()+" n'existe pas");
+				return null;
+			}
 
 			HashMap<String,String[]> grilleMap = xpcmsMap.get(GRILLE);			
 			if(grilleMap==null) {
