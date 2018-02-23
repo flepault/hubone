@@ -33,7 +33,7 @@
 	<FieldMapper>
 		<FieldPossition>6</FieldPossition>
 		<PropertyName>re.AccQualGroup</PropertyName>
-		<PropertyType>string</PropertyType> <!-- select c_name from t_amp_accountqualgro  -- usually Payees (shared bucket) Self (single bucket) -->
+		<PropertyType>string</PropertyType> <!-- select c_name from t_amp_accountqualgro  // usually Payees (shared bucket) Self (single bucket) -->
 	</FieldMapper>
 	<FieldMapper>
 		<FieldPossition>7</FieldPossition>

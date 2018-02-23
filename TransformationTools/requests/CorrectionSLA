@@ -1,0 +1,16 @@
+SET ANSI_WARNINGS  OFF;
+insert into t_spec_characteristics
+values (1000,0,3208,Cast('HubOne' as varchar(20)),'Y',3206,Cast('CommercialProductCode' as varchar(255)),
+3207,Cast('CommercialProdCode' as varchar(255)),'N','Y',Cast('255' as varchar(30)),NULL)
+insert into t_spec_characteristics
+values (1001,0,3212,Cast('Internal' as varchar(20)),'N',3210,Cast('MigrationId' as varchar(255)),
+3211,Cast('MigrationId' as varchar(255)),'N','N',Cast('50' as varchar(30)),NULL)
+update  t_entity_specs set id_spec = 1000 where id_spec = 1004
+update  t_entity_specs set id_spec = 1001 where id_spec = 1005
+insert into t_spec_char_values values (1000,'N',3209,'')
+insert into t_spec_char_values values (1001,'N',4252,'')
+insert into t_spec_val_map(id_spec,id_scv) values (1000,1000)
+insert into t_spec_val_map(id_spec,id_scv) values (1001,1001)
+delete t_spec_val_map  where id_scv in (1004,1005)
+delete t_spec_char_values where id_scv in (1004,1005)
+delete t_spec_characteristics where id_spec in ( 1004,1005)

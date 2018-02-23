@@ -5,7 +5,10 @@ import java.util.Date;
 
 public class MappingConstants {
 	
-	protected Date migrationHubOneStartDate = new Date(new Long("1483225200000"));
+	
+	protected Date migrationHubOneAccountStartDate = new Date(new Long("978303600000"));
+	
+	protected Date migrationHubOneSubscriptionStartDate = new Date(new Long("1483225200000"));
 
 	protected Date migrationHubOneFarEndDate = new Date(new Long("2145913200000"));
 	

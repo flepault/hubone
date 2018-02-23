@@ -26,7 +26,7 @@ public class CliToAccount extends MappingConstants{
 		Subscription subscription = new SimpleSubscription();
 
 		subscription.setAccountId(cli.getCODE_CLIENT());
-		subscription.setStartDate(format.format(migrationHubOneStartDate));
+		subscription.setStartDate(format.format(migrationHubOneSubscriptionStartDate));
 		subscription.setNewCOM(true);
 		subscription.setEndDate("");
 		subscription.setCommercialProdCode("");
@@ -44,9 +44,9 @@ public class CliToAccount extends MappingConstants{
 		Account account = new Account();
 		account.setAccountType(cli.getNIV_HIERARCHIE_CLIENT());
 		account.setUserName(cli.getCODE_CLIENT());
-		account.setAccountStartDate(format.format(migrationHubOneStartDate));
+		account.setAccountStartDate(format.format(migrationHubOneAccountStartDate));
 		account.setAccountEndDate(format.format(migrationHubOneFarEndDate));
-		account.setPayment_StartDate(format.format(migrationHubOneStartDate));
+		account.setPayment_StartDate(format.format(migrationHubOneAccountStartDate));
 		account.setPayment_EndDate(format.format(migrationHubOneFarEndDate));
 		account.setAccountStatus("Active");
 

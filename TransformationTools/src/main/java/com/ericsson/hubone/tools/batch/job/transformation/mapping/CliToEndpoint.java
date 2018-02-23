@@ -59,9 +59,9 @@ public class CliToEndpoint extends MappingConstants{
 			ecbEP.setNewEP(true);
 			ecbEP.setAccountType(HierarchieClient.Endpoint.toString());
 			ecbEP.setUserName(userName);
-			ecbEP.setAccountStartDate(format.format(migrationHubOneStartDate));
+			ecbEP.setAccountStartDate(format.format(migrationHubOneAccountStartDate));
 			ecbEP.setAccountEndDate(format.format(migrationHubOneFarEndDate));
-			ecbEP.setPayment_StartDate(format.format(migrationHubOneStartDate));
+			ecbEP.setPayment_StartDate(format.format(migrationHubOneAccountStartDate));
 			ecbEP.setPayment_EndDate(format.format(migrationHubOneFarEndDate));
 			ecbEP.setAccountStatus("Active");
 

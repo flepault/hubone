@@ -10,3 +10,5 @@ cp D:\\MigrationTools\\TransformationTools\\output\\GroupSubscription.Old.input.
 cp D:\\MigrationTools\\TransformationTools\\output\\GroupSubscription.New.input.csv D:\\MigrationTools\\ECBDataMigration\\Mapper\\input\\Subscriptions\\GroupSubscription.New.input.csv
 cp D:\\MigrationTools\\TransformationTools\\output\\t_pt_FlatRecurringCharge.input.csv D:\\MigrationTools\\ECBDataMigration\\Mapper\\input\\Rates\\t_pt_FlatRecurringCharge.input.csv
 cp D:\\MigrationTools\\TransformationTools\\output\\t_pt_NonRecurringCharge.input.csv D:\\MigrationTools\\ECBDataMigration\\Mapper\\input\\Rates\\t_pt_NonRecurringCharge.input.csv
+cp D:\\MigrationTools\\TransformationTools\\output\\t_pt_RampBucket.input.csv D:\\MigrationTools\\ECBDataMigration\\Mapper\\input\\Rates\\t_pt_RampBucket.input.csv
+cp D:\\MigrationTools\\TransformationTools\\output\\t_pt_XPCMS.input.csv D:\\MigrationTools\\ECBDataMigration\\Mapper\\input\\Rates\\t_pt_XPCMS.input.csv

@@ -124,8 +124,8 @@ public class ComToSubscription extends MappingConstants{
 		try {
 			Date lastBillApplicationDate = formatCOM.parse(com.getDATE_APPLI_FACTU());
 
-			if(migrationHubOneStartDate.after(lastBillApplicationDate))
-				lastBillApplicationDate = migrationHubOneStartDate;
+			if(migrationHubOneSubscriptionStartDate.after(lastBillApplicationDate))
+				lastBillApplicationDate = migrationHubOneSubscriptionStartDate;
 
 			subscriptionInfoBME.setCreateAppliedDate(format.format(lastBillApplicationDate));
 		} catch (ParseException e) {
@@ -157,8 +157,8 @@ public class ComToSubscription extends MappingConstants{
 
 			Date lastModificationDate = formatCOM.parse(com.getDATE_MODIFICATION());
 
-			if(migrationHubOneStartDate.after(lastModificationDate))
-				lastModificationDate = migrationHubOneStartDate;
+			if(migrationHubOneSubscriptionStartDate.after(lastModificationDate))
+				lastModificationDate = migrationHubOneSubscriptionStartDate;
 
 			subscription.setStartDate(format.format(lastModificationDate));
 
