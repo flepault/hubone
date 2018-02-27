@@ -50,24 +50,34 @@ public class Rules {
 		
 	}
 	
-	public static boolean RG8(String value,Cli cli){		
-		return CycleFacturation.match(value);
+	public static boolean RG8(String value,Cli cli){
+		if(cli.getCLIENT_FACTURE().equals("Y"))
+			return CycleFacturation.match(value);
+		return true;
 	}
 	
 	public static boolean RG9(String value,Cli cli){		
-		return ModeleFacture.match(value);
+		if(cli.getCLIENT_FACTURE().equals("Y"))
+			return ModeleFacture.match(value);
+		return true;
 	}
 	
 	public static boolean RG10(String value,Cli cli){		
-		return SupportFacture.match(value);
+		if(cli.getCLIENT_FACTURE().equals("Y"))
+			return SupportFacture.match(value);
+		return true;
 	}
 	
 	public static boolean RG11(String value,Cli cli){		
-		return DelaiPaiement.match(value);
+		if(cli.getCLIENT_FACTURE().equals("Y"))
+			return DelaiPaiement.match(value);
+		return true;
 	}
 	
-	public static boolean RG12(String value,Cli cli){		
-		return ModePaiement.match(value);
+	public static boolean RG12(String value,Cli cli){	
+		if(cli.getCLIENT_FACTURE().equals("Y"))
+			return ModePaiement.match(value);
+		return true;
 	}
 	
 	public static boolean RG13(String value,Cli cli){	
