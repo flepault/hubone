@@ -27,7 +27,7 @@ public class CliToAccount extends MappingConstants{
 
 		subscription.setAccountId(cli.getCODE_CLIENT());
 		subscription.setStartDate(format.format(migrationHubOneSubscriptionStartDate));
-		subscription.setNewCOM(true);
+		subscription.setNewCOM(false);
 		subscription.setEndDate("");
 		subscription.setCommercialProdCode("");
 		subscription.setProductOfferingId("MINFAC");

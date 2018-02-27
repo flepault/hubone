@@ -40,3 +40,11 @@ for %%f in (t_pt_NonRecurringCharge.*.dat) do (
   cp %%~f ..\\..\\Loader\\Rates\\02ICBRates\\%%~f 
 )
 
+for %%f in (t_pt_RampBucket.*.dat) do ( 
+ cp %%~f ..\\..\\Loader\\Rates\\02ICBRates\\%%~f 
+)
+
+for %%f in (t_pt_XPCMS.*.dat) do ( 
+  cp %%~f ..\\..\\Loader\\Rates\\02ICBRates\\%%~f 
+)
+
