@@ -141,7 +141,7 @@ public class TransformationReport{
 		LocalDateTime  date = LocalDateTime.now();
 
 		try(FileInputStream is = new FileInputStream("reports/template/TransformationReportTemplate.xlsx")) {
-			try (OutputStream os = new FileOutputStream("reports/transformation/TransformationReport"+date.format(DateTimeFormatter.ofPattern("ddMMyyyy_MMmm"))+".xlsx")) {
+			try (OutputStream os = new FileOutputStream("reports/transformation/TransformationReport"+date.format(DateTimeFormatter.ofPattern("ddMMyyyy_HHmm"))+".xlsx")) {
 				Context context = new Context();
 				if(errorList.size()==0){						
 					errorList.add(new TransformationReportLine("", "", ""));						

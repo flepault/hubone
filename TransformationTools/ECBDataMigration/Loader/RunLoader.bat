@@ -1,10 +1,18 @@
 @echo off
 
-if %5 == "N" (
+if %5==N (
 	mkdir %4
 ) else (
 	echo Create %4 on %1 server
 	pause
+	
+	cp D:\MigrationTools\TransformationTools\output\EPBME.csv \\SV652HTRAFECB1\hshare
+	echo "On DB Server copy manually \\SV652HTRAFECB1\hshare\EPBME.csv to E: Drive"
+	pause
+	
+	cp D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv \\SV652HTRAFECB1\hshare
+	echo "On DB Server copy manually \\SV652HTRAFECB1\hshare\SubscriptionInfoBME.csv to E: Drive"
+	pause	
 )
 
 echo "###############################################"
@@ -139,12 +147,9 @@ echo "###############################################"
 echo "#          ENDPOINT BME SQL LOADING           #" 
 echo "###############################################"
 
-if %5 == "N" (
+if %5==N (
 	sqlcmd -b -S %1 -Q "BULK INSERT %2.dbo.t_be_hub_pdc_serviceidaudit FROM 'D:\MigrationTools\TransformationTools\output\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
 ) else (
-	cp D:\MigrationTools\TransformationTools\output\EPBME.csv \\SV652HTRAFECB1\hshare
-	echo "On DB Server copy manually \\SV652HTRAFECB1\hshare\EPBME.csv to E: Drive"
-	pause
 	sqlcmd -b -S %1 -Q "BULK INSERT %2.dbo.t_be_hub_pdc_serviceidaudit FROM 'E:\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
 )
 IF ERRORLEVEL 1 (
@@ -373,12 +378,9 @@ if NOT "%nbDB%" == "%nbFile%" (
 echo "###############################################"
 echo "#        SUBSCRIPTION BME SQL LOADING         #"
 echo "###############################################"
-if %5 == "N" (
+if %5==N (
 	sqlcmd -b -S %1 -Q "BULK INSERT %2.dbo.t_be_hub_cat_subscriptionin FROM 'D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
 ) else (
-	cp D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv \\SV652HTRAFECB1\hshare
-	echo "On DB Server copy manually \\SV652HTRAFECB1\hshare\SubscriptionInfoBME.csv to E: Drive"
-	pause
 	sqlcmd -b -S %1 -Q "BULK INSERT %2.dbo.t_be_hub_cat_subscriptionin FROM 'E:\SubscriptionInfoBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
 )
 IF ERRORLEVEL 1 (

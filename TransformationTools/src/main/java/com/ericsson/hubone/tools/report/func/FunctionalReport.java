@@ -33,6 +33,7 @@ public class FunctionalReport{
 		super();
 		errorList = new ArrayList<FunctionalReportLine>(); 
 
+		errorTotalClient = 0;
 		errorTotalRegroupCF = 0;	
 		errorTotalCF = 0;	
 		errorTotalSouscription = 0;	
@@ -43,6 +44,7 @@ public class FunctionalReport{
 		
 	}
 
+	Integer errorTotalClient;
 	Integer errorTotalRegroupCF;
 	Integer errorTotalCF;
 	Integer errorTotalSouscription;
@@ -74,6 +76,11 @@ public class FunctionalReport{
 		increaseError(functionalReportLine);
 	}
 	
+	public void increaseClientError(FunctionalReportLine functionalReportLine){
+		errorTotalClient++;
+		increaseError(functionalReportLine);
+	}
+	
 	public void increaseRegroupCFError(FunctionalReportLine functionalReportLine){
 		errorTotalRegroupCF++;
 		increaseError(functionalReportLine);
@@ -94,6 +101,7 @@ public class FunctionalReport{
 		log.info("Validation Hiérarchique Regroup CF :"+totalRegroupCF);
 		log.info("Validation Hiérarchique CF :"+totalCF);
 		log.info("Validation Hiérarchique Souscriptions :"+totalSouscription);
+		log.info("NB Erreur total Client :"+errorTotalClient);
 		log.info("NB Erreur total RegroupCF :"+errorTotalRegroupCF);
 		log.info("NB Erreur total CF :"+errorTotalCF);
 		log.info("NB Erreur total Souscriptions :"+errorTotalSouscription);
@@ -103,6 +111,7 @@ public class FunctionalReport{
 		generalLineList.add(new GeneralLine("Validation Hiérarchique Regroup CF :",totalRegroupCF));
 		generalLineList.add(new GeneralLine("Validation Hiérarchique CF :",totalCF));
 		generalLineList.add(new GeneralLine("Validation Hiérarchique Souscriptions :",totalSouscription));
+		generalLineList.add(new GeneralLine("Erreurs Client", errorTotalClient));
 		generalLineList.add(new GeneralLine("Erreurs Regroup CF", errorTotalRegroupCF));
 		generalLineList.add(new GeneralLine("Erreurs CF", errorTotalCF));
 		generalLineList.add(new GeneralLine("Erreurs Souscriptions", errorTotalSouscription));

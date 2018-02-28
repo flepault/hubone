@@ -400,7 +400,7 @@ public class Cli extends CesameRootBean implements Serializable {
 	}
 
 	public void setSIRET(String SIRET) {
-		this.SIRET = new CesameBeanField(SIRET,false,new String[]{"RG4"},"STRING20");
+		this.SIRET = new CesameBeanField(SIRET,false,new String[]{},"STRING20");
 	}
 
 	public void setCODE_SERVICE_UO(String CODE_SERVICE_UO) {
