@@ -5,7 +5,7 @@ public class Account extends EcbRootBean{
 	public static String[] column = new String[] {"userName","password","ancestorAccount","accountStatus","payerAccount",			
 			"accountStartDate","accountEndDate","payment_StartDate","payment_EndDate","dayOfMonth",
 			"firstDayOfMonth","secondDayOfMonth","internal_UsageCycleType","internal_TimezoneID","internal_Language",
-			"internal_Currency","internal_Billable","internal_TaxExempt","contact_FirstName","contact_LastName","contact_Email","contact_PhoneNumber","contact_Company",
+			"internal_Currency","internal_Billable","internal_TaxExempt","internal_MetraTaxHasOverrideBand","internal_MetraTaxOverrideBand","contact_FirstName","contact_LastName","contact_Email","contact_PhoneNumber","contact_Company",
 			"contact_Address1","contact_Address2","contact_Address3","contact_City","contact_State","contact_Zip","contact_Country",
 			"contact_FacsimileTelephoneNumber","contact_AccountName","contact_BillingAddressID","contact_ShipmentAddressID",
 			"contact_BillingContactID","contact_CommercialContactID","billing_BillingGroupName","billing_InvoiceTemplate",
@@ -21,7 +21,7 @@ public class Account extends EcbRootBean{
 		
 		return "UserName|Password_|AncestorAccount|AccountStatus|PayerAccount|AccountStartDate|AccountEndDate"
 				+ "|Payment_StartDate|Payment_EndDate|DayOfMonth|FirstDayOfMonth|SecondDayOfMonth"
-				+ "|UsageCycleType|TimezoneID|Language|Currency|Billable|TaxExempt|FirstName|LastName|Email|PhoneNumber|Company"
+				+ "|UsageCycleType|TimezoneID|Language|Currency|Billable|TaxExempt|MetraTaxHasOverrideBand|MetraTaxOverrideBand|FirstName|LastName|Email|PhoneNumber|Company"
 				+ "|Address1|Address2|Address3|City|State|Zip|Country|FacsimileTelephoneNumber|AccountName"
 				+ "|BillingAddressID|ShipmentAddressID|BillingContactID|CommercialContactID|BillingGroupName"
 				+ "|InvoiceTemplate|InvoiceSupport|IsToCheckInvoice|HasJustifDetCom|PaymentDelay|PaymentMode"
@@ -51,6 +51,8 @@ public class Account extends EcbRootBean{
 	String internal_Currency="EUR";	
 	String internal_Billable;
 	String internal_TaxExempt;
+	String internal_MetraTaxHasOverrideBand;
+	String internal_MetraTaxOverrideBand;
 	
 	String billing_InvoiceTemplate;
 	String billing_InvoiceSupport;
@@ -479,6 +481,18 @@ public class Account extends EcbRootBean{
 	}
 	public void setCommon_CodeMarche(String common_CodeMarche) {
 		this.common_CodeMarche = common_CodeMarche;
+	}
+	public String getInternal_MetraTaxHasOverrideBand() {
+		return internal_MetraTaxHasOverrideBand;
+	}
+	public void setInternal_MetraTaxHasOverrideBand(String internal_MetraTaxHasOverrideBand) {
+		this.internal_MetraTaxHasOverrideBand = internal_MetraTaxHasOverrideBand;
+	}
+	public String getInternal_MetraTaxOverrideBand() {
+		return internal_MetraTaxOverrideBand;
+	}
+	public void setInternal_MetraTaxOverrideBand(String internal_MetraTaxOverrideBand) {
+		this.internal_MetraTaxOverrideBand = internal_MetraTaxOverrideBand;
 	}
 	
 	

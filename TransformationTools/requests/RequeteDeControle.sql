@@ -30,3 +30,24 @@ SELECT'PRICELIST : '+ cast(count(id_pricelist) as varchar)
   
 SELECT 'GROUP SOUSCRIPTION : '+ cast(count(id_group) as varchar)
 FROM [dbo].[t_group_sub]  
+
+--Chiffre d’affaire global HT et chiffre d’affaire global TTC.
+select sum(invoice_amount-tax_ttl_amt) as HT,sum(tax_ttl_amt) as TVA,sum(invoice_amount) as TTC from t_invoice
+
+--Chiffre d’affaire par CF
+select map.nm_login as 'Num Compte',invoice_amount-tax_ttl_amt as 'Montant HT', tax_ttl_amt as 'Montant TVA',invoice_amount as 'Montant TTC' 
+from t_invoice inv, t_account_mapper map where inv.id_acc = map.id_acc order by nm_login
+
+--Chiffre d’affaire factures régulières et de régularisation
+select  'Facture régulières' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like 'L%'
+union
+select 'Facture de régularisation' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like 'R%'
+
+--Quantité d'ABO
+select count(*) as 'Quantité Abonnement' from t_svc_FlatRecurringCharge rec where c__IntervalID = (select distinct c__IntervalID from  t_invoice )
+
+--Quantité de facture
+select count(*) as 'Quantité de Facture' from t_invoice 
+
+--Nombre d'entités facturables dans Rafael
+select count(*) as 'NB Entité Facturable' from t_av_Internal where c_Billable = 1

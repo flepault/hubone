@@ -154,20 +154,19 @@ public class ComToSubscription extends MappingConstants{
 
 		subscription.setAccountId(com.getCODE_CLIENT());
 		try {
+			
+			Date lastBillApplicationDate = formatCOM.parse(com.getDATE_APPLI_FACTU());
+			
+			if(migrationHubOneSubscriptionStartDate.after(lastBillApplicationDate))
+				lastBillApplicationDate = migrationHubOneSubscriptionStartDate;	
+			
+			subscription.setStartDate(format.format(lastBillApplicationDate));
 
 			Date lastModificationDate = formatCOM.parse(com.getDATE_MODIFICATION());
-
-			if(migrationHubOneSubscriptionStartDate.after(lastModificationDate))
-				lastModificationDate = migrationHubOneSubscriptionStartDate;
-
-			subscription.setStartDate(format.format(lastModificationDate));
-
 			if(firstDayOfMonthDate.before(lastModificationDate))
 				subscription.setNewCOM(true);
 			else
 				subscription.setNewCOM(false);
-
-
 
 		} catch (ParseException e) {
 			errorCOM(com,e.getMessage());

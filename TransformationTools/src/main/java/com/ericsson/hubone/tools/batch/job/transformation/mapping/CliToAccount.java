@@ -60,6 +60,9 @@ public class CliToAccount extends MappingConstants{
 
 		account.setInternal_Billable(cli.getCLIENT_FACTURE());
 		account.setInternal_TaxExempt(cli.getEXEMPTION_TVA());
+		account.setInternal_MetraTaxHasOverrideBand(cli.getEXEMPTION_TVA());
+		account.setInternal_MetraTaxOverrideBand("");		
+		
 		account.setBilling_InvoiceTemplate(cli.getMODELE_FACTURE());
 		account.setBilling_InvoiceSupport(cli.getSUPPORT_FACTURE());
 		account.setBilling_BillingGroupName(cli.getGROUPE_FACTURATION());

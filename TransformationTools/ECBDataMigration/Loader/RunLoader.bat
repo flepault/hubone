@@ -256,6 +256,17 @@ if NOT "%nbDB%" == "%nbFile%" (
 )
 
 echo "###############################################"
+echo "#             INSTANT RC TO TRUE              #"
+echo "###############################################"
+sqlcmd -b -S %1 -Q "update %2.dbo.t_db_values set value='true' where parameter='Instantrc'"
+IF ERRORLEVEL 1 (
+	echo InstantRC to True : KO 
+	echo Verifier la cause des problemes avant de continuer !
+	pause
+)
+echo InstantRC to True : OK 
+
+echo "###############################################"
 echo "#          NEW SUBSCRIPTION INJECTION         #"
 echo "###############################################"
 cmd /c Subscriptions\\NewSubscriptions\\RunSubscriptionsLoader.bat

@@ -135,105 +135,126 @@
 		<FieldPossition>17</FieldPossition>
 		<PropertyName>Internal.TaxExempt</PropertyName>
 		<PropertyType>boolean</PropertyType>
+		<DynymicFieldMapper>
+			<CurrentValue>true</CurrentValue>
+			<TargePropertyName>Internal.MetraTaxOverrideBand</TargePropertyName>
+			<NewValue>exempt</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>false</CurrentValue>
+			<TargePropertyName>Internal.MetraTaxOverrideBand</TargePropertyName>
+			<NewValue>standard</NewValue>
+		  </DynymicFieldMapper>
 	</FieldMapper>
 	<FieldMapper>
 		<FieldPossition>18</FieldPossition>
+		<PropertyName>Internal.MetraTaxHasOverrideBand</PropertyName>
+		<PropertyType>boolean</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>19</FieldPossition>
+		<PropertyName>Internal.MetraTaxOverrideBand</PropertyName>
+		<PropertyType>enum</PropertyType>
+		<Prefix>metratech.com/tax/TaxBand/</Prefix>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>20</FieldPossition>
 		<PropertyName>Contact.FirstName</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>19</FieldPossition>
+		<FieldPossition>21</FieldPossition>
 		<PropertyName>Contact.LastName</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>20</FieldPossition>
+		<FieldPossition>22</FieldPossition>
 		<PropertyName>Contact.Email</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>21</FieldPossition>
+		<FieldPossition>23</FieldPossition>
 		<PropertyName>Contact.PhoneNumber</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>22</FieldPossition>
+		<FieldPossition>24</FieldPossition>
 		<PropertyName>Contact.Company</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>23</FieldPossition>
+		<FieldPossition>25</FieldPossition>
 		<PropertyName>Contact.Address1</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>24</FieldPossition>
+		<FieldPossition>26</FieldPossition>
 		<PropertyName>Contact.Address2</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>25</FieldPossition>
+		<FieldPossition>27</FieldPossition>
 		<PropertyName>Contact.Address3</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>26</FieldPossition>
+		<FieldPossition>28</FieldPossition>
 		<PropertyName>Contact.City</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>27</FieldPossition>
+		<FieldPossition>29</FieldPossition>
 		<PropertyName>Contact.State</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>28</FieldPossition>
+		<FieldPossition>30</FieldPossition>
 		<PropertyName>Contact.Zip</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>29</FieldPossition>
+		<FieldPossition>31</FieldPossition>
 		<PropertyName>Contact.Country</PropertyName>
 		<PropertyType>int</PropertyType>
 		<Prefix>Global/CountryName/</Prefix>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>30</FieldPossition>
+		<FieldPossition>32</FieldPossition>
 		<PropertyName>Contact.FacsimileTelephoneNumber</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>31</FieldPossition>
+		<FieldPossition>33</FieldPossition>
 		<PropertyName>Contact.AccountName</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>32</FieldPossition>
+		<FieldPossition>34</FieldPossition>
 		<PropertyName>Contact.BillingAddressID</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>33</FieldPossition>
+		<FieldPossition>35</FieldPossition>
 		<PropertyName>Contact.ShipmentAddressID</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>34</FieldPossition>
+		<FieldPossition>36</FieldPossition>
 		<PropertyName>Contact.BillingContactID</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>35</FieldPossition>
+		<FieldPossition>37</FieldPossition>
 		<PropertyName>Contact.CommercialContactID</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>36</FieldPossition>
+		<FieldPossition>38</FieldPossition>
 		<PropertyName>Billing.BillingGroupName</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>37</FieldPossition>
+		<FieldPossition>39</FieldPossition>
 		<PropertyName>Billing.InvoiceTemplate</PropertyName>
 		<PropertyType>enum</PropertyType>
 		<Prefix>hubone.fr/InvoiceTemplate/</Prefix>
@@ -266,7 +287,7 @@
 		</DynamicFieldsValues>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>38</FieldPossition>
+		<FieldPossition>40</FieldPossition>
 		<PropertyName>Billing.InvoiceSupport</PropertyName>
 		<PropertyType>enum</PropertyType>
 		<Prefix>hubone.fr/InvoiceSupport/</Prefix>
@@ -299,22 +320,22 @@
 		</DynamicFieldsValues>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>39</FieldPossition>
+		<FieldPossition>41</FieldPossition>
 		<PropertyName>Billing.IsToCheckInvoice</PropertyName>
 		<PropertyType>boolean</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>40</FieldPossition>
+		<FieldPossition>42</FieldPossition>
 		<PropertyName>Billing.HasJustifDetCom</PropertyName>
 		<PropertyType>boolean</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>41</FieldPossition>
+		<FieldPossition>43</FieldPossition>
 		<PropertyName>Billing.PaymentDelay</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>42</FieldPossition>
+		<FieldPossition>44</FieldPossition>
 		<PropertyName>Billing.PaymentMode</PropertyName>
 		<PropertyType>enum</PropertyType>
 		<Prefix>hubone.fr/PaymentMode/</Prefix>
@@ -337,42 +358,42 @@
 		</DynamicFieldsValues>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>43</FieldPossition>
+		<FieldPossition>45</FieldPossition>
 		<PropertyName>Billing.IbanCodeIso</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>44</FieldPossition>
+		<FieldPossition>46</FieldPossition>
 		<PropertyName>Billing.IbanCodeCtl</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>45</FieldPossition>
+		<FieldPossition>47</FieldPossition>
 		<PropertyName>Billing.IbanCodeCompte</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>46</FieldPossition>
+		<FieldPossition>48</FieldPossition>
 		<PropertyName>Billing.Bic</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>47</FieldPossition>
+		<FieldPossition>49</FieldPossition>
 		<PropertyName>Common.BillComment</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>48</FieldPossition>
+		<FieldPossition>50</FieldPossition>
 		<PropertyName>Common.RowIdSiebel</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>49</FieldPossition>
+		<FieldPossition>51</FieldPossition>
 		<PropertyName>Common.CrmStatus</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>50</FieldPossition>
+		<FieldPossition>52</FieldPossition>
 		<PropertyName>Common.CustomerRole</PropertyName>
 		<PropertyType>enum</PropertyType>
 		<Prefix>hubone.fr/CustomerRole/</Prefix>
@@ -400,57 +421,57 @@
 		</DynamicFieldsValues>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>51</FieldPossition>
+		<FieldPossition>53</FieldPossition>
 		<PropertyName>Common.GroupName</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>52</FieldPossition>
+		<FieldPossition>54</FieldPossition>
 		<PropertyName>Common.TvaIntra</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>53</FieldPossition>
+		<FieldPossition>55</FieldPossition>
 		<PropertyName>Common.CodeApe</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>54</FieldPossition>
+		<FieldPossition>56</FieldPossition>
 		<PropertyName>Common.Organization</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>55</FieldPossition>
+		<FieldPossition>57</FieldPossition>
 		<PropertyName>Common.Siret</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>56</FieldPossition>
+		<FieldPossition>58</FieldPossition>
 		<PropertyName>Common.CodeService</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>57</FieldPossition>
+		<FieldPossition>59</FieldPossition>
 		<PropertyName>Common.CodeCC</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>58</FieldPossition>
+		<FieldPossition>60</FieldPossition>
 		<PropertyName>Common.ClientRootId</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>59</FieldPossition>
+		<FieldPossition>61</FieldPossition>
 		<PropertyName>Common.GroupId</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>60</FieldPossition>
+		<FieldPossition>62</FieldPossition>
 		<PropertyName>Common.ClientParentName</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>61</FieldPossition>
+		<FieldPossition>63</FieldPossition>
 		<PropertyName>Common.CodeMarche</PropertyName>
 		<PropertyType>string</PropertyType>
 	</FieldMapper>
