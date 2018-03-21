@@ -4,7 +4,7 @@ public class Account extends EcbRootBean{
 	
 	public static String[] column = new String[] {"userName","password","ancestorAccount","accountStatus","payerAccount",			
 			"accountStartDate","accountEndDate","payment_StartDate","payment_EndDate","dayOfMonth",
-			"firstDayOfMonth","secondDayOfMonth","internal_UsageCycleType","internal_TimezoneID","internal_Language",
+			"firstDayOfMonth","secondDayOfMonth","startDay","startMonth","startYear","internal_UsageCycleType","internal_TimezoneID","internal_Language",
 			"internal_Currency","internal_Billable","internal_TaxExempt","internal_MetraTaxHasOverrideBand","internal_MetraTaxOverrideBand","contact_FirstName","contact_LastName","contact_Email","contact_PhoneNumber","contact_Company",
 			"contact_Address1","contact_Address2","contact_Address3","contact_City","contact_State","contact_Zip","contact_Country",
 			"contact_FacsimileTelephoneNumber","contact_AccountName","contact_BillingAddressID","contact_ShipmentAddressID",
@@ -20,7 +20,7 @@ public class Account extends EcbRootBean{
 	public static String header(){
 		
 		return "UserName|Password_|AncestorAccount|AccountStatus|PayerAccount|AccountStartDate|AccountEndDate"
-				+ "|Payment_StartDate|Payment_EndDate|DayOfMonth|FirstDayOfMonth|SecondDayOfMonth"
+				+ "|Payment_StartDate|Payment_EndDate|DayOfMonth|FirstDayOfMonth|SecondDayOfMonth|StartDay|StartMonth|StartYear"
 				+ "|UsageCycleType|TimezoneID|Language|Currency|Billable|TaxExempt|MetraTaxHasOverrideBand|MetraTaxOverrideBand|FirstName|LastName|Email|PhoneNumber|Company"
 				+ "|Address1|Address2|Address3|City|State|Zip|Country|FacsimileTelephoneNumber|AccountName"
 				+ "|BillingAddressID|ShipmentAddressID|BillingContactID|CommercialContactID|BillingGroupName"
@@ -44,6 +44,9 @@ public class Account extends EcbRootBean{
 	String dayOfMonth="31";
 	String firstDayOfMonth;
 	String secondDayOfMonth;
+	String startDay;
+	String startMonth;
+	String startYear;
 	
 	String internal_UsageCycleType="Monthly";
 	String internal_TimezoneID="(GMT+01:00) Paris, Madrid, Amsterdam";
@@ -493,6 +496,24 @@ public class Account extends EcbRootBean{
 	}
 	public void setInternal_MetraTaxOverrideBand(String internal_MetraTaxOverrideBand) {
 		this.internal_MetraTaxOverrideBand = internal_MetraTaxOverrideBand;
+	}
+	public String getStartDay() {
+		return startDay;
+	}
+	public void setStartDay(String startDay) {
+		this.startDay = startDay;
+	}
+	public String getStartMonth() {
+		return startMonth;
+	}
+	public void setStartMonth(String startMonth) {
+		this.startMonth = startMonth;
+	}
+	public String getStartYear() {
+		return startYear;
+	}
+	public void setStartYear(String startYear) {
+		this.startYear = startYear;
 	}
 	
 	

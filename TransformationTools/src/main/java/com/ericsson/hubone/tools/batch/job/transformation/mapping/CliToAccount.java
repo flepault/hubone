@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Cli;
+import com.ericsson.hubone.tools.batch.data.cesame.enumeration.CycleFacturation;
 import com.ericsson.hubone.tools.batch.data.cesame.enumeration.HierarchieClient;
 import com.ericsson.hubone.tools.batch.data.ecb.Account;
 import com.ericsson.hubone.tools.batch.data.ecb.SimpleSubscription;
@@ -57,6 +58,22 @@ public class CliToAccount extends MappingConstants{
 		}
 
 		account.setPayerAccount(determinePayerAccount(cli));
+		
+		
+		if(cli.getFREQ_CYCLE_FACTU().equals(CycleFacturation.Trimestriel.toString())) {
+			account.setStartDay("1");
+			account.setFirstDayOfMonth("1");
+			account.setSecondDayOfMonth("2");
+			account.setStartMonth("1");
+		}else if(cli.getFREQ_CYCLE_FACTU().equals(CycleFacturation.Annuel.toString())) {
+			account.setStartDay("1");
+			account.setStartMonth("1");
+			account.setStartYear("2001");
+		}else if(cli.getFREQ_CYCLE_FACTU().equals(CycleFacturation.Semestriel.toString())) {
+			account.setStartDay("1");
+			account.setStartMonth("1");
+		}
+		
 
 		account.setInternal_Billable(cli.getCLIENT_FACTURE());
 		account.setInternal_TaxExempt(cli.getEXEMPTION_TVA());
