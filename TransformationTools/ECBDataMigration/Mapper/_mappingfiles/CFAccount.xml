@@ -82,6 +82,31 @@
 		<Prefix>metratech.com/billingcycle/UsageCycleType/</Prefix>
 		<DynamicFieldsValues>
 		  <DynymicFieldMapper>
+			<CurrentValue>Mensuel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Monthly</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>Trimestriel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Quarterly</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>Annuel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Annually</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>Bimestriel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Monthly</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>Semestriel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Semi-Annually</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
 			<CurrentValue></CurrentValue>
 			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
 			<NewValue>Monthly</NewValue>
@@ -135,16 +160,6 @@
 		<FieldPossition>17</FieldPossition>
 		<PropertyName>Internal.TaxExempt</PropertyName>
 		<PropertyType>boolean</PropertyType>
-		<DynymicFieldMapper>
-			<CurrentValue>true</CurrentValue>
-			<TargePropertyName>Internal.MetraTaxOverrideBand</TargePropertyName>
-			<NewValue>exempt</NewValue>
-		  </DynymicFieldMapper>
-		  <DynymicFieldMapper>
-			<CurrentValue>false</CurrentValue>
-			<TargePropertyName>Internal.MetraTaxOverrideBand</TargePropertyName>
-			<NewValue>standard</NewValue>
-		  </DynymicFieldMapper>
 	</FieldMapper>
 	<FieldMapper>
 		<FieldPossition>18</FieldPossition>

@@ -190,24 +190,12 @@ IF ERRORLEVEL 1 (
 echo InstantRC to False : OK 
 
 echo "###############################################"
-echo "#               CLOSE INTERVAL                #"
-echo "###############################################"
-sqlcmd -b -S %1 -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from %2.dbo.t_usage_interval where dt_end < DATEADD(month, -1, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
-IF ERRORLEVEL 1 (
-	echo Generate MigrationCloseInterval script : KO 
-	echo Verifier la cause des problemes avant de continuer !
-	pause
-)
-echo Generate MigrationCloseInterval script : OK 
-cmd /c MigrationCloseInterval.bat
-
-echo "###############################################"
 echo "#          OLD SUBSCRIPTION INJECTION         #"
 echo "###############################################"
 cmd /c Subscriptions\\OldSubscriptions\\RunSubscriptionsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where vt_start < DATEADD(DAY,1,EOMONTH(SYSDATETIME (),-2)) and id_group is null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
-set /p nbDB= < nbDbTmp
+sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+set /p nbOldSubDB= < nbDbTmp
 del nbDbTmp
 
 wc -l D:\MigrationTools\TransformationTools\output\Subscription.Old.input.csv | awk '{print $1-1}' > nbTransformedTmp
@@ -220,7 +208,7 @@ del nbRejectedTmp
 
 set /a nbFile = "%nbTransformed%"-"%nbRejected%"
 
-if NOT "%nbDB%" == "%nbFile%" (
+if NOT "%nbOldSubDB%" == "%nbFile%" (
 	echo Injection des Old Subscriptions : KO 
 	echo Verifier la cause des problemes avant de continuer !
 	pause
@@ -233,8 +221,8 @@ echo "#      OLD GROUP SUBSCRIPTION INJECTION       #"
 echo "###############################################"
 cmd /c GroupSubscriptions\\OldGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where vt_start < DATEADD(DAY,1,EOMONTH(SYSDATETIME (),-2))  and id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
-set /p nbDB= < nbDbTmp
+sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+set /p nbOldGSubDB= < nbDbTmp
 del nbDbTmp
 
 wc -l D:\MigrationTools\TransformationTools\output\GroupSubscription.Old.input.csv | awk '{print $1-1}' > nbTransformedTmp
@@ -247,13 +235,32 @@ del nbRejectedTmp
 
 set /a nbFile = "%nbTransformed%"-"%nbRejected%"
 
-if NOT "%nbDB%" == "%nbFile%" (
+if NOT "%nbOldGSubDB%" == "%nbFile%" (
 	echo Injection des Old GroupSubscriptions : KO 
 	echo Verifier la cause des problemes avant de continuer !
 	pause
 ) else (
 	echo Injection des Old GroupSubscriptions : OK 
 )
+
+
+echo "###############################################"
+echo "#       NON RECURRING CHARGE ADAPTER          #"
+echo "###############################################"
+usm run /event:NonRecurringCharges
+timeout /t 600
+
+echo "###############################################"
+echo "#               CLOSE INTERVAL                #"
+echo "###############################################"
+sqlcmd -b -S %1 -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from %2.dbo.t_usage_interval where dt_end < DATEADD(month, -1, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
+IF ERRORLEVEL 1 (
+	echo Generate MigrationCloseInterval script : KO 
+	echo Verifier la cause des problemes avant de continuer !
+	pause
+)
+echo Generate MigrationCloseInterval script : OK 
+cmd /c MigrationCloseInterval.bat
 
 echo "###############################################"
 echo "#             INSTANT RC TO TRUE              #"
@@ -271,8 +278,9 @@ echo "#          NEW SUBSCRIPTION INJECTION         #"
 echo "###############################################"
 cmd /c Subscriptions\\NewSubscriptions\\RunSubscriptionsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub where vt_start >= DATEADD(DAY,1,EOMONTH(SYSDATETIME (),-2))   and id_group is null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub where id_group is null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
+set /a nbNewSubDB = "%nbDB%"-"%nbOldSubDB%"
 del nbDbTmp
 
 wc -l D:\MigrationTools\TransformationTools\output\Subscription.New.input.csv | awk '{print $1-1}' > nbTransformedTmp
@@ -285,7 +293,7 @@ del nbRejectedTmp
 
 set /a nbFile = "%nbTransformed%"-"%nbRejected%"
 
-if NOT "%nbDB%" == "%nbFile%" (
+if NOT "%nbNewSubDB%" == "%nbFile%" (
 	echo Injection des New Subscriptions : KO 
 	echo Verifier la cause des problemes avant de continuer !
 	pause
@@ -300,6 +308,7 @@ echo "###############################################"
 cmd /c GroupSubscriptions\\NewGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
 sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where vt_start < DATEADD(DAY,1,EOMONTH(SYSDATETIME (),-2))  and id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
+set /a nbNewGSubDB = "%nbDB%"-"%nbOldGSubDB%"
 del nbDbTmp
 
 wc -l D:\MigrationTools\TransformationTools\output\GroupSubscription.New.input.csv | awk '{print $1-1}' > nbTransformedTmp
@@ -312,7 +321,7 @@ del nbRejectedTmp
 
 set /a nbFile = "%nbTransformed%"-"%nbRejected%"
 
-if NOT "%nbDB%" == "%nbFile%" (
+if NOT "%nbNewGSubDB%" == "%nbFile%" (
 	echo Injection des New GroupSubscriptions : KO 
 	echo Verifier la cause des problemes avant de continuer !
 	pause

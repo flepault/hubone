@@ -44,40 +44,41 @@ public class Rules {
 	
 	public static boolean RG7(String value,Cli cli){
 			
-		if(cli.getCLIENT_FACTURE().equals("Y"))
+		if(cli.getCLIENT_FACTURE().equals("Y") || (value != null && !value.equals("")))
 			return value.matches("(Y|N)");
 		return true;
 		
 	}
 	
 	public static boolean RG8(String value,Cli cli){
-		if(cli.getCLIENT_FACTURE().equals("Y"))
+		if(cli.getCLIENT_FACTURE().equals("Y") || (value != null && !value.equals("")))
 			return CycleFacturation.match(value);
 		return true;
 	}
 	
 	public static boolean RG9(String value,Cli cli){		
-		if(cli.getCLIENT_FACTURE().equals("Y"))
+		if(cli.getCLIENT_FACTURE().equals("Y") || (value != null && !value.equals("")))
 			return ModeleFacture.match(value);
 		return true;
 	}
 	
 	public static boolean RG10(String value,Cli cli){		
-		if(cli.getCLIENT_FACTURE().equals("Y"))
+		if(cli.getCLIENT_FACTURE().equals("Y") || (value != null && !value.equals("")))
 			return SupportFacture.match(value);
 		return true;
 	}
 	
 	public static boolean RG11(String value,Cli cli){		
-		if(cli.getCLIENT_FACTURE().equals("Y"))
+		if(cli.getCLIENT_FACTURE().equals("Y") || (value != null && !value.equals("")))
 			return DelaiPaiement.match(value);
 		return true;
 	}
 	
 	public static boolean RG12(String value,Cli cli){	
-		if(cli.getCLIENT_FACTURE().equals("Y"))
+		if(cli.getCLIENT_FACTURE().equals("Y") || (value != null && !value.equals("")))
 			return ModePaiement.match(value);
-		return true;
+		else
+			return true;
 	}
 	
 	public static boolean RG13(String value,Cli cli){	

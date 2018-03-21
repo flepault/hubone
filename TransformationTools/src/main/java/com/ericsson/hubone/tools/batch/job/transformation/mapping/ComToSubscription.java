@@ -501,16 +501,12 @@ public class ComToSubscription extends MappingConstants{
 
 		Subscription ecbCOM = createSouscription(com,false);
 		if(ecbCOM==null)
-			return null;
-
-		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
-		if(subscriptionInfoBME==null)
 			return null;		
-		subscriptionInfoBME.setTargetTariffGridId(com.getID_SIEBEL_PRESTATION());
 
 		String DESTINATION = null;
 		String PRIX = null;
 		String GRILLE = null;
+		String PARENT_ID = null;
 
 		if(com.getPARAM_PRODUIT_ADD()!=null || !com.getPARAM_PRODUIT_ADD().equals("")){
 			for(String param:com.getPARAM_PRODUIT_ADD().split(";")){
@@ -520,6 +516,8 @@ public class ComToSubscription extends MappingConstants{
 					PRIX = param.split("=")[1];
 				}else if(param.split("=")[0].equals("GRILLE")){
 					GRILLE = param.split("=")[1];
+				}else if(param.split("=")[0].equals("PARENT_ID")){
+					PARENT_ID = param.split("=")[1];
 				}
 			}
 		}
@@ -531,7 +529,10 @@ public class ComToSubscription extends MappingConstants{
 			errorCOM(com, "Aucun PRIX disponible");
 			return null;
 		}else if(GRILLE==null) {
-			errorCOM(com, "Aucune information sur la GRILLE surchargé disponible");
+			errorCOM(com, "Aucune information sur la GRILLE surchargé");
+			return null;
+		}else if(PARENT_ID==null) {
+			errorCOM(com, "Aucune information sur le PARENT_ID surchargé");
 			return null;
 		}else {
 
@@ -600,6 +601,11 @@ public class ComToSubscription extends MappingConstants{
 
 		}
 
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return null;		
+		subscriptionInfoBME.setTargetTariffGridId(PARENT_ID);
+		
 		listEcbRootBeans.add(ecbCOM);
 		listEcbRootBeans.add(subscriptionInfoBME);
 		return listEcbRootBeans;

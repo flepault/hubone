@@ -60,8 +60,13 @@ public class CliToAccount extends MappingConstants{
 
 		account.setInternal_Billable(cli.getCLIENT_FACTURE());
 		account.setInternal_TaxExempt(cli.getEXEMPTION_TVA());
+		account.setInternal_UsageCycleType(cli.getFREQ_CYCLE_FACTU());
+		
 		account.setInternal_MetraTaxHasOverrideBand(cli.getEXEMPTION_TVA());
-		account.setInternal_MetraTaxOverrideBand("");		
+		if(cli.getEXEMPTION_TVA().equals("Y"))
+			account.setInternal_MetraTaxOverrideBand("exempt");		
+		else
+			account.setInternal_MetraTaxOverrideBand("STD");	
 		
 		account.setBilling_InvoiceTemplate(cli.getMODELE_FACTURE());
 		account.setBilling_InvoiceSupport(cli.getSUPPORT_FACTURE());
@@ -175,6 +180,8 @@ public class CliToAccount extends MappingConstants{
 					Map<String,Object> ancestor = rows.get(0);
 
 					code_client_parent = ancestor.get("CODE_CLIENT_PARENT").toString();
+					if(code_client_parent==null || code_client_parent.equals(""))
+						code_client_parent = ancestor.get("CODE_CLIENT").toString();
 				}
 			}
 			return code_client_parent;
