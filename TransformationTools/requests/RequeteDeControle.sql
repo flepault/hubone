@@ -31,65 +31,65 @@ SELECT'PRICELIST : '+ cast(count(id_pricelist) as varchar)
   FROM [dbo].[t_rsched] rs, [dbo].[t_pricelist] pl
   where rs.id_pricelist = pl.id_pricelist and n_type = 0  
   
-select  * from t_acc_usage where id_acc = 31072740 
-
-select * from t_invoice where id_acc = 31072740 
-
-select * from t_acc_usage where id_sess not in (select id_sess from t_cust_usage_correction )
-
-select * from t_usage_interval 
-
-select * from t_svc_FlatRecurringCharge
-
-update t_pv_NonRecurringCharge set id_usage_interval = 1150943265 , c_NRCIntervalEnd='2018-01-31 00:00:00.000' where  c_NRCIntervalSubscriptionStart < '2018-02-01 00:00:00.000'
-
-update t_acc_usage set id_usage_interval = 1150943265 ,dt_crt='2018-01-31 00:00:00.000' where id_sess in ( select id_sess from t_pv_NonRecurringCharge where  c_NRCIntervalSubscriptionStart < '2018-02-01 00:00:00.000')
-
-select * from t_pv_NonRecurringCharge where id_usage_interval != 1150943265
-
-select * from t_pv_taxation 
-
-
-
-where id_sess in (select id_sess from t_pv_NonRecurringCharge where id_usage_interval != 1150943265)
-
-select * from t_prod_view
-
+IF OBJECT_ID('tempdb.dbo.#RecTmpTable', 'U') IS NOT NULL
+  DROP TABLE #RecTmpTable; 
 select acu.*
+into #RecTmpTable
 from t_acc_usage acu , t_prod_view pv , t_usage_interval inter 
 where pv.id_view = acu.id_view and  pv.nm_name = 'metratech.com/FlatRecurringCharge' 
 and inter.tx_interval_status = 'O' and acu.id_usage_interval = inter.id_interval
+and GETDATE()> dt_end
 
+IF OBJECT_ID('tempdb.dbo.#NRecTmpTable', 'U') IS NOT NULL
+  DROP TABLE #NRecTmpTable; 
 select acu.*
+into #NRecTmpTable
 from t_acc_usage acu , t_prod_view pv , t_usage_interval inter 
 where pv.id_view = acu.id_view and  pv.nm_name = 'metratech.com/NonRecurringCharge'
 and inter.tx_interval_status = 'O' and acu.id_usage_interval = inter.id_interval
+and GETDATE()> dt_end
 
+IF OBJECT_ID('tempdb.dbo.#DiscountTmpTable', 'U') IS NOT NULL
+  DROP TABLE #DiscountTmpTable; 
+select acu.*
+into #DiscountTmpTable
+from t_acc_usage acu , t_prod_view pv , t_usage_interval inter 
+where pv.id_view = acu.id_view and  pv.nm_name = 'hubone.fr/%Discount%'
+and inter.tx_interval_status = 'O' and acu.id_usage_interval = inter.id_interval
+and GETDATE()> dt_end
 
-select * from t_usage_interval
-
-
-select * from t_av_Common avC where c_ClientRootId is null
+IF OBJECT_ID('tempdb.dbo.#UsageTmpTable', 'U') IS NOT NULL
+  DROP TABLE #UsageTmpTable; 
+select acu.*
+into #UsageTmpTable
+from t_acc_usage acu , t_prod_view pv , t_usage_interval inter 
+where pv.id_view = acu.id_view and 
+( pv.nm_name = 'hubone.fr/Interco' or pv.nm_name = 'hubone.fr/Operateur' 
+or pv.nm_name = 'hubone.fr/OrangeAbo' or pv.nm_name = 'hubone.fr/RampBucket'
+or pv.nm_name = 'hubone.fr/Tetra' or pv.nm_name = 'hubone.fr/Voix' 
+or pv.nm_name = 'hubone.fr/WifiRoaming')
+and inter.tx_interval_status = 'O' and acu.id_usage_interval = inter.id_interval
+and GETDATE()> dt_end
  
-
-delete t_invoice where id_invoice <= 3336
-
-
+ 
 --Chiffre d’affaire global HT et chiffre d’affaire global TTC.
 select sum(invoice_amount-tax_ttl_amt) as HT,sum(tax_ttl_amt) as TVA,sum(invoice_amount) as TTC 
 from t_invoice
 
 --Chiffre d’affaire par CF
 select 'C'+avC.c_ClientRootId as 'CODE_CLIENT_GENERIQUE',
-
-select IIF(acc1.id_type=12, 'C', 'F')+map.nm_login as 'CODE_CLIENT_FACTURE', 
+IIF(acc1.id_type=12, 'C', 'F')+map.nm_login as 'CODE_CLIENT_FACTURE', 
 invoice_string as 'NO_FACTURE',
 invoice_amount as 'MONTANT_TOTAL' ,
 tax_ttl_amt as 'MONTANT_TVA',
-invoice_amount-tax_ttl_amt as 'MONTANT_TOTAL_HT'
+invoice_amount-tax_ttl_amt as 'MONTANT_TOTAL_HT',
+(select sum(amount) from #RecTmpTable where id_acc = inv.id_acc ) as 'MONTANT_ABO',
+(select sum(amount) from #NRecTmpTable where id_acc = inv.id_acc ) as 'MONTANT_FAS',
+(select sum(amount) from #DiscountTmpTable where id_acc = inv.id_acc ) as 'MONTANT_REM',
+(select sum(amount) from #UsageTmpTable where id_acc = inv.id_acc ) as 'MONTANT_USG'
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC 
- where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
- order by c_ClientRootId
+where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
+
 
 --Chiffre d’affaire factures régulières et de régularisation
 select  'Facture régulières' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like 'L%'
@@ -97,7 +97,9 @@ union
 select 'Facture de régularisation' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like 'R%'
 
 --Quantité d'ABO
-select count(*) as 'Quantité Abonnement' from t_svc_FlatRecurringCharge rec where c__IntervalID = (select distinct id_interval from  t_invoice )
+select count(*) as 'Quantité Abonnement' from t_svc_FlatRecurringCharge rec , t_usage_interval inter 
+where inter.tx_interval_status = 'O' and rec.c__IntervalID = inter.id_interval
+and GETDATE()> dt_end
 
 --Quantité de facture régulière
 select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like 'L%'
@@ -108,4 +110,3 @@ select count(*) as 'Quantité de Facture' from t_invoice where invoice_string li
 --Nombre d'entités facturables dans Rafael
 select count(*) as 'NB Entité Facturable' from t_av_Internal where c_Billable = 1
 
-select * from t_svc_FlatRecurringCharge

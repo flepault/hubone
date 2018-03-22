@@ -306,7 +306,7 @@ echo "###############################################"
 echo "#      NEW GROUP SUBSCRIPTION INJECTION       #"
 echo "###############################################"
 cmd /c GroupSubscriptions\\NewGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
-sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where vt_start < DATEADD(DAY,1,EOMONTH(SYSDATETIME (),-2))  and id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
 set /a nbNewGSubDB = "%nbDB%"-"%nbOldGSubDB%"
 del nbDbTmp

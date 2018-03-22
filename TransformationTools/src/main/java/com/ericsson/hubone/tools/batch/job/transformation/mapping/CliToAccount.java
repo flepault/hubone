@@ -67,7 +67,7 @@ public class CliToAccount extends MappingConstants{
 			account.setStartMonth("1");
 		}else if(cli.getFREQ_CYCLE_FACTU().equals(CycleFacturation.Annuel.toString())) {
 			account.setStartDay("1");
-			account.setStartMonth("1");
+			account.setStartMonth("January");
 			account.setStartYear("2001");
 		}else if(cli.getFREQ_CYCLE_FACTU().equals(CycleFacturation.Semestriel.toString())) {
 			account.setStartDay("1");
