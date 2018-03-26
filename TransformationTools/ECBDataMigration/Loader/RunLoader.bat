@@ -418,6 +418,22 @@ IF ERRORLEVEL 1 (
 )
 echo Maj des Subscriptions BME : OK 
 
+sqlcmd -b -S %1 -Q "update %2.dbo.update bme set bme.c_SubId= t1.id_sub from (select id_sub as id_sub,nm_value as migration_id from %2.dbo.t_sub sub, %2.dbo.t_char_values sla where sla.id_scv = 1001 and sla.id_entity = sub.id_sub  and (nm_value is not null and nm_value != '')) t1, %2.dbo.t_be_hub_cat_subscriptionin bme where bme.c_MigrationId = t1.migration_id"
+IF ERRORLEVEL 1 (
+	echo Maj des c_SubId dans la BME Subscriptions: KO 
+	echo Verifier la cause des problemes avant de continuer !
+	pause
+)
+echo Maj des c_SubId dans la BME Subscriptions : OK 
+
+sqlcmd -b -S %1 -Q "update %2.dbo.update bme set bme.c_GroupId= t1.id_group from (select id_group as id_group,nm_value as migration_id from %2.dbo.t_sub sub, %2.dbo.t_char_values sla where sla.id_scv = 1001 and sla.id_entity = sub.id_sub  and (nm_value is not null and nm_value != '') and sub.id_group is not null) t1,%2.dbo.t_be_hub_cat_subscriptionin bme where bme.c_MigrationId = t1.migration_id"
+IF ERRORLEVEL 1 (
+	echo Maj des c_GroupId dans la BME Subscriptions: KO 
+	echo Verifier la cause des problemes avant de continuer !
+	pause
+)
+echo Maj des c_GroupId dans la BME Subscriptions : OK 
+
 echo "###############################################"
 echo "#          DB BACKUP POST MIGRATION           #"
 echo "###############################################"
