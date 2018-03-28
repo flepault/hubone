@@ -154,12 +154,12 @@ public class ComToSubscription extends MappingConstants{
 
 		subscription.setAccountId(com.getCODE_CLIENT());
 		try {
-			
+
 			Date lastBillApplicationDate = formatCOM.parse(com.getDATE_APPLI_FACTU());
-			
+
 			if(migrationHubOneSubscriptionStartDate.after(lastBillApplicationDate))
 				lastBillApplicationDate = migrationHubOneSubscriptionStartDate;	
-			
+
 			subscription.setStartDate(format.format(lastBillApplicationDate));
 
 			Date lastModificationDate = formatCOM.parse(com.getDATE_MODIFICATION());
@@ -205,6 +205,18 @@ public class ComToSubscription extends MappingConstants{
 		Subscription ecbCOM = createSouscription(com,false);
 		if(ecbCOM==null)
 			return null;
+		
+		try{
+			Calendar c = Calendar.getInstance();   // this takes current date		
+			c.setTime(format.parse(ecbCOM.getStartDate()));
+			c.add(Calendar.SECOND, 1);
+			ecbCOM.setEndDate(format.format(c.getTime()));
+		}
+		catch (ParseException e) {
+			errorCOM(com,e.getMessage());
+			return null;
+		}
+				
 		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
 		if(subscriptionInfoBME==null)
 			return null;
@@ -461,7 +473,7 @@ public class ComToSubscription extends MappingConstants{
 			rampBucket.setTierId("T01");
 			rampBucket.setTierName("");
 			rampBucket.setStartOfUnitRange("0");
-			
+
 			if(com.CODE_PRODUIT_RAFAEL.getValue().contains("DUR")) {
 				BigDecimal icbValue = BigDecimal.valueOf(new Double(CREDIT_FORFAIT)*new Double(3600))
 						.setScale(10, RoundingMode.HALF_UP);
@@ -473,8 +485,8 @@ public class ComToSubscription extends MappingConstants{
 			}if(com.CODE_PRODUIT_RAFAEL.getValue().contains("ACT")) {
 				rampBucket.setEndOfUnitRange(CREDIT_FORFAIT);
 			}
-			
-			
+
+
 			rampBucket.setPriority("10");
 
 			String tariffCodeList = tariffCodeMap.get(com.getCODE_PRODUIT_RAFAEL());
@@ -605,7 +617,7 @@ public class ComToSubscription extends MappingConstants{
 		if(subscriptionInfoBME==null)
 			return null;		
 		subscriptionInfoBME.setTargetTariffGridId(PARENT_ID);
-		
+
 		listEcbRootBeans.add(ecbCOM);
 		listEcbRootBeans.add(subscriptionInfoBME);
 		return listEcbRootBeans;
