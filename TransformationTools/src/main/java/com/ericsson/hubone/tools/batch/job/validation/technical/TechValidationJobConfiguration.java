@@ -120,18 +120,11 @@ public class TechValidationJobConfiguration{
 			return new TechValidationProcessor<Com>();
 	}
 
-	@Bean(name="technicalValidationJob")
 	@Profile("full")
+	@Bean(name="technicalValidationJob")
 	public Job technicalValidationJob(JobListener jobListener,StepListener stepListener) {
 
 		return technicalValidationJob(jobListener,true,stepListener);								
-	}
-
-	@Bean(name="technicalValidationJob")
-	@Profile("fast")
-	public Job noTechnicalValidationJob(JobListener jobListener,StepListener stepListener) {
-
-		return technicalValidationJob(jobListener,false,stepListener);								
 	}
 
 

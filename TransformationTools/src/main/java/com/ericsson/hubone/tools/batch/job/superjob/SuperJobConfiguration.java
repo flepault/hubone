@@ -47,8 +47,8 @@ public class SuperJobConfiguration {
 	
 		
 	@Bean(name="superJob")
-	@Profile({"full","fast"})
-	public Job fullSuperJob() {
+	@Profile({"full"})
+	public Job fullSuperJob() throws IOException {
 		
 		JobBuilder builder = jobBuilderFactory.get("superJob");
 		
