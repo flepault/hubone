@@ -6,12 +6,12 @@ if %5==N (
 	echo Create %4 on %1 server
 	pause
 	
-	cp D:\MigrationTools\TransformationTools\output\EPBME.csv \\SV652HTRAFECB1\hshare
-	echo "On DB Server copy manually \\SV652HTRAFECB1\hshare\EPBME.csv to E: Drive"
+	cp D:\MigrationTools\TransformationTools\output\EPBME.csv \\%6\hshare
+	echo "On DB Server copy manually \\%6\hshare\EPBME.csv to E: Drive"
 	pause
 	
-	cp D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv \\SV652HTRAFECB1\hshare
-	echo "On DB Server copy manually \\SV652HTRAFECB1\hshare\SubscriptionInfoBME.csv to E: Drive"
+	cp D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv \\%6\hshare
+	echo "On DB Server copy manually \\%6\hshare\SubscriptionInfoBME.csv to E: Drive"
 	pause	
 )
 

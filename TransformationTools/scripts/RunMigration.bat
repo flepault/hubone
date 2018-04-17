@@ -9,6 +9,8 @@ set BackUpFolder=D:\MigrationTools\DBBackUp\
 REM PROD=Y or N (N pour environnement Dev, Y pour environnement Prod/VP/VABF/Integration HubOne
 set PROD=N
 
+set ECBServerName=VM-Migration
+
 echo "###############################################"
 echo "########## RUN TRANSFORMATION TOOLS ###########"
 echo "###############################################"
@@ -46,7 +48,7 @@ echo "###############################################"
 echo "############### RUN ECB LOADER  ###############"
 echo "###############################################"
 cd D:\\MigrationTools\\ECBDataMigration\\Loader\\
-cmd /c RunLoader.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName% %BackUpFolder% %PROD%
+cmd /c RunLoader.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName% %BackUpFolder% %PROD% %ECBServerName%
 
 echo "###############################################"
 echo "####### RUN ECB MIGRATION TOOLS REPORT ########"
