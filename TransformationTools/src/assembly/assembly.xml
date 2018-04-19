@@ -12,6 +12,7 @@
 			<outputDirectory>.</outputDirectory>
 			<includes>
 				<include>RunMigration.bat</include>
+				<include>RunBilling.bat</include>
 			</includes>
 		</fileSet>
 		<fileSet>

@@ -70,4 +70,8 @@ for %%f in (D:\MigrationTools\LogReader\report\*.xlsx) do mv %%~f  .
 echo "###############################################"
 echo "###########     MIGRATION ENDED      ##########"
 echo "###############################################"
+
+cd D:\\MigrationTools\\
+cmd /c RunBilling.bat
+
 pause
