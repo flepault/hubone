@@ -2,7 +2,8 @@
 
 set DBServerName=VM-Migration
 set DBInstanceName=NetMeter
-set DBInstanceStagingName=NetMeter_VM_Migration
+set DBInstanceStagingName1=NetMeter_VM_Migration
+set DBInstanceStagingName2=NetMeter_VM_Migration
 
 set BackUpFolder=D:\MigrationTools\DBBackUp\
 
@@ -10,6 +11,8 @@ REM PROD=Y or N (N pour environnement Dev, Y pour environnement Prod/VP/VABF/Int
 set PROD=N
 
 set ECBServerName=VM-Migration
+set DB_OPTION_USER=nmdbo 
+set DB_OPTION_PASS=MetraTech1
 
 echo "###############################################"
 echo "########## RUN TRANSFORMATION TOOLS ###########"
@@ -48,7 +51,7 @@ echo "###############################################"
 echo "############### RUN ECB LOADER  ###############"
 echo "###############################################"
 cd D:\\MigrationTools\\ECBDataMigration\\Loader\\
-cmd /c RunLoader.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName% %BackUpFolder% %PROD% %ECBServerName%
+cmd /c RunLoader.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName% %BackUpFolder% %PROD% %ECBServerName% %DBInstanceStagingName2%  %DB_OPTION_USER% %DB_OPTION_PASS%
 
 echo "###############################################"
 echo "####### RUN ECB MIGRATION TOOLS REPORT ########"

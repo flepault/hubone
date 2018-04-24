@@ -1,24 +1,25 @@
 @echo off
 
-if %5==N (
-	mkdir %4
+
+if %5==Y (
+
+	mkdir \\%1\h$\MigrationTools\DBBackUp\
+	mkdir \\%1\h$\Bulk
+	
+	cp D:\MigrationTools\TransformationTools\output\EPBME.csv \\%1\h$\Bulk\
+	
+	cp D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv \\%1\h$\Bulk\
 ) else (
-	echo Create %4 on %1 server
-	pause
-	
-	cp D:\MigrationTools\TransformationTools\output\EPBME.csv \\%6\hshare
-	echo "On DB Server copy manually \\%6\hshare\EPBME.csv to E: Drive"
-	pause
-	
-	cp D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv \\%6\hshare
-	echo "On DB Server copy manually \\%6\hshare\SubscriptionInfoBME.csv to E: Drive"
-	pause	
+
+	mkdir %4
+
 )
 
 echo "###############################################"
 echo "#         DB BACKUP BEFORE MIGRATION          #"
 echo "###############################################"
-sqlcmd -b -S %1 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_BeforeMigration.bak'"
+
+sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_BeforeMigration.bak'"
 IF ERRORLEVEL 1 ( 
 	echo BackUP %2 : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -26,20 +27,30 @@ IF ERRORLEVEL 1 (
 )
 echo BackUP %2 : OK 
 
-sqlcmd -b -S %1 -Q "BACKUP DATABASE %3 TO DISK = '%4%3_BeforeMigration.bak'"
+sqlcmd -b -S %1 -U %8 -P %9  -Q "BACKUP DATABASE %3 TO DISK = '%4%3_BeforeMigration.bak'"
 IF ERRORLEVEL 1 (
 	echo BackUP %3 : KO 
 	echo Verifier la cause des problemes avant de continuer !
 	pause
 )
 echo BackUP %3 : OK 
+if %5==Y (
+
+	sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %3 TO DISK = '%4%7_BeforeMigration.bak'"
+	IF ERRORLEVEL 1 (
+		echo BackUP %7 : KO 
+		echo Verifier la cause des problemes avant de continuer !
+		pause
+	)
+	echo BackUP %7 : OK 
+)
 
 echo "###############################################"
 echo "#               CLIENT INJECTION              #"
 echo "###############################################"
 cmd /c Accounts\\01ClientAccounts\\RunAccountsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;SELECT count(*) as Nombre FROM %2.dbo.t_account WHERE id_type in (12)"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;SELECT count(*) as Nombre FROM %2.dbo.t_account WHERE id_type in (12)"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
 del nbDbTmp
 
@@ -66,7 +77,7 @@ echo "#            REGROUPCF INJECTION              #"
 echo "###############################################"
 cmd /c Accounts\\02RegroupCFAccounts\\RunAccountsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;SELECT count(*) as Nombre FROM %2.dbo.t_account WHERE id_type in (14)"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;SELECT count(*) as Nombre FROM %2.dbo.t_account WHERE id_type in (14)"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
 del nbDbTmp
 
@@ -94,7 +105,7 @@ echo "#                 CF INJECTION                #"
 echo "###############################################"
 cmd /c Accounts\\03CFAccounts\\RunAccountsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;SELECT count(*) as Nombre FROM %2.dbo.t_account WHERE id_type in (11)"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;SELECT count(*) as Nombre FROM %2.dbo.t_account WHERE id_type in (11)"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
 del nbDbTmp
 
@@ -121,7 +132,7 @@ echo "#              ENDPOINT INJECTION             #"
 echo "###############################################"
 cmd /c Accounts\\04EPAccounts\\RunAccountsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;SELECT count(*) as Nombre FROM %2.dbo.t_account WHERE id_type in (13)"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;SELECT count(*) as Nombre FROM %2.dbo.t_account WHERE id_type in (13)"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
 del nbDbTmp
 
@@ -148,9 +159,9 @@ echo "#          ENDPOINT BME SQL LOADING           #"
 echo "###############################################"
 
 if %5==N (
-	sqlcmd -b -S %1 -Q "BULK INSERT %2.dbo.t_be_hub_pdc_serviceidaudit FROM 'D:\MigrationTools\TransformationTools\output\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
+	sqlcmd -b -S %1 -U %8 -P %9 -Q "BULK INSERT %2.dbo.t_be_hub_pdc_serviceidaudit FROM 'D:\MigrationTools\TransformationTools\output\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
 ) else (
-	sqlcmd -b -S %1 -Q "BULK INSERT %2.dbo.t_be_hub_pdc_serviceidaudit FROM 'E:\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
+	sqlcmd -b -S %1 -U %8 -P %9 -Q "BULK INSERT %2.dbo.t_be_hub_pdc_serviceidaudit FROM 'H:\Bulk\EPBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
 )
 IF ERRORLEVEL 1 (
 	echo Injection des Endpoint BME : KO 
@@ -159,7 +170,7 @@ IF ERRORLEVEL 1 (
 )
 echo Injection des Endpoint BME : OK 
 
-sqlcmd -b -S %1 -Q "update sidaudit set c_EPAccountId = am.id_acc from %2.dbo.t_be_hub_pdc_serviceidaudit sidaudit join %2.dbo.t_account_mapper am on am.nm_login = sidaudit.c_Username"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "update sidaudit set c_EPAccountId = am.id_acc from %2.dbo.t_be_hub_pdc_serviceidaudit sidaudit join %2.dbo.t_account_mapper am on am.nm_login = sidaudit.c_Username"
 IF ERRORLEVEL 1 (
 	echo Maj des Endpoint BME : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -170,7 +181,7 @@ echo Maj des Endpoint BME : OK
 echo "###############################################"
 echo "#       DB BACKUP WITH ACCOUNT MIGRATED       #"
 echo "###############################################"
-sqlcmd -b -S %1 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_WithAccountsMigrated.bak'"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_WithAccountsMigrated.bak'"
 IF ERRORLEVEL 1 (
 	echo BackUp %2 : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -181,7 +192,7 @@ echo BackUp %2 : OK
 echo "###############################################"
 echo "#             INSTANT RC TO FALSE             #"
 echo "###############################################"
-sqlcmd -b -S %1 -Q "update %2.dbo.t_db_values set value='false' where parameter='Instantrc'"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "update %2.dbo.t_db_values set value='false' where parameter='Instantrc'"
 IF ERRORLEVEL 1 (
 	echo InstantRC to False : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -194,7 +205,7 @@ echo "#          OLD SUBSCRIPTION INJECTION         #"
 echo "###############################################"
 cmd /c Subscriptions\\OldSubscriptions\\RunSubscriptionsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbOldSubDB= < nbDbTmp
 del nbDbTmp
 
@@ -221,7 +232,7 @@ echo "#      OLD GROUP SUBSCRIPTION INJECTION       #"
 echo "###############################################"
 cmd /c GroupSubscriptions\\OldGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbOldGSubDB= < nbDbTmp
 del nbDbTmp
 
@@ -253,7 +264,7 @@ timeout /t 600
 echo "###############################################"
 echo "#               CLOSE INTERVAL                #"
 echo "###############################################"
-sqlcmd -b -S %1 -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from %2.dbo.t_usage_interval where dt_end < DATEADD(month, -1, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
+sqlcmd -b -S %1 -U %8 -P %9 -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from %2.dbo.t_usage_interval where dt_end < DATEADD(month, -1, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
 IF ERRORLEVEL 1 (
 	echo Generate MigrationCloseInterval script : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -265,7 +276,7 @@ cmd /c MigrationCloseInterval.bat
 echo "###############################################"
 echo "#             INSTANT RC TO TRUE              #"
 echo "###############################################"
-sqlcmd -b -S %1 -Q "update %2.dbo.t_db_values set value='true' where parameter='Instantrc'"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "update %2.dbo.t_db_values set value='true' where parameter='Instantrc'"
 IF ERRORLEVEL 1 (
 	echo InstantRC to True : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -278,7 +289,7 @@ echo "#          NEW SUBSCRIPTION INJECTION         #"
 echo "###############################################"
 cmd /c Subscriptions\\NewSubscriptions\\RunSubscriptionsLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub where id_group is null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub where id_group is null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
 set /a nbNewSubDB = "%nbDB%"-"%nbOldSubDB%"
 del nbDbTmp
@@ -306,7 +317,7 @@ echo "###############################################"
 echo "#      NEW GROUP SUBSCRIPTION INJECTION       #"
 echo "###############################################"
 cmd /c GroupSubscriptions\\NewGroupSubscriptions\\RunGroupSubscriptionsLoader.bat
-sqlcmd -S %1 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;select count(*) FROM %2.dbo.t_sub sub where id_group is not null"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
 set /a nbNewGSubDB = "%nbDB%"-"%nbOldGSubDB%"
 del nbDbTmp
@@ -332,7 +343,7 @@ if NOT "%nbNewGSubDB%" == "%nbFile%" (
 echo "###############################################"
 echo "#   DB BACKUP ACCOUNT & SUBS/NO ICB MIGRATED  #"
 echo "###############################################"
-sqlcmd -b -S %1 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_WithAccountsMigrated&WithSubscriptionsNoICBMigrated.bak'"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_WithAccountsMigrated&WithSubscriptionsNoICBMigrated.bak'"
 IF ERRORLEVEL 1 (
 	echo BackUP %2 : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -345,7 +356,7 @@ echo "#                ICB INJECTION                #"
 echo "###############################################"
 cmd /c Rates\\02ICBRates\\RunICBRatesLoader.bat
 
-sqlcmd -S %1 -Q "set nocount on;SELECT count(*) FROM %2.dbo.t_pricelist  where n_type = 0"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
+sqlcmd -S %1 -U %8 -P %9 -Q "set nocount on;SELECT count(*) FROM %2.dbo.t_pricelist  where n_type = 0"  -h -1 -f 1252 | awk '{print $1}' > nbDbTmp
 set /p nbDB= < nbDbTmp
 del nbDbTmp
 
@@ -399,9 +410,9 @@ echo "###############################################"
 echo "#        SUBSCRIPTION BME SQL LOADING         #"
 echo "###############################################"
 if %5==N (
-	sqlcmd -b -S %1 -Q "BULK INSERT %2.dbo.t_be_hub_cat_subscriptionin FROM 'D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
+	sqlcmd -b -S %1 -U %8 -P %9 -Q "BULK INSERT %2.dbo.t_be_hub_cat_subscriptionin FROM 'D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
 ) else (
-	sqlcmd -b -S %1 -Q "BULK INSERT %2.dbo.t_be_hub_cat_subscriptionin FROM 'E:\SubscriptionInfoBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
+	sqlcmd -b -S %1 -U %8 -P %9 -Q "BULK INSERT %2.dbo.t_be_hub_cat_subscriptionin FROM 'H:\Bulk\SubscriptionInfoBME.csv' WITH (FIELDTERMINATOR = '|', ROWTERMINATOR = '\n')"
 )
 IF ERRORLEVEL 1 (
 	echo Injection des Subscriptions BME : KO 
@@ -410,7 +421,7 @@ IF ERRORLEVEL 1 (
 )
 echo Injection des Subscriptions BME : OK 
 
-sqlcmd -b -S %1 -Q "update %2.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from %2.dbo.t_enum_data where nm_enum_data like '%applicationlevel/CG%') where c_SharedBucketScope = 0;update %2.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from %2.dbo.t_enum_data where nm_enum_data like '%applicationlevel/GCF%') where c_SharedBucketScope = 1;update %2.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from %2.dbo.t_enum_data where nm_enum_data like '%applicationlevel/CF%') where c_SharedBucketScope = 2"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "update %2.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from %2.dbo.t_enum_data where nm_enum_data like '%applicationlevel/CG%') where c_SharedBucketScope = 0;update %2.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from %2.dbo.t_enum_data where nm_enum_data like '%applicationlevel/GCF%') where c_SharedBucketScope = 1;update %2.dbo.t_be_hub_cat_subscriptionin set c_SharedBucketScope = (select id_enum_data from %2.dbo.t_enum_data where nm_enum_data like '%applicationlevel/CF%') where c_SharedBucketScope = 2"
 IF ERRORLEVEL 1 (
 	echo Maj des Subscriptions BME : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -418,7 +429,7 @@ IF ERRORLEVEL 1 (
 )
 echo Maj des Subscriptions BME : OK 
 
-sqlcmd -b -S %1 -Q "update %2.dbo.t_be_hub_cat_subscriptionin set c_SubId= t1.id_sub from (select id_sub as id_sub,nm_value as migration_id from %2.dbo.t_sub sub, %2.dbo.t_char_values sla where sla.id_scv = 1001 and sla.id_entity = sub.id_sub  and (nm_value is not null and nm_value != '')) t1 where c_MigrationId = t1.migration_id"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "update %2.dbo.t_be_hub_cat_subscriptionin set c_SubId= t1.id_sub from (select id_sub as id_sub,nm_value as migration_id from %2.dbo.t_sub sub, %2.dbo.t_char_values sla where sla.id_scv = 1001 and sla.id_entity = sub.id_sub  and (nm_value is not null and nm_value != '')) t1 where c_MigrationId = t1.migration_id"
 IF ERRORLEVEL 1 (
 	echo Maj des c_SubId dans la BME Subscriptions: KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -426,7 +437,7 @@ IF ERRORLEVEL 1 (
 )
 echo Maj des c_SubId dans la BME Subscriptions : OK 
 
-sqlcmd -b -S %1 -Q "update %2.dbo.t_be_hub_cat_subscriptionin set c_GroupId= t1.id_group from (select id_group as id_group,nm_value as migration_id from %2.dbo.t_sub sub, %2.dbo.t_char_values sla where sla.id_scv = 1001 and sla.id_entity = sub.id_sub  and (nm_value is not null and nm_value != '') and sub.id_group is not null) t1 where c_MigrationId = t1.migration_id"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "update %2.dbo.t_be_hub_cat_subscriptionin set c_GroupId= t1.id_group from (select id_group as id_group,nm_value as migration_id from %2.dbo.t_sub sub, %2.dbo.t_char_values sla where sla.id_scv = 1001 and sla.id_entity = sub.id_sub  and (nm_value is not null and nm_value != '') and sub.id_group is not null) t1 where c_MigrationId = t1.migration_id"
 IF ERRORLEVEL 1 (
 	echo Maj des c_GroupId dans la BME Subscriptions: KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -437,7 +448,9 @@ echo Maj des c_GroupId dans la BME Subscriptions : OK
 echo "###############################################"
 echo "#          DB BACKUP POST MIGRATION           #"
 echo "###############################################"
-sqlcmd -b -S %1 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_PostMigration.bak'"
+
+
+sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_AfterMigration.bak'"
 IF ERRORLEVEL 1 ( 
 	echo BackUP %2 : KO 
 	echo Verifier la cause des problemes avant de continuer !
@@ -445,10 +458,21 @@ IF ERRORLEVEL 1 (
 )
 echo BackUP %2 : OK 
 
-sqlcmd -b -S %1 -Q "BACKUP DATABASE %3 TO DISK = '%4%3_PostMigration.bak'"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %3 TO DISK = '%4%3_AfterMigration.bak'"
 IF ERRORLEVEL 1 (
 	echo BackUP %3 : KO 
 	echo Verifier la cause des problemes avant de continuer !
 	pause
 )
 echo BackUP %3 : OK 
+
+if %5==Y  (
+
+	sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %3 TO DISK = '%4%7_AfterMigration.bak'"
+	IF ERRORLEVEL 1 (
+		echo BackUP %7 : KO 
+		echo Verifier la cause des problemes avant de continuer !
+		pause
+	)
+	echo BackUP %7 : OK 
+)

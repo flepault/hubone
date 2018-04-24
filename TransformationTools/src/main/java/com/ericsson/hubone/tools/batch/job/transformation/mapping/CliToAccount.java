@@ -196,9 +196,7 @@ public class CliToAccount extends MappingConstants{
 
 					Map<String,Object> ancestor = rows.get(0);
 
-					code_client_parent = ancestor.get("CODE_CLIENT_PARENT").toString();
-					if(code_client_parent==null || code_client_parent.equals(""))
-						code_client_parent = ancestor.get("CODE_CLIENT").toString();
+					code_client_parent = ancestor.get("CODE_CLIENT").toString();
 				}
 			}
 			return code_client_parent;
