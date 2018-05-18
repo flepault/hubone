@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
@@ -42,11 +43,15 @@ public class ComToSubscription extends MappingConstants{
 	private HashMap<String,String> destZoneIdtariffCodeMap = new HashMap<String,String>();
 
 	private HashMap<String,HashMap<String,String[]>> xpcmsMap = new HashMap<String,HashMap<String,String[]>>();
-
-	public ComToSubscription() {
+	
+	public ComToSubscription(@Value("${nb.month.back}")Integer nbMonthBack){
 		Calendar c = Calendar.getInstance();   // this takes current date
 		c.set(Calendar.DAY_OF_MONTH, 1);
-		c.add(Calendar.MONTH, -1);
+		c.add(Calendar.MONTH, -nbMonthBack);
+		c.set(Calendar.HOUR, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
 		firstDayOfMonthDate = c.getTime(); 
 		init();
 	}
@@ -118,8 +123,7 @@ public class ComToSubscription extends MappingConstants{
 		subscriptionInfoBME.setCommandId(com.getCODE_COMMANDE());
 		subscriptionInfoBME.setAttributs(com.getPARAM_PRODUIT_ADD());
 		subscriptionInfoBME.setServiceId(com.getSERVICE_ID());	
-		subscriptionInfoBME.setClientCommandRef(com.getREF_COMMANDE_CLIENT());
-		subscriptionInfoBME.setModifyAppliedDate("");		
+		subscriptionInfoBME.setClientCommandRef(com.getREF_COMMANDE_CLIENT());		
 		subscriptionInfoBME.setResiliateAppliedDate("");
 		try {
 			Date lastBillApplicationDate = formatCOM.parse(com.getDATE_APPLI_FACTU());
@@ -128,6 +132,7 @@ public class ComToSubscription extends MappingConstants{
 				lastBillApplicationDate = migrationHubOneSubscriptionStartDate;
 
 			subscriptionInfoBME.setCreateAppliedDate(format.format(lastBillApplicationDate));
+			subscriptionInfoBME.setModifyAppliedDate(format.format(lastBillApplicationDate));
 		} catch (ParseException e) {
 			errorCOM(com,e.getMessage());
 			return null;
@@ -322,6 +327,7 @@ public class ComToSubscription extends MappingConstants{
 				return null;
 			}else {
 				ecbCOM.setAccountId(endpoint.getUserName());
+				subscriptionInfoBME.setIsSharedTariffGrid("N");	
 				//subscriptionInfoBME.setGroupId(groupId);
 			}
 

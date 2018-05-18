@@ -36,7 +36,7 @@ IF ERRORLEVEL 1 (
 echo BackUP %3 : OK 
 if %5==Y (
 
-	sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %3 TO DISK = '%4%7_BeforeMigration.bak'"
+	sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %7 TO DISK = '%4%7_BeforeMigration.bak'"
 	IF ERRORLEVEL 1 (
 		echo BackUP %7 : KO 
 		echo Verifier la cause des problemes avant de continuer !
@@ -264,13 +264,6 @@ timeout /t 600
 echo "###############################################"
 echo "#               CLOSE INTERVAL                #"
 echo "###############################################"
-sqlcmd -b -S %1 -U %8 -P %9 -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from %2.dbo.t_usage_interval where dt_end < DATEADD(month, -1, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
-IF ERRORLEVEL 1 (
-	echo Generate MigrationCloseInterval script : KO 
-	echo Verifier la cause des problemes avant de continuer !
-	pause
-)
-echo Generate MigrationCloseInterval script : OK 
 cmd /c MigrationCloseInterval.bat
 
 echo "###############################################"
@@ -468,7 +461,7 @@ echo BackUP %3 : OK
 
 if %5==Y  (
 
-	sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %3 TO DISK = '%4%7_AfterMigration.bak'"
+	sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %7 TO DISK = '%4%7_AfterMigration.bak'"
 	IF ERRORLEVEL 1 (
 		echo BackUP %7 : KO 
 		echo Verifier la cause des problemes avant de continuer !

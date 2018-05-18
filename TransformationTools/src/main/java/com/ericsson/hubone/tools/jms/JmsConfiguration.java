@@ -54,7 +54,7 @@ public class JmsConfiguration {
 		return jmsTemplate;
 	}
 	
-	@Bean
+	//@Bean
 	public ConnectionFactory connectionFactory() {
 
 

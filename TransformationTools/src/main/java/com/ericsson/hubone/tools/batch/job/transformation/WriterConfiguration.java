@@ -10,8 +10,8 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.stereotype.Component;
 
 import com.ericsson.hubone.tools.batch.data.ecb.Account;
 import com.ericsson.hubone.tools.batch.data.ecb.EcbRootBean;
@@ -26,7 +26,7 @@ import com.ericsson.hubone.tools.batch.data.ecb.SubscriptionInfoBME;
 import com.ericsson.hubone.tools.batch.data.ecb.XPCMS;
 import com.ericsson.hubone.tools.batch.job.superjob.FilesNames;
 
-@Configuration
+@Component
 public class WriterConfiguration {
 		
 	@Autowired

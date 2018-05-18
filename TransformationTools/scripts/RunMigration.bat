@@ -14,11 +14,13 @@ set ECBServerName=VM-Migration
 set DB_OPTION_USER=nmdbo 
 set DB_OPTION_PASS=MetraTech1
 
+set NB_MONTH_BACK=1
+
 echo "###############################################"
 echo "########## RUN TRANSFORMATION TOOLS ###########"
 echo "###############################################"
 cd D:\\MigrationTools\\TransformationTools\\
-cmd /c RunTransformationTools.bat
+cmd /c RunTransformationTools.bat %NB_MONTH_BACK%
 
 echo "###############################################"
 echo "########### DEPLOY TRANSFORMED DATA ###########"
@@ -48,10 +50,22 @@ cd D:\\MigrationTools\\ECBDataMigration\\Mapper\\output\\
 cmd /c DeployOutputFile.bat
 
 echo "###############################################"
+echo "##      GENERATE CLOSING INTERVAL SCRIPT     ##"
+echo "###############################################"
+cd D:\\MigrationTools\\ECBDataMigration\\Loader\\
+sqlcmd -b -S %DBServerName% -U %DB_OPTION_USER% -P %DB_OPTION_PASS% -Q "set nocount on;select 'usm close /interval:'+cast(id_interval as varchar)+' /hard+ /ignoreBG' from %DBInstanceName%.dbo.t_usage_interval where dt_end < DATEADD(month, -%NB_MONTH_BACK%, GETDATE()) and tx_interval_status!='H' order by dt_start" -h -1 -f 1252 -o MigrationCloseInterval.bat
+IF ERRORLEVEL 1 (
+	echo Generate MigrationCloseInterval script : KO 
+	echo Verifier la cause des problemes avant de continuer !
+	pause
+)
+echo Generate MigrationCloseInterval script : OK 
+
+echo "###############################################"
 echo "############### RUN ECB LOADER  ###############"
 echo "###############################################"
 cd D:\\MigrationTools\\ECBDataMigration\\Loader\\
-cmd /c RunLoader.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName% %BackUpFolder% %PROD% %ECBServerName% %DBInstanceStagingName2%  %DB_OPTION_USER% %DB_OPTION_PASS%
+cmd /c RunLoader.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName1% %BackUpFolder% %PROD% %ECBServerName% %DBInstanceStagingName2%  %DB_OPTION_USER% %DB_OPTION_PASS% 
 
 echo "###############################################"
 echo "####### RUN ECB MIGRATION TOOLS REPORT ########"
@@ -74,7 +88,7 @@ echo "###############################################"
 echo "###########     MIGRATION ENDED      ##########"
 echo "###############################################"
 
-cd D:\\MigrationTools\\
-cmd /c RunBilling.bat
+rem cd D:\\MigrationTools\\
+rem cmd /c RunBilling.bat
 
 pause

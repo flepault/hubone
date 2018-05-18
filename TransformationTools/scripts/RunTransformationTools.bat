@@ -8,5 +8,5 @@ echo "############## ACTIVE MQ STARTED ##############"
 echo "###############################################"
 
 cd D:\\MigrationTools\\TransformationTools\\
-java -jar D:\\MigrationTools\\TransformationTools\\TransformationTools-1.0.0.jar --spring.profiles.active=full
+java -jar D:\\MigrationTools\\TransformationTools\\TransformationTools-1.0.0.jar --spring.profiles.active=full --nb.month.back=%1 
 
