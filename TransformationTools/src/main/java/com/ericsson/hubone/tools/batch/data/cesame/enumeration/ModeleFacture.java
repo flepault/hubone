@@ -6,7 +6,10 @@ public enum ModeleFacture {
 	Client("client"),
 	Administration("administration"),
 	IntercoVoixEntrant("interco-voix-entrant"),
-	WifiRoaming("wifi-roaming");
+	WifiRoaming("wifi-roaming"),
+	WifiRoamingEn("wifi-roaming_en"),
+	WifiRoamingFr("wifi-roaming_fr");
+
 
 	private String name = "";
 

@@ -10,12 +10,12 @@ public class EndpointBME extends EcbRootBean{
 	protected static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public static String[] column = new String[] {"serviceIdAudit","version","internalKey","creationDate","updateDate",			
-			"uID","endDate","startDate","userName","serviceId","parentAccountName","ePAccountId"};
+			"uID","endDate","startDate","userName","serviceId","parentAccountName","ePAccountId","startDateUsed","endDateUsed"};
 	
 	public static String header(){
 		
 		return "ServiceIdAudit|Version|InternalKey|CreationDate|UpdateDate|"
-				+ "UID|EndDate|StartDate|UserName|ServiceId|ParentAccountName|EPAccountId";
+				+ "UID|EndDate|StartDate|UserName|ServiceId|ParentAccountName|EPAccountId|StartDateUsed|EndDateUsed";
 		
 	}
 	
@@ -45,6 +45,8 @@ public class EndpointBME extends EcbRootBean{
 	String userName;
 	String serviceId;
 	String ePAccountId;
+	String startDateUsed;
+	String endDateUsed;
 
 	public String getServiceIdAudit() {
 		return serviceIdAudit;
@@ -123,6 +125,30 @@ public class EndpointBME extends EcbRootBean{
 
 	public void setePAccountId(String ePAccountId) {
 		this.ePAccountId = ePAccountId;
+	}
+
+
+
+	public String getStartDateUsed() {
+		return startDateUsed;
+	}
+
+
+
+	public void setStartDateUsed(String startDateUsed) {
+		this.startDateUsed = startDateUsed;
+	}
+
+
+
+	public String getEndDateUsed() {
+		return endDateUsed;
+	}
+
+
+
+	public void setEndDateUsed(String endDateUsed) {
+		this.endDateUsed = endDateUsed;
 	}	
 	
 	

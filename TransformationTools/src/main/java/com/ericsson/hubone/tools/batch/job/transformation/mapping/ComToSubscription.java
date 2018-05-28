@@ -125,6 +125,7 @@ public class ComToSubscription extends MappingConstants{
 		subscriptionInfoBME.setServiceId(com.getSERVICE_ID());	
 		subscriptionInfoBME.setClientCommandRef(com.getREF_COMMANDE_CLIENT());		
 		subscriptionInfoBME.setResiliateAppliedDate("");
+		subscriptionInfoBME.setResiliateAppliedDateUsed("");
 		try {
 			Date lastBillApplicationDate = formatCOM.parse(com.getDATE_APPLI_FACTU());
 
@@ -133,13 +134,26 @@ public class ComToSubscription extends MappingConstants{
 
 			subscriptionInfoBME.setCreateAppliedDate(format.format(lastBillApplicationDate));
 			subscriptionInfoBME.setModifyAppliedDate(format.format(lastBillApplicationDate));
+			
+			Calendar c = Calendar.getInstance(); 
+			c.setTime(lastBillApplicationDate);
+			c.set(Calendar.HOUR, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			c.set(Calendar.MILLISECOND, 0);
+						
+			subscriptionInfoBME.setCreateAppliedDateUsed(format.format(c.getTime()));
+			subscriptionInfoBME.setModifyAppliedDateUsed(format.format(c.getTime()));
+			
 		} catch (ParseException e) {
 			errorCOM(com,e.getMessage());
 			return null;
 		}
 
 
-		subscriptionInfoBME.setMigrationId("{"+migrationID+"}");		
+		subscriptionInfoBME.setMigrationId("{"+migrationID+"}");	
+		
+		
 
 		return subscriptionInfoBME;
 

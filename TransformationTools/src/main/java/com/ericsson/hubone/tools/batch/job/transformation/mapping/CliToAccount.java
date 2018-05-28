@@ -21,7 +21,7 @@ public class CliToAccount extends MappingConstants{
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+
 	public Subscription createMinFactSouscription(Cli cli){
 
 		Subscription subscription = new SimpleSubscription();
@@ -38,7 +38,7 @@ public class CliToAccount extends MappingConstants{
 
 		return subscription;
 	}
-	
+
 
 	public Account createAccount(Cli cli){		
 
@@ -58,8 +58,8 @@ public class CliToAccount extends MappingConstants{
 		}
 
 		account.setPayerAccount(determinePayerAccount(cli));
-		
-		
+
+
 		if(cli.getFREQ_CYCLE_FACTU().equals(CycleFacturation.Trimestriel.toString())) {
 			account.setStartDay("1");
 			account.setFirstDayOfMonth("1");
@@ -73,18 +73,18 @@ public class CliToAccount extends MappingConstants{
 			account.setStartDay("1");
 			account.setStartMonth("1");
 		}
-		
+
 
 		account.setInternal_Billable(cli.getCLIENT_FACTURE());
 		account.setInternal_TaxExempt(cli.getEXEMPTION_TVA());
 		account.setInternal_UsageCycleType(cli.getFREQ_CYCLE_FACTU());
-		
+
 		account.setInternal_MetraTaxHasOverrideBand(cli.getEXEMPTION_TVA());
 		if(cli.getEXEMPTION_TVA().equals("Y"))
 			account.setInternal_MetraTaxOverrideBand("exempt");		
 		else
 			account.setInternal_MetraTaxOverrideBand("STD");	
-		
+
 		account.setBilling_InvoiceTemplate(cli.getMODELE_FACTURE());
 		account.setBilling_InvoiceSupport(cli.getSUPPORT_FACTURE());
 		account.setBilling_BillingGroupName(cli.getGROUPE_FACTURATION());
@@ -113,9 +113,9 @@ public class CliToAccount extends MappingConstants{
 		account.setCommon_Siret(cli.getSIRET());
 		account.setCommon_CodeService(cli.getCODE_SERVICE_UO());
 		account.setCommon_CodeCC(cli.getCODE_CC());
-		
+
 		account.setCommon_ClientRootId(determineClientRootId(cli));
-		
+
 		account.setCommon_GroupId(cli.getID_GROUPE());
 		account.setCommon_ClientParentName(cli.getNOM_CLIENT_PARENT());
 		account.setCommon_CodeMarche(cli.getCODE_MARCHE());
@@ -129,15 +129,15 @@ public class CliToAccount extends MappingConstants{
 			TransformationReport.getIntance().increaseCF();
 		}else
 			System.err.println("Probleme :" + cli.getROW_ID_SIEBEL());
-		
+
 		return account;
 	}
-	
+
 	private String determinePayerAccount(Cli cli){
 		if(cli.getCLIENT_FACTURE().equals("Y")){				
 			return cli.getCODE_CLIENT();
 		}else{
-			
+
 			String payerAccount = null;
 
 			String code_client_parent = cli.getCODE_CLIENT_PARENT();
@@ -179,27 +179,44 @@ public class CliToAccount extends MappingConstants{
 			return payerAccount;			
 		}
 	}
-	
+
 	private String determineClientRootId(Cli cli){
 		if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.Client.toString())){
-			return cli.getCODE_CLIENT();
-		}else{
-			String code_client_parent = cli.getCODE_CLIENT_PARENT();
-			if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.CF.toString())){
-				List<Map<String,Object>> rows = jdbcTemplate.queryForList("select * from CLI where CODE_CLIENT = ?", code_client_parent);
+			return cli.getROW_ID_SIEBEL();
+		}else if(cli.getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.RegroupCF.toString())){
+			List<Map<String,Object>> rows = jdbcTemplate.queryForList("select * from CLI where CODE_CLIENT = ?", cli.getCODE_CLIENT_PARENT());
 
-				//TODO gestion exception
-				if(rows.size()!=1){
-					errorCLI(cli,"Niveau CF : Problème de détermination du ClientRootId");
-					return null;
-				}else{
+			if(rows.size()!=1){
+				errorCLI(cli,"Niveau RCF : Problème de détermination du ClientRootId");
+				return null;
+			}else{
 
-					Map<String,Object> ancestor = rows.get(0);
+				Map<String,Object> ancestor = rows.get(0);
+				return ancestor.get("ROW_ID_SIEBEL").toString();
+			}
+		} else {
+			List<Map<String,Object>> rows = jdbcTemplate.queryForList("select * from CLI where CODE_CLIENT = ?", cli.getCODE_CLIENT_PARENT());
 
-					code_client_parent = ancestor.get("CODE_CLIENT").toString();
+			if(rows.size()!=1){
+				errorCLI(cli,"Niveau CF : Problème de détermination du ClientRootId");
+				return null;
+			}else{
+
+				Map<String,Object> ancestor = rows.get(0);
+				if(ancestor.get("NIV_HIERARCHIE_CLIENT").toString().equals(HierarchieClient.Client.toString()))
+					return ancestor.get("ROW_ID_SIEBEL").toString();
+				else {
+					rows = jdbcTemplate.queryForList("select * from CLI where CODE_CLIENT = ?", ancestor.get("CODE_CLIENT_PARENT").toString());
+
+					if(rows.size()!=1){
+						errorCLI(cli,"Niveau RCF : Problème de détermination du ClientRootId");
+						return null;
+					}else {
+						ancestor = rows.get(0);
+						return ancestor.get("ROW_ID_SIEBEL").toString();
+					}
 				}
 			}
-			return code_client_parent;
 		}
 	}
 

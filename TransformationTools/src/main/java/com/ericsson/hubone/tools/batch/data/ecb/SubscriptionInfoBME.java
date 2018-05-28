@@ -13,7 +13,8 @@ public class SubscriptionInfoBME extends EcbRootBean{
 			"quantity","catalogPrice","discountPercent","discountAmount","isSharedTariffGrid",
 			"targetTariffGridId","isOnDemand","sharedBucketScope","appliedPrice","siteAddressId",
 			"productIntegrationId","productId","parentProductId","media","commandId","attributs","groupId",
-			"serviceId","clientCommandRef","action","modifyAppliedDate","resiliateAppliedDate","createAppliedDate","subId","migrationId"};
+			"serviceId","clientCommandRef","action","modifyAppliedDate","resiliateAppliedDate","createAppliedDate","subId","migrationId",
+			"modifyAppliedDateUsed","resiliateAppliedDateUsed","createAppliedDateUsed"};
 	
 	public static String header(){
 		
@@ -21,7 +22,8 @@ public class SubscriptionInfoBME extends EcbRootBean{
 				+ "|Quantity|CatalogPrice|DiscountPercent|DiscountAmount|IsSharedTariffGrid|"
 				+ "TargetTariffGridId|IsOnDemand|SharedBucketScope|AppliedPrice|SiteAddressId|"
 				+ "ProductIntegrationId|ProductId|ParentProductId|Media|CommandId|Attributs|GroupId|"
-				+ "ServiceId|ClientCommandRef|Action|ModifyAppliedDate|ResiliateAppliedDate|CreateAppliedDate|SubId|MigrationId";
+				+ "ServiceId|ClientCommandRef|Action|ModifyAppliedDate|ResiliateAppliedDate|CreateAppliedDate|SubId|MigrationId|"
+				+ "ModifyAppliedDateUsed|ResiliateAppliedDateUsed|CreateAppliedDateUsed";
 		
 	}
 	public SubscriptionInfoBME() {
@@ -67,6 +69,9 @@ public class SubscriptionInfoBME extends EcbRootBean{
 	String createAppliedDate;
 	String subId;
 	String migrationId;	
+	String modifyAppliedDateUsed;
+	String resiliateAppliedDateUsed;
+	String createAppliedDateUsed;
 	
 	public String getSubscriptionInfoId() {
 		return subscriptionInfoId;
@@ -253,6 +258,24 @@ public class SubscriptionInfoBME extends EcbRootBean{
 	}
 	public void setSubId(String subId) {
 		this.subId = subId;
+	}
+	public String getModifyAppliedDateUsed() {
+		return modifyAppliedDateUsed;
+	}
+	public void setModifyAppliedDateUsed(String modifyAppliedDateUsed) {
+		this.modifyAppliedDateUsed = modifyAppliedDateUsed;
+	}
+	public String getResiliateAppliedDateUsed() {
+		return resiliateAppliedDateUsed;
+	}
+	public void setResiliateAppliedDateUsed(String resiliateAppliedDateUsed) {
+		this.resiliateAppliedDateUsed = resiliateAppliedDateUsed;
+	}
+	public String getCreateAppliedDateUsed() {
+		return createAppliedDateUsed;
+	}
+	public void setCreateAppliedDateUsed(String createAppliedDateUsed) {
+		this.createAppliedDateUsed = createAppliedDateUsed;
 	}
 	
 }

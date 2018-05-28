@@ -291,29 +291,39 @@
 		<Prefix>hubone.fr/InvoiceTemplate/</Prefix>
 		<DynamicFieldsValues>
 		  <DynymicFieldMapper>
-			<CurrentValue>CLIENT</CurrentValue>
-			<TargePropertyName>Billing.InvoiceTemplate</TargePropertyName>
-			<NewValue>client</NewValue>
-		  </DynymicFieldMapper>
-		  <DynymicFieldMapper>
-			<CurrentValue>PRODUIT</CurrentValue>
+			<CurrentValue>produit</CurrentValue>
 			<TargePropertyName>Billing.InvoiceTemplate</TargePropertyName>
 			<NewValue>produit</NewValue>
 		  </DynymicFieldMapper>
 		  <DynymicFieldMapper>
-			<CurrentValue>DOUANES</CurrentValue>
+			<CurrentValue>client</CurrentValue>
 			<TargePropertyName>Billing.InvoiceTemplate</TargePropertyName>
-			<NewValue>douanes</NewValue>
+			<NewValue>client</NewValue>
 		  </DynymicFieldMapper>
 		  <DynymicFieldMapper>
-			<CurrentValue>INTERCO VOIX ENTRANT</CurrentValue>
+			<CurrentValue>administration</CurrentValue>
+			<TargePropertyName>Billing.InvoiceTemplate</TargePropertyName>
+			<NewValue>administration</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>interco-voix-entrant</CurrentValue>
 			<TargePropertyName>Billing.InvoiceTemplate</TargePropertyName>
 			<NewValue>interco-voix-entrant</NewValue>
 		  </DynymicFieldMapper>
 		  <DynymicFieldMapper>
-			<CurrentValue>ADMINISTRATION</CurrentValue>
+			<CurrentValue>wifi-roaming</CurrentValue>
 			<TargePropertyName>Billing.InvoiceTemplate</TargePropertyName>
-			<NewValue>administration</NewValue>
+			<NewValue>wifi-roaming_en</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>wifi-roaming_en</CurrentValue>
+			<TargePropertyName>Billing.InvoiceTemplate</TargePropertyName>
+			<NewValue>wifi-roaming_en</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>wifi-roaming_fr</CurrentValue>
+			<TargePropertyName>Billing.InvoiceTemplate</TargePropertyName>
+			<NewValue>wifi-roaming_fr</NewValue>
 		  </DynymicFieldMapper>
 		</DynamicFieldsValues>
 	</FieldMapper>
