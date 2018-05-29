@@ -597,7 +597,7 @@ public class ComToSubscription extends MappingConstants{
 				BigDecimal icbValue = BigDecimal.valueOf(new Double(PRIX)/new Double(60))
 						.setScale(10, RoundingMode.HALF_UP);
 				xpcms.setUnitPrice(icbValue.toString());	
-			}else if(com.CODE_PRODUIT_RAFAEL.getValue().equals("DESTDUR")) {
+			}else if(com.CODE_PRODUIT_RAFAEL.getValue().equals("DESTVOL")) {
 				BigDecimal icbValue = BigDecimal.valueOf(new Double(PRIX)/new Double(1000))
 						.setScale(10, RoundingMode.HALF_UP);
 				xpcms.setUnitPrice(icbValue.toString());
