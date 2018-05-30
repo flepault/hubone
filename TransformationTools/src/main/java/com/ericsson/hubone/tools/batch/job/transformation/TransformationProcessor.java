@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.ericsson.hubone.tools.batch.data.cesame.bean.CesameRootBean;
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Cli;
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
+import com.ericsson.hubone.tools.batch.data.cesame.enumeration.CycleFacturation;
 import com.ericsson.hubone.tools.batch.data.ecb.EcbRootBean;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
 import com.ericsson.hubone.tools.batch.job.transformation.exception.EndpointException;
@@ -45,6 +46,10 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 			list.add(cliToAccount.createAccount((Cli)t));
 			if(((Cli)t).getCLIENT_FACTURE()!=null && ((Cli)t).getCLIENT_FACTURE().equals("Y"))
 				list.add(cliToAccount.createMinFactSouscription((Cli)t));
+			
+			if(((Cli)t).getFREQ_CYCLE_FACTU().equals(CycleFacturation.Bimestriel.toString()))
+				list.add(cliToAccount.createBimestrielSouscription((Cli)t));
+			
 			return list;
 		}else if (t instanceof Com){
 

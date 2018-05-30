@@ -168,6 +168,7 @@ public class ComToSubscription extends MappingConstants{
 			subscription = new GroupSubscription();
 			((GroupSubscription)subscription).setName(com.getCODE_CLIENT()+"_"+com.getCODE_PRODUIT_RAFAEL()+"_"+com.getINTEGRATION_ID());
 			((GroupSubscription)subscription).setDescription(com.getCODE_CLIENT()+"_"+com.getCODE_PRODUIT_RAFAEL()+"_"+com.getINTEGRATION_ID());
+			subscription.setEndDate(format.format(migrationHubOneFarEndDate));
 		}else
 			subscription = new SimpleSubscription();
 

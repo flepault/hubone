@@ -38,6 +38,23 @@ public class CliToAccount extends MappingConstants{
 
 		return subscription;
 	}
+	
+	public Subscription createBimestrielSouscription(Cli cli){
+
+		Subscription subscription = new SimpleSubscription();
+
+		subscription.setAccountId(cli.getCODE_CLIENT());
+		subscription.setStartDate(format.format(migrationHubOneSubscriptionStartDate));
+		subscription.setNewCOM(false);
+		subscription.setEndDate("");
+		subscription.setCommercialProdCode("");
+		subscription.setProductOfferingId("2MonthlyInvoice");
+		subscription.setMigrationId("");		
+
+		TransformationReport.getIntance().increaseSouscription();
+
+		return subscription;
+	}
 
 
 	public Account createAccount(Cli cli){		
