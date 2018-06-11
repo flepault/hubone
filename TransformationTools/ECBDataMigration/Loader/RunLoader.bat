@@ -254,6 +254,16 @@ if NOT "%nbOldGSubDB%" == "%nbFile%" (
 	echo Injection des Old GroupSubscriptions : OK 
 )
 
+echo "###############################################"
+echo "# DB BACKUP WITH ACCOUNT & OLD SUBS MIGRATED  #"
+echo "###############################################"
+sqlcmd -b -S %1 -U %8 -P %9 -Q "BACKUP DATABASE %2 TO DISK = '%4%2_WithAccounts&OldSubsMigrated.bak'"
+IF ERRORLEVEL 1 (
+	echo BackUp %2 : KO 
+	echo Verifier la cause des problemes avant de continuer !
+	pause
+)
+echo BackUp %2 : OK 
 
 echo "###############################################"
 echo "#       NON RECURRING CHARGE ADAPTER          #"

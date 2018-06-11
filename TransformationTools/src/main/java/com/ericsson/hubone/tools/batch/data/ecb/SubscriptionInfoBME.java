@@ -13,8 +13,8 @@ public class SubscriptionInfoBME extends EcbRootBean{
 			"quantity","catalogPrice","discountPercent","discountAmount","isSharedTariffGrid",
 			"targetTariffGridId","isOnDemand","sharedBucketScope","appliedPrice","siteAddressId",
 			"productIntegrationId","productId","parentProductId","media","commandId","attributs","groupId",
-			"serviceId","clientCommandRef","action","modifyAppliedDate","resiliateAppliedDate","createAppliedDate","subId","migrationId",
-			"modifyAppliedDateUsed","resiliateAppliedDateUsed","createAppliedDateUsed"};
+			"serviceId","clientCommandRef","subId","migrationId","action","modifyAppliedDate","resiliateAppliedDate","createAppliedDate",
+			"createAppliedDateUsed","resiliateAppliedDateUsed","modifyAppliedDateUsed"};
 	
 	public static String header(){
 		
@@ -22,8 +22,8 @@ public class SubscriptionInfoBME extends EcbRootBean{
 				+ "|Quantity|CatalogPrice|DiscountPercent|DiscountAmount|IsSharedTariffGrid|"
 				+ "TargetTariffGridId|IsOnDemand|SharedBucketScope|AppliedPrice|SiteAddressId|"
 				+ "ProductIntegrationId|ProductId|ParentProductId|Media|CommandId|Attributs|GroupId|"
-				+ "ServiceId|ClientCommandRef|Action|ModifyAppliedDate|ResiliateAppliedDate|CreateAppliedDate|SubId|MigrationId|"
-				+ "ModifyAppliedDateUsed|ResiliateAppliedDateUsed|CreateAppliedDateUsed";
+				+ "ServiceId|ClientCommandRef|SubId|MigrationId|Action|ModifyAppliedDate|ResiliateAppliedDate|CreateAppliedDate|"
+				+ "CreateAppliedDateUsed|ResiliateAppliedDateUsed|ModifyAppliedDateUsed|";
 		
 	}
 	public SubscriptionInfoBME() {
