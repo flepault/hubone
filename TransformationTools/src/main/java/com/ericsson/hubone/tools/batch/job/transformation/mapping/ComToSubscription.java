@@ -43,6 +43,8 @@ public class ComToSubscription extends MappingConstants{
 	private HashMap<String,String> destZoneIdtariffCodeMap = new HashMap<String,String>();
 
 	private HashMap<String,HashMap<String,String[]>> xpcmsMap = new HashMap<String,HashMap<String,String[]>>();
+	
+	private HashMap<String,String> tariffGridMigrationId = new HashMap<String,String>();
 
 	public ComToSubscription(@Value("${nb.month.back}")Integer nbMonthBack){
 		Calendar c = Calendar.getInstance();   // this takes current date
@@ -366,6 +368,7 @@ public class ComToSubscription extends MappingConstants{
 		listEcbRootBeans.add(ecbCOM);
 		listEcbRootBeans.add(subscriptionInfoBME);
 
+		tariffGridMigrationId.put(com.getID_SIEBEL_LIGNE()+"_"+com.getCODE_PRODUIT_RAFAEL(), ecbCOM.getMigrationId());
 
 		return listEcbRootBeans;
 	}
@@ -606,7 +609,7 @@ public class ComToSubscription extends MappingConstants{
 
 		XPCMS xpcms = new XPCMS();
 		xpcms.setiCBAccountId(ecbCOM.getAccountId());
-		xpcms.setMigrationId(ecbCOM.getMigrationId());
+		xpcms.setMigrationId(tariffGridMigrationId.get(PARENT_ID+"_"+GRILLE));
 		xpcms.setPoName(GRILLE);
 		if(com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
 			xpcms.setPiName("Tetra_PI");

@@ -17,6 +17,16 @@ set DB_OPTION_PASS=MetraTech1
 set NB_MONTH_BACK=1
 
 echo "###############################################"
+echo "##########      PREPARE FOLDER      ###########"
+echo "###############################################"
+if %PROD%==Y (
+	mkdir \\%DBServerName%\h$\MigrationTools\DBBackUp\
+	mkdir \\%DBServerName%\h$\Bulk	
+) else (
+	mkdir %BackUpFolder%
+)
+
+echo "###############################################"
 echo "########## RUN TRANSFORMATION TOOLS ###########"
 echo "###############################################"
 cd D:\\MigrationTools\\TransformationTools\\
@@ -27,6 +37,11 @@ echo "########### DEPLOY TRANSFORMED DATA ###########"
 echo "###############################################"
 cd D:\\MigrationTools\\TransformationTools\\output\\
 cmd /c D:\\MigrationTools\\TransformationTools\\output\\DeployOutputFile.bat
+
+if %PROD%==Y (
+	cp D:\MigrationTools\TransformationTools\output\EPBME.csv \\%DBServerName%\h$\Bulk\	
+	cp D:\MigrationTools\TransformationTools\output\SubscriptionInfoBME.csv \\%DBServerName%\h$\Bulk\
+) 
 
 echo "###############################################"
 echo "##### DEPLOY ECB MIGRATION TOOLS BINARIES #####"
@@ -50,6 +65,12 @@ cd D:\\MigrationTools\\ECBDataMigration\\Mapper\\output\\
 cmd /c DeployOutputFile.bat
 
 echo "###############################################"
+echo "########## RUN ECB LOADER ACCOUNTS  ###########"
+echo "###############################################"
+cd D:\\MigrationTools\\ECBDataMigration\\Loader\\
+cmd /c RunLoaderAccounts.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName1% %BackUpFolder% %PROD% %ECBServerName% %DBInstanceStagingName2%  %DB_OPTION_USER% %DB_OPTION_PASS% 
+
+echo "###############################################"
 echo "##      GENERATE CLOSING INTERVAL SCRIPT     ##"
 echo "###############################################"
 cd D:\\MigrationTools\\ECBDataMigration\\Loader\\
@@ -62,10 +83,16 @@ IF ERRORLEVEL 1 (
 echo Generate MigrationCloseInterval script : OK 
 
 echo "###############################################"
-echo "############### RUN ECB LOADER  ###############"
+echo "####### RUN ECB LOADER SUBSCRIPTIONS  #########"
 echo "###############################################"
 cd D:\\MigrationTools\\ECBDataMigration\\Loader\\
-cmd /c RunLoader.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName1% %BackUpFolder% %PROD% %ECBServerName% %DBInstanceStagingName2%  %DB_OPTION_USER% %DB_OPTION_PASS% 
+cmd /c RunLoaderSubscriptions.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName1% %BackUpFolder% %PROD% %ECBServerName% %DBInstanceStagingName2%  %DB_OPTION_USER% %DB_OPTION_PASS% 
+
+echo "###############################################"
+echo "#######      RUN ECB LOADER RATES     #########"
+echo "###############################################"
+cd D:\\MigrationTools\\ECBDataMigration\\Loader\\
+cmd /c RunLoaderRates.bat %DBServerName% %DBInstanceName% %DBInstanceStagingName1% %BackUpFolder% %PROD% %ECBServerName% %DBInstanceStagingName2%  %DB_OPTION_USER% %DB_OPTION_PASS% 
 
 echo "###############################################"
 echo "####### RUN ECB MIGRATION TOOLS REPORT ########"
@@ -90,5 +117,3 @@ echo "###############################################"
 
 rem cd D:\\MigrationTools\\
 rem cmd /c RunBilling.bat
-
-pause
