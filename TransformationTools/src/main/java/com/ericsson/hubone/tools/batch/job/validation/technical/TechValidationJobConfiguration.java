@@ -1,6 +1,8 @@
 package com.ericsson.hubone.tools.batch.job.validation.technical;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -17,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jms.core.JmsTemplate;
 
@@ -31,6 +32,8 @@ import com.ericsson.hubone.tools.batch.listener.StepListener;
 
 @Configuration
 public class TechValidationJobConfiguration{
+	
+	private List<String> resiliationCMDList;
 
 	@Autowired
 	public FilesNames filesNames;
@@ -106,66 +109,55 @@ public class TechValidationJobConfiguration{
 	}
 
 
-	public TechValidationProcessor<Cli> cliTechValidationProcessor(String inputFile,Boolean complete) {
-		if(complete)
-			return new TechValidationProcessor<Cli>(inputFile);
-		else
-			return new TechValidationProcessor<Cli>();
+	public TechValidationProcessor<Cli> cliTechValidationProcessor(String inputFile) {
+		return new TechValidationProcessor<Cli>(inputFile,resiliationCMDList);
 	}
 
-	public TechValidationProcessor<Com> comTechValidationProcessor(String inputFile,Boolean complete) {
-		if(complete)
-			return new TechValidationProcessor<Com>(inputFile);
-		else
-			return new TechValidationProcessor<Com>();
+	public TechValidationProcessor<Com> comTechValidationProcessor(String inputFile) {
+			return new TechValidationProcessor<Com>(inputFile,resiliationCMDList);
 	}
 
-	@Profile("full")
 	@Bean(name="technicalValidationJob")
 	public Job technicalValidationJob(JobListener jobListener,StepListener stepListener) {
 
-		return technicalValidationJob(jobListener,true,stepListener);								
-	}
-
-
-	public Job technicalValidationJob(JobListener jobListener,Boolean complete,StepListener stepListener) {
-
+		resiliationCMDList = new ArrayList<String>();
+		
 		JobBuilder builder = jobBuilderFactory.get("technicalValidationJob");
 		builder.incrementer(new RunIdIncrementer());
 		builder.listener(jobListener);
 
-		return builder.flow(technicalValidationStepCLI("technicalValidationClient",filesNames.CLI_CLIENT,complete,stepListener))
-				.next(technicalValidationStepCLI("technicalValidationRegroupCF",filesNames.CLI_REGROUPCF,complete,stepListener))
-				.next(technicalValidationStepCLI("technicalValidationCF",filesNames.CLI_CF,complete,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationADP",filesNames.COM_ADP,complete,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationAIRFRANCE",filesNames.COM_AIRFRANCE,complete,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationAVIS",filesNames.COM_AVIS,complete,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationRESTE",filesNames.COM_RESTE,complete,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationCMD_M1",filesNames.COM_CMD_M1,complete,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationCMD_M2",filesNames.COM_CMD_M2,complete,stepListener))
+		return builder.flow(technicalValidationStepCLI("technicalValidationClient",filesNames.CLI_CLIENT,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationRegroupCF",filesNames.CLI_REGROUPCF,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationCF",filesNames.CLI_CF,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationCMD_M1",filesNames.COM_CMD_M1,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationCMD_M2",filesNames.COM_CMD_M2,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationADP",filesNames.COM_ADP,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationAIRFRANCE",filesNames.COM_AIRFRANCE,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationAVIS",filesNames.COM_AVIS,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationRESTE",filesNames.COM_RESTE,stepListener))				
 				.end().build();								
 	}
 
-	public Step technicalValidationStepCLI(String name,String inputFile,Boolean complete,StepListener stepListener) {
+	public Step technicalValidationStepCLI(String name,String inputFile,StepListener stepListener) {
 
 
 		return stepBuilderFactory.get(name)
 				.listener(stepListener)
 				.<Cli, Cli> chunk(1)
 				.reader(cliReader(inputFile))
-				.processor(cliTechValidationProcessor(inputFile,complete))
+				.processor(cliTechValidationProcessor(inputFile))
 				.writer(writerCLI())
 				.taskExecutor((new TaskExecutorConfig()).taskExecutor())
 				.build();		
 	}	
 
-	public Step technicalValidationStepCOM(String name,String inputFile,Boolean complete,StepListener stepListener) {
+	public Step technicalValidationStepCOM(String name,String inputFile,StepListener stepListener) {
 
 		return stepBuilderFactory.get(name)
 				.listener(stepListener)
 				.<Com, Com> chunk(1)
 				.reader(comReader(inputFile))
-				.processor(comTechValidationProcessor(inputFile,complete))
+				.processor(comTechValidationProcessor(inputFile))
 				.writer(writerCOM())
 				.taskExecutor(taskExecutor.taskExecutor())
 				.build();		
@@ -178,9 +170,9 @@ public class TechValidationJobConfiguration{
 		builder.incrementer(new RunIdIncrementer());
 		builder.listener(jobListener);
 
-		return builder.flow(technicalValidationStepCLI("technicalValidationClient",filesNames.CLI_CLIENT,complete,stepListener))
-				.next(technicalValidationStepCLI("technicalValidationRegroupCF",filesNames.CLI_REGROUPCF,complete,stepListener))
-				.next(technicalValidationStepCLI("technicalValidationCF",filesNames.CLI_CF,complete,stepListener))
+		return builder.flow(technicalValidationStepCLI("technicalValidationClient",filesNames.CLI_CLIENT,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationRegroupCF",filesNames.CLI_REGROUPCF,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationCF",filesNames.CLI_CF,stepListener))
 				.end().build();								
 	}
 

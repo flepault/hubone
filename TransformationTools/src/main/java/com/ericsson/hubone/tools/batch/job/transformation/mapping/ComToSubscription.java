@@ -422,7 +422,7 @@ public class ComToSubscription extends MappingConstants{
 		rampBucket.setPiName("RampBucket");
 		rampBucket.setRateType("ICBRate");
 		rampBucket.setPriceListName("");
-		rampBucket.setAccQualGroup("Self");
+		rampBucket.setAccQualGroup("self");
 
 		if(com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
 			rampBucket.setUsgQualGroup("Tetra_UQG");
@@ -516,7 +516,7 @@ public class ComToSubscription extends MappingConstants{
 		rampBucket.setPiName("RampBucket");
 		rampBucket.setRateType("ICBRate");
 		rampBucket.setPriceListName("");
-		rampBucket.setAccQualGroup("Payees");
+		rampBucket.setAccQualGroup("descendants");
 
 		if(com.getCODE_PRODUIT_RAFAEL().contains("TETRA"))
 			rampBucket.setUsgQualGroup("Tetra_UQG");

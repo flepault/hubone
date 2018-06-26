@@ -1,9 +1,9 @@
 @echo off
 
-set DBServerName=SV652HTRAFDB1
+set DBServerName=RAFAELPROD
 set DBInstanceName=NetMeter
-set DBInstanceStagingName1=NetMeter_SV652HTRAFECB1
-set DBInstanceStagingName2=NetMeter_SV652HTRAFECB2
+set DBInstanceStagingName1=NetMeter_SP652HTRAFECB1
+set DBInstanceStagingName2=NetMeter_SP652HTRAFECB2
 
 set BackUpFolder=H:\MigrationTools\DBBackUp\
 
@@ -12,7 +12,7 @@ set PROD=Y
 
 set ECBServerName=SP652HTRAFECB1
 set DB_OPTION_USER=nmdbo
-set DB_OPTION_PASS=MetraTech@2017
+set DB_OPTION_PASS=F9SZe.9x.2.w
 
 set NB_MONTH_BACK=1
 

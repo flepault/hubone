@@ -66,7 +66,7 @@ public class TechnicalReport extends Report{
 		increaseError(str,technicalReportLine);
 	}
 
-	private void increaseError(String str, TechnicalReportLine technicalReportLine){
+	public void increaseError(String str, TechnicalReportLine technicalReportLine){
 		if(!errorRulesMap.containsKey(technicalReportLine.getField())){
 			errorRulesMap.put(technicalReportLine.getField(),new HashMap<String,Integer>());
 			errorRulesMap.get(technicalReportLine.getField()).put(str, 0);

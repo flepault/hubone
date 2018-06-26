@@ -31,6 +31,14 @@ SELECT'PRICELIST : '+ cast(count(id_pricelist) as varchar)
   FROM [dbo].[t_rsched] rs, [dbo].[t_pricelist] pl
   where rs.id_pricelist = pl.id_pricelist and n_type = 0  
   
+  -- Suivi Batch Valo  
+select sum(n_completed) as completed , sum(n_failed) as failed,
+sum(n_expected) as expected,  
+datediff(mi, min(dt_first), max(dt_last)) as minutes 
+from t_batch where id_batch > 2 and tx_status != 'F'
+  
+  select * from t_batch order by dt_last desc
+  
 IF OBJECT_ID('tempdb.dbo.#RecTmpTable', 'U') IS NOT NULL
   DROP TABLE #RecTmpTable; 
 select acu.*
