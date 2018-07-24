@@ -1,0 +1,34 @@
+Dans un Git Bash
+
+cd /D
+rm -rf D:/MigrationTools/RunMigration.log
+rm -rf D:/MigrationTools/TransformationTools/apache-activemq-5.15.0/data/kahadd/*
+rm -rf D:/MigrationTools/TransformationTools/apache-activemq-5.15.0/data/tmp/*
+rm -rf D:/MigrationTools/TransformationTools/output/*.csv
+rm -rf D:/MigrationTools/TransformationTools/input/CLI*.csv
+rm -rf D:/MigrationTools/TransformationTools/input/COM*.csv
+rm -rf D:/MigrationTools/Reports
+rm -rf D:/MigrationTools/ECBDataMigration/Mapper/input/Accounts/*.csv
+rm -rf D:/MigrationTools/ECBDataMigration/Mapper/input/Rates/*.csv
+rm -rf D:/MigrationTools/ECBDataMigration/Mapper/input/Subscriptions/*.csv
+rm -rf D:/MigrationTools/ECBDataMigration/Mapper/output/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Mapper/rejected/*.csv
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/ECBMigrationAPILog.txt
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/MigrationCloseInterval.bat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/Accounts/01ClientAccounts/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/Accounts/02RegroupCFAccounts/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/Accounts/03CFAccounts/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/Accounts/04EPAccounts/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/GroupSubscriptions/NewGroupSubscriptions/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/GroupSubscriptions/OldGroupSubscriptions/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/Rates/02ICBRates/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/Subscriptions/NewSubscriptions/*.dat
+rm -rf D:/MigrationTools/ECBDataMigration/Loader/Subscriptions/OldSubscriptions/*.dat
+rm -rf H:/Bulk/*.csv
+mv H:/MigrationTools/DBBackUp H:/MigrationTools/DBBackUpOld
+
+
+
+
+
+
