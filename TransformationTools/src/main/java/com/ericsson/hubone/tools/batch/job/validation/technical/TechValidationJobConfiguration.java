@@ -36,9 +36,6 @@ public class TechValidationJobConfiguration{
 	private List<String> resiliationCMDList;
 
 	@Autowired
-	public FilesNames filesNames;
-
-	@Autowired
 	public JobBuilderFactory jobBuilderFactory;
 
 	@Autowired
@@ -126,15 +123,15 @@ public class TechValidationJobConfiguration{
 		builder.incrementer(new RunIdIncrementer());
 		builder.listener(jobListener);
 
-		return builder.flow(technicalValidationStepCLI("technicalValidationClient",filesNames.CLI_CLIENT,stepListener))
-				.next(technicalValidationStepCLI("technicalValidationRegroupCF",filesNames.CLI_REGROUPCF,stepListener))
-				.next(technicalValidationStepCLI("technicalValidationCF",filesNames.CLI_CF,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationCMD_M1",filesNames.COM_CMD_M1,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationCMD_M2",filesNames.COM_CMD_M2,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationADP",filesNames.COM_ADP,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationAIRFRANCE",filesNames.COM_AIRFRANCE,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationAVIS",filesNames.COM_AVIS,stepListener))
-				.next(technicalValidationStepCOM("technicalValidationRESTE",filesNames.COM_RESTE,stepListener))				
+		return builder.flow(technicalValidationStepCLI("technicalValidationClient",FilesNames.CLI_CLIENT,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationRegroupCF",FilesNames.CLI_REGROUPCF,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationCF",FilesNames.CLI_CF,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationCMD_M1",FilesNames.COM_CMD_M1,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationCMD_M2",FilesNames.COM_CMD_M2,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationADP",FilesNames.COM_ADP,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationAIRFRANCE",FilesNames.COM_AIRFRANCE,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationAVIS",FilesNames.COM_AVIS,stepListener))
+				.next(technicalValidationStepCOM("technicalValidationRESTE",FilesNames.COM_RESTE,stepListener))				
 				.end().build();								
 	}
 
@@ -170,9 +167,9 @@ public class TechValidationJobConfiguration{
 		builder.incrementer(new RunIdIncrementer());
 		builder.listener(jobListener);
 
-		return builder.flow(technicalValidationStepCLI("technicalValidationClient",filesNames.CLI_CLIENT,stepListener))
-				.next(technicalValidationStepCLI("technicalValidationRegroupCF",filesNames.CLI_REGROUPCF,stepListener))
-				.next(technicalValidationStepCLI("technicalValidationCF",filesNames.CLI_CF,stepListener))
+		return builder.flow(technicalValidationStepCLI("technicalValidationClient",FilesNames.CLI_CLIENT,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationRegroupCF",FilesNames.CLI_REGROUPCF,stepListener))
+				.next(technicalValidationStepCLI("technicalValidationCF",FilesNames.CLI_CF,stepListener))
 				.end().build();								
 	}
 

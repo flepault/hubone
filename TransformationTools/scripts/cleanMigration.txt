@@ -2,7 +2,7 @@ Dans un Git Bash
 
 cd /D
 rm -rf D:/MigrationTools/RunMigration.log
-rm -rf D:/MigrationTools/TransformationTools/apache-activemq-5.15.0/data/kahadd/*
+rm -rf D:/MigrationTools/TransformationTools/apache-activemq-5.15.0/data/kahadb/*
 rm -rf D:/MigrationTools/TransformationTools/apache-activemq-5.15.0/data/tmp/*
 rm -rf D:/MigrationTools/TransformationTools/output/*.csv
 rm -rf D:/MigrationTools/TransformationTools/input/CLI*.csv

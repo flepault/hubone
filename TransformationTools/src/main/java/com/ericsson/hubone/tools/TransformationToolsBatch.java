@@ -15,28 +15,33 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import com.ericsson.hubone.tools.batch.job.superjob.FilesNames;
+
 @SpringBootApplication
 @EnableBatchProcessing
 public class TransformationToolsBatch {
 
 
 	public static void main(String[] args) throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException, IOException {
+
+		FilesNames.controlFilesNames();
+
 		ConfigurableApplicationContext ctx = SpringApplication.run(TransformationToolsBatch.class, args);
-		
-		 JobLauncher jobLauncher = ctx.getBean(JobLauncher.class);
-		 Job superJob = null;
-		 		 
-		 superJob = ctx.getBean("superJob",Job.class);   
-		 
-		 JobParameters jobParameters = new JobParametersBuilder()
-		            .toJobParameters();  
-		 
+
+		JobLauncher jobLauncher = ctx.getBean(JobLauncher.class);
+		Job superJob = null;
+
+		superJob = ctx.getBean("superJob",Job.class);   
+
+		JobParameters jobParameters = new JobParametersBuilder()
+				.toJobParameters();  
+
 		jobLauncher.run(superJob, jobParameters);
-		
-		 System.exit(0);
-		
+
+		System.exit(0);
+
 	}
-	
-	
-	
+
+
+
 }

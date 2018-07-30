@@ -211,8 +211,14 @@ public class ComToSubscription extends MappingConstants{
 		Subscription ecbCOM = createSouscription(com,false);
 		if(ecbCOM==null)
 			return null;	
-		ecbCOM.setMigrationId("");
+//		ecbCOM.setMigrationId("");
+//		listEcbRootBeans.add(ecbCOM);
+		
+		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
+		if(subscriptionInfoBME==null)
+			return null;
 		listEcbRootBeans.add(ecbCOM);
+		listEcbRootBeans.add(subscriptionInfoBME);
 
 		//		if(com.getCODE_CLIENT()!=null)				
 		//			CartoClient.getIntance().addSub(com.getCODE_CLIENT(),com.getCODE_PRODUIT_RAFAEL());
