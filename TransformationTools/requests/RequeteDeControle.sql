@@ -113,7 +113,7 @@ and rec.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invo
 						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_ABO_PRORATA_HORS_PERIODE',
 (select count(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc 
 and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
-						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'NB_USG',
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'NB_USG'
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC
 where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
 and invoice_string like 'L%'
@@ -131,7 +131,7 @@ and rec.id_sess in ( select id_sess from t_cust_usage_correction cor  where cor.
 0 as 'MONTANT_REM',
 0 as 'MONTANT_USG',
 0 as 'MONTANT_ABO_PRORATA_HORS_PERIODE',
-0 as 'NB_USG',
+0 as 'NB_USG'
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC 
 where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
 and invoice_string like 'R%'
