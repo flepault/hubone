@@ -14,7 +14,7 @@ public class Cli extends CesameRootBean implements Serializable {
 		Object[] o = new Object[]{this.ROW_ID_SIEBEL.getValue(),this.CODE_CLIENT.getValue(),this.NOM_CLIENT.getValue(),this.STATUT_CRM.getValue(),
 				this.ROLE_CLIENT.getValue(),this.NIV_HIERARCHIE_CLIENT.getValue(),this.NOM_GROUPE.getValue(), this.ID_GROUPE.getValue(),
 				this.NOM_CLIENT_PARENT.getValue(), this.CODE_CLIENT_PARENT.getValue(),this.CLIENT_FACTURE.getValue(),this.A_CONTROLLER.getValue(),
-				this.GROUPE_FACTURATION.getValue()};
+				this.GROUPE_FACTURATION.getValue(),this.FREQ_CYCLE_FACTU.getValue()};
 		
 		return o; 
 	}

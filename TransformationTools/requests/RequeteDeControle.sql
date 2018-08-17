@@ -1,3 +1,5 @@
+-- Suivi Migration
+
 SELECT 'CLIENT ACCOUNT : ' + cast(count(*) as varchar)
 FROM dbo.t_account 
 WHERE id_type in (12)
@@ -31,22 +33,25 @@ SELECT'PRICELIST : '+ cast(count(id_pricelist) as varchar)
   FROM [dbo].[t_rsched] rs, [dbo].[t_pricelist] pl
   where rs.id_pricelist = pl.id_pricelist and n_type = 0  
   
-  -- Suivi Batch Valo  
+-- Suivi Valorisation
+    
 select sum(n_completed) as completed , sum(n_failed) as failed,
 sum(n_expected) as expected,  
-datediff(mi, min(dt_first), max(dt_last)) as minutes 
+datediff(mi, min(dt_first), max(dt_last)) as minutes , (sum(n_completed)+sum(n_failed))*60/datediff(mi, min(dt_first), max(dt_last)) trx_hour
 from t_batch where id_batch > 2 and tx_status != 'F'
   
-  select * from t_batch order by dt_last desc
+select * from t_batch order by dt_last desc
+  
+-- KPI Facturation 
   
 IF OBJECT_ID('tempdb.dbo.#RecTmpTable', 'U') IS NOT NULL
   DROP TABLE #RecTmpTable; 
-select acu.*
+select acu.*,pv_flat.c_ProratedOnSubscription
 into #RecTmpTable
-from t_acc_usage acu , t_prod_view pv , t_usage_interval inter 
+from t_acc_usage acu , t_prod_view pv , t_usage_interval inter , t_pv_FlatRecurringCharge pv_flat
 where pv.id_view = acu.id_view and  pv.nm_name = 'metratech.com/FlatRecurringCharge' 
 and inter.tx_interval_status = 'O' and acu.id_usage_interval = inter.id_interval
-and GETDATE()> dt_end
+and GETDATE()> dt_end and pv_flat.id_sess = acu.id_sess and pv_flat.id_usage_interval = acu.id_usage_interval
 
 IF OBJECT_ID('tempdb.dbo.#NRecTmpTable', 'U') IS NOT NULL
   DROP TABLE #NRecTmpTable; 
@@ -86,11 +91,12 @@ from t_invoice
 --Chiffre d’affaire par CF
 select 'C'+avC.c_ClientRootId as 'CODE_CLIENT_GENERIQUE',
 IIF(acc1.id_type=12, 'C', 'F')+map.nm_login as 'CODE_CLIENT_FACTURE', 
+'REGULIERE' as 'TYPE_FACTURE',
 invoice_string as 'NO_FACTURE',
 invoice_amount as 'MONTANT_TOTAL' ,
 tax_ttl_amt as 'MONTANT_TVA',
 invoice_amount-tax_ttl_amt as 'MONTANT_TOTAL_HT',
-(select sum(amount) from #RecTmpTable rec where rec.id_acc = inv.id_acc 
+(select sum(amount) from #RecTmpTable rec where rec.id_acc = inv.id_acc and rec.c_ProratedOnSubscription=0
 and rec.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i  
 						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_ABO',
 (select sum(amount) from #NRecTmpTable nrec where nrec.id_acc = inv.id_acc 
@@ -101,13 +107,20 @@ and disc.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_inv
 						  where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_REM',
 (select sum(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc 
 and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
-						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG'
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG',
+(select sum(amount) from #RecTmpTable rec where rec.id_acc = inv.id_acc and rec.c_ProratedOnSubscription=1
+and rec.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i  
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_ABO_PRORATA_HORS_PERIODE',
+(select count(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc 
+and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'NB_USG',
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC
 where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
 and invoice_string like 'L%'
 union
 select 'C'+avC.c_ClientRootId as 'CODE_CLIENT_GENERIQUE',
 IIF(acc1.id_type=12, 'C', 'F')+map.nm_login as 'CODE_CLIENT_FACTURE', 
+'RATTRAPAGE' as 'TYPE_FACTURE',
 invoice_string as 'NO_FACTURE',
 invoice_amount as 'MONTANT_TOTAL' ,
 tax_ttl_amt as 'MONTANT_TVA',
@@ -116,7 +129,9 @@ invoice_amount-tax_ttl_amt as 'MONTANT_TOTAL_HT',
 and rec.id_sess in ( select id_sess from t_cust_usage_correction cor  where cor.id_invoice_num = inv.id_invoice_num)) as 'MONTANT_ABO',
 0 as 'MONTANT_FAS',
 0 as 'MONTANT_REM',
-0 as 'MONTANT_USG'
+0 as 'MONTANT_USG',
+0 as 'MONTANT_ABO_PRORATA_HORS_PERIODE',
+0 as 'NB_USG',
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC 
 where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
 and invoice_string like 'R%'

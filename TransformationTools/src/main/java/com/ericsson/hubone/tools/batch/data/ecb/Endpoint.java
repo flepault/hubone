@@ -4,14 +4,14 @@ public class Endpoint extends EcbRootBean{
 	
 	public static String[] column = new String[] {"userName","password","ancestorAccount","accountStatus","payerAccount",			
 			"accountStartDate","accountEndDate","payment_StartDate","payment_EndDate","dayOfMonth",
-			"firstDayOfMonth","secondDayOfMonth","internal_UsageCycleType","internal_TimezoneID","internal_Language",
+			"firstDayOfMonth","secondDayOfMonth","startDay","startMonth","startYear","internal_UsageCycleType","internal_TimezoneID","internal_Language",
 			"internal_Currency"						
 			};
 	
 	public static String header(){
 		
 		return "UserName|Password_|AncestorAccount|AccountStatus|PayerAccount|AccountStartDate|AccountEndDate"
-				+ "|Payment_StartDate|Payment_EndDate|DayOfMonth|FirstDayOfMonth|SecondDayOfMonth"
+				+ "|Payment_StartDate|Payment_EndDate|DayOfMonth|FirstDayOfMonth|SecondDayOfMonth|StartDay|StartMonth|StartYear"
 				+ "|UsageCycleType|TimezoneID|Language|Currency";
 		
 	}
@@ -30,6 +30,9 @@ public class Endpoint extends EcbRootBean{
 	String dayOfMonth="31";
 	String firstDayOfMonth;
 	String secondDayOfMonth;
+	String startDay;
+	String startMonth;
+	String startYear;
 	
 	String internal_UsageCycleType="Monthly";
 	String internal_TimezoneID="(GMT+01:00) Paris, Madrid, Amsterdam";
@@ -146,6 +149,24 @@ public class Endpoint extends EcbRootBean{
 	}
 	public void setNewEP(Boolean newEP) {
 		this.newEP = newEP;
+	}
+	public String getStartDay() {
+		return startDay;
+	}
+	public void setStartDay(String startDay) {
+		this.startDay = startDay;
+	}
+	public String getStartMonth() {
+		return startMonth;
+	}
+	public void setStartMonth(String startMonth) {
+		this.startMonth = startMonth;
+	}
+	public String getStartYear() {
+		return startYear;
+	}
+	public void setStartYear(String startYear) {
+		this.startYear = startYear;
 	}
 	
 

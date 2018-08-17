@@ -35,9 +35,9 @@ public class StorageProcessor<T extends CesameRootBean> implements ItemProcessor
 		try{
 			jdbcTemplate.update("insert into CLI(ROW_ID_SIEBEL,CODE_CLIENT,NOM_CLIENT,STATUT_CRM,ROLE_CLIENT,NIV_HIERARCHIE_CLIENT,"
 					+ "NOM_GROUPE, ID_GROUPE, NOM_CLIENT_PARENT, CODE_CLIENT_PARENT,"
-					+ "CLIENT_FACTURE,A_CONTROLLER,GROUPE_FACTURATION) values ("
+					+ "CLIENT_FACTURE,A_CONTROLLER,GROUPE_FACTURATION,FREQ_CYCLE_FACTU) values ("
 					+ "?,?,?,?,?,?,?,?,?,?,"
-					+ "?,?,?)", ((Cli)t).toSmallObjectArray());
+					+ "?,?,?,?)", ((Cli)t).toSmallObjectArray());
 		}catch (Exception e) {
 
 			if(((Cli)t).getNIV_HIERARCHIE_CLIENT().equals(HierarchieClient.Client.toString())){

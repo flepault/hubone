@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ericsson.hubone.tools.batch.data.cesame.bean.Com;
+import com.ericsson.hubone.tools.batch.data.cesame.enumeration.CycleFacturation;
 import com.ericsson.hubone.tools.batch.data.cesame.enumeration.HierarchieClient;
 import com.ericsson.hubone.tools.batch.data.ecb.Endpoint;
 import com.ericsson.hubone.tools.batch.data.ecb.EndpointBME;
@@ -83,12 +84,29 @@ public class CliToEndpoint extends MappingConstants{
 
 					Map<String,Object> ancestor = rows.get(0);
 
-					if(ancestor.get("CLIENT_FACTURE").equals("Y"))
+					if(ancestor.get("CLIENT_FACTURE").equals("Y")) {
 						ecbEP.setPayerAccount(ancestor.get("CODE_CLIENT").toString());
-					else
+						
+						if(ancestor.get("FREQ_CYCLE_FACTU").toString().equals(CycleFacturation.Trimestriel.toString())) {
+							ecbEP.setStartDay("1");
+							ecbEP.setFirstDayOfMonth("1");
+							ecbEP.setSecondDayOfMonth("2");
+							ecbEP.setStartMonth("1");
+						}else if(ancestor.get("FREQ_CYCLE_FACTU").toString().equals(CycleFacturation.Annuel.toString())) {
+							ecbEP.setStartDay("1");
+							ecbEP.setStartMonth("January");
+							ecbEP.setStartYear("2001");
+						}else if(ancestor.get("FREQ_CYCLE_FACTU").toString().equals(CycleFacturation.Semestriel.toString())) {
+							ecbEP.setStartDay("1");
+							ecbEP.setStartMonth("1");
+						}
+						
+					}else
 						code_client_parent = ancestor.get("CODE_CLIENT_PARENT").toString();
 				}
-			}		
+			}	
+			
+			
 
 
 			TransformationReport.getIntance().increaseEndpoint();

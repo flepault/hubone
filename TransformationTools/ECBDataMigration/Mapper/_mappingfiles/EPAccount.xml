@@ -61,7 +61,7 @@
 		  <DynymicFieldMapper>
 			<CurrentValue></CurrentValue>
 			<TargePropertyName>DayOfMonth</TargePropertyName>
-			<NewValue>1</NewValue>
+			<NewValue>31</NewValue>
 		  </DynymicFieldMapper>
 		 </DynamicFieldsValues>
 	</FieldMapper>
@@ -77,10 +77,51 @@
 	</FieldMapper>
 	<FieldMapper>
 		<FieldPossition>12</FieldPossition>
+		<PropertyName>StartDay</PropertyName>
+		<PropertyType>int</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>13</FieldPossition>
+		<PropertyName>StartMonth</PropertyName>
+		<PropertyType>enum</PropertyType>
+		<Prefix>Global/MonthOfTheYear/</Prefix>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>14</FieldPossition>
+		<PropertyName>StartYear</PropertyName>
+		<PropertyType>int</PropertyType>
+	</FieldMapper>
+	<FieldMapper>
+		<FieldPossition>15</FieldPossition>
 		<PropertyName>Internal.UsageCycleType</PropertyName>
 		<PropertyType>enum</PropertyType>
 		<Prefix>metratech.com/billingcycle/UsageCycleType/</Prefix>
 		<DynamicFieldsValues>
+		  <DynymicFieldMapper>
+			<CurrentValue>Mensuel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Monthly</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>Trimestriel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Quarterly</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>Annuel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Annually</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>Bimestriel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Monthly</NewValue>
+		  </DynymicFieldMapper>
+		  <DynymicFieldMapper>
+			<CurrentValue>Semestriel</CurrentValue>
+			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
+			<NewValue>Semi-Annually</NewValue>
+		  </DynymicFieldMapper>
 		  <DynymicFieldMapper>
 			<CurrentValue></CurrentValue>
 			<TargePropertyName>Internal.UsageCycleType</TargePropertyName>
@@ -89,7 +130,7 @@
 		</DynamicFieldsValues>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>13</FieldPossition>
+		<FieldPossition>16</FieldPossition>
 		<PropertyName>Internal.TimezoneID</PropertyName>
 		<PropertyType>enum</PropertyType>
 		<Prefix>Global/TimeZoneID/</Prefix>
@@ -102,7 +143,7 @@
 		</DynamicFieldsValues>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>14</FieldPossition>
+		<FieldPossition>17</FieldPossition>
 		<PropertyName>Internal.Language</PropertyName>
 		<PropertyType>enum</PropertyType>
 		<Prefix>Global/LanguageCode/</Prefix>
@@ -115,7 +156,7 @@
 		</DynamicFieldsValues>
 	</FieldMapper>
 	<FieldMapper>
-		<FieldPossition>15</FieldPossition>
+		<FieldPossition>18</FieldPossition>
 		<PropertyName>Internal.Currency</PropertyName>
 		<PropertyType>string</PropertyType>
 		<DynamicFieldsValues>
@@ -125,5 +166,5 @@
 			<NewValue>EUR</NewValue>
 		  </DynymicFieldMapper>
 		</DynamicFieldsValues>
-	</FieldMapper>	
+	</FieldMapper>
 </ArrayOfFieldMapper>
