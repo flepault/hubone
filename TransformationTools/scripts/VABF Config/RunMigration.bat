@@ -10,7 +10,7 @@ set BackUpFolder=H:\MigrationTools\DBBackUp\
 REM PROD=Y or N (N pour environnement Dev, Y pour environnement Prod/VP/VABF/Integration HubOne
 set PROD=Y
 
-set ECBServerName=SP652HTRAFECB1
+set ECBServerName=SV652HTRAFECB1
 set DB_OPTION_USER=nmdbo
 set DB_OPTION_PASS=MetraTech@2017
 

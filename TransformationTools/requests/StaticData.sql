@@ -29,7 +29,7 @@ from t_cust_tariffcode
 group by c_dest_zoneid,c_tariffcode
 
 -- Request XPCMS Mapping
-SELECT substring(bp.nm_name,18,36)+'|'+xp.c_TariffCode+'|'+ 
+SELECT distinct substring(bp.nm_name,18,36)+'|'+xp.c_TariffCode+'|'+ 
 CAST(xp.c_TimeCredit as VARCHAR)+'|'+ CAST(xp.c_UndividedPeriod as VARCHAR)+'|'+ 
 CAST(xp.c_ConnectionPrice as VARCHAR)+'|'+ xp.c_CodeGL+'|'+ xp.c_AnalysisCode
 FROM t_pt_XPCMS xp, t_rsched rs, t_base_props bp

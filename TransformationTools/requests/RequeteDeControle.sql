@@ -73,7 +73,7 @@ and GETDATE()> dt_end
 
 IF OBJECT_ID('tempdb.dbo.#UsageTmpTable', 'U') IS NOT NULL
   DROP TABLE #UsageTmpTable; 
-select acu.*
+select acu.*, pv.nm_name
 into #UsageTmpTable
 from t_acc_usage acu , t_prod_view pv , t_usage_interval inter 
 where pv.id_view = acu.id_view and 
@@ -86,7 +86,7 @@ and GETDATE()> dt_end
  
 --Chiffre d’affaire global HT et chiffre d’affaire global TTC.
 select sum(invoice_amount-tax_ttl_amt) as HT,sum(tax_ttl_amt) as TVA,sum(invoice_amount) as TTC 
-from t_invoice
+from t_invoice  where invoice_amount > 5
 
 --Chiffre d’affaire par CF
 select 'C'+avC.c_ClientRootId as 'CODE_CLIENT_GENERIQUE',
@@ -113,10 +113,31 @@ and rec.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invo
 						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_ABO_PRORATA_HORS_PERIODE',
 (select count(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc 
 and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
-						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'NB_USG'
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'NB_USG',
+(select sum(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc and usg.nm_name = 'hubone.fr/Voix'
+and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG_VOIX',
+(select sum(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc and usg.nm_name = 'hubone.fr/Tetra'
+and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG_TETRA',
+(select sum(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc and usg.nm_name = 'hubone.fr/Interco'
+and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG_INTERCO',
+(select sum(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc and usg.nm_name = 'hubone.fr/Operateur'
+and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG_OPERATEUR',							 					 						 
+(select sum(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc and usg.nm_name = 'hubone.fr/OrangeAbo'
+and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG_ORANGE_ABO',	
+(select sum(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc and usg.nm_name = 'hubone.fr/WifiRoaming'
+and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG_WIFI_ROAMING',	
+(select sum(amount) from #UsageTmpTable usg where usg.id_acc = inv.id_acc and usg.nm_name = 'hubone.fr/RampBucket'
+and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invoice i 
+						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG_RAMP_BUCKET'				 						 
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC
 where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
-and invoice_string like 'L%'
+and invoice_string like '%L%' and invoice_amount > 5
 union
 select 'C'+avC.c_ClientRootId as 'CODE_CLIENT_GENERIQUE',
 IIF(acc1.id_type=12, 'C', 'F')+map.nm_login as 'CODE_CLIENT_FACTURE', 
@@ -131,15 +152,34 @@ and rec.id_sess in ( select id_sess from t_cust_usage_correction cor  where cor.
 0 as 'MONTANT_REM',
 0 as 'MONTANT_USG',
 0 as 'MONTANT_ABO_PRORATA_HORS_PERIODE',
-0 as 'NB_USG'
+0 as 'NB_USG',
+0 as 'MONTANT_USG_VOIX',
+0 as 'MONTANT_USG_TETRA',
+0 as 'MONTANT_USG_INTERCO',
+0 as 'MONTANT_USG_OPERATEUR',							 					 						 
+0 as 'MONTANT_USG_ORANGE_ABO',	
+0 as 'MONTANT_USG_WIFI_ROAMING',	
+0 as 'MONTANT_USG_RAMP_BUCKET'
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC 
 where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
-and invoice_string like 'R%'
+and invoice_string like '%R%'    and invoice_amount > 5
+
+-- Détails Usage Destination par Factures
+select inv.invoice_string, pv.c_DestZoneId, sum(acu.amount)
+from t_acc_usage acu , 
+(select id_sess,c_DestZoneId  from t_pv_Voix union 
+select id_sess,c_DestZoneId from t_pv_Tetra) pv , t_usage_interval inter , t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC
+where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
+and inv.invoice_string like '%L%' and inv.invoice_amount > 5 and inter.tx_interval_status = 'O' and acu.id_usage_interval = inter.id_interval
+and acu.id_acc = inv.id_acc and pv.id_sess = acu.id_sess and acu.id_sess not in 
+( select id_sess from t_cust_usage_correction cor, t_invoice i  
+where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)
+group by inv.invoice_string, pv.c_DestZoneId order by inv.invoice_string
 
 --Chiffre d’affaire factures régulières et de régularisation
-select  'Facture régulières' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like 'L%'
+select  'Facture régulières' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like '%L%'  and invoice_amount > 5
 union
-select 'Facture de régularisation' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like 'R%'
+select 'Facture de régularisation' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like '%R%'   and invoice_amount > 5
 
 --Quantité d'ABO
 select count(*) as 'Quantité Abonnement' from t_svc_FlatRecurringCharge rec , t_usage_interval inter 
@@ -147,10 +187,10 @@ where inter.tx_interval_status = 'O' and rec.c__IntervalID = inter.id_interval
 and GETDATE()> dt_end
 
 --Quantité de facture régulière
-select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like 'L%'
+select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like '%L%'  and invoice_amount > 5
 
 --Quantité de facture de régularisation
-select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like 'R%'
+select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like '%R%' and invoice_amount > 5
 
 --Nombre d'entités facturables dans Rafael
 select count(*) as 'NB Entité Facturable' from t_av_Internal where c_Billable = 1
