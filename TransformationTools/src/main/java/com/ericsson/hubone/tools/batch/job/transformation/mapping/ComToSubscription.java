@@ -252,7 +252,7 @@ public class ComToSubscription extends MappingConstants{
 		listEcbRootBeans.add(subscriptionInfoBME);
 
 		BigDecimal icbValue = BigDecimal.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT()))
-				.setScale(2, RoundingMode.HALF_UP);
+				.setScale(10, RoundingMode.HALF_UP);
 
 		if(icbValue.doubleValue() > 0) {
 
@@ -287,7 +287,7 @@ public class ComToSubscription extends MappingConstants{
 		listEcbRootBeans.add(subscriptionInfoBME);
 
 		BigDecimal icbValue = BigDecimal.valueOf(new Double(com.getPRIX_APPLIQUE_MANUEL())*new Double(com.getQUANTITE_PRODUIT()))
-				.setScale(2, RoundingMode.HALF_UP);
+				.setScale(10, RoundingMode.HALF_UP);
 
 		if(icbValue.doubleValue() > 0) {
 
