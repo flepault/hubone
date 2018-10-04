@@ -38,7 +38,9 @@ SELECT'PRICELIST : '+ cast(count(id_pricelist) as varchar)
 select sum(n_completed) as completed , sum(n_failed) as failed,
 sum(n_expected) as expected,  
 datediff(mi, min(dt_first), max(dt_last)) as minutes , (sum(n_completed)+sum(n_failed))*60/datediff(mi, min(dt_first), max(dt_last)) trx_hour
-from t_batch where id_batch > 2 and tx_status != 'F'
+from t_batch where id_batch != 2 and tx_namespace='pipeline' and tx_status != 'F' 
+
+
   
 select * from t_batch order by dt_last desc
   

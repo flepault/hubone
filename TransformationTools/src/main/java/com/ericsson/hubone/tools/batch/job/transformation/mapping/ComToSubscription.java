@@ -765,7 +765,7 @@ public class ComToSubscription extends MappingConstants{
 		return listEcbRootBeans;
 	}
 
-	public List<EcbRootBean> createIntercoIn(Com com,Endpoint endpoint) {
+	public List<EcbRootBean> createIntercoIn(Com com){//,Endpoint endpoint) {
 		List<EcbRootBean> listEcbRootBeans = new ArrayList<EcbRootBean>();
 		Subscription ecbCOM = createSouscription(com,false);
 		if(ecbCOM==null)
@@ -773,11 +773,11 @@ public class ComToSubscription extends MappingConstants{
 		//		if(endpoint!=null && endpoint.getUserName()!=null)				
 		//			CartoClient.getIntance().addSub(endpoint.getUserName(),com.getCODE_PRODUIT_RAFAEL());
 
-		if(endpoint==null) {
+		/*if(endpoint==null) {
 			errorCOM(com,"Aucun endpoint détecté pour la souscription d'interco in");
 			return null;
 		}else
-			ecbCOM.setAccountId(endpoint.getUserName());
+			ecbCOM.setAccountId(endpoint.getUserName());*/
 
 		SubscriptionInfoBME subscriptionInfoBME = createSubcriptionInfoBME(com, ecbCOM.getMigrationId());		
 		if(subscriptionInfoBME==null)

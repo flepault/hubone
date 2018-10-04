@@ -97,7 +97,7 @@ public class TransformationProcessor<T extends CesameRootBean,V extends EcbRootB
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("WIFIROAM")){
 					ecbRootBeanList = comToSubscription.createWifiRoam(com,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("INTERCOIN")){
-					ecbRootBeanList = comToSubscription.createIntercoIn(com,endpoint);
+					ecbRootBeanList = comToSubscription.createIntercoIn(com);//,endpoint);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORP")){
 					ecbRootBeanList = comToSubscription.createForfaitPartage(com);
 				}else if(com.getCODE_PRODUIT_RAFAEL().startsWith("FORL")){
