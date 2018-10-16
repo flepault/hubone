@@ -164,6 +164,7 @@ IF ERRORLEVEL 1 (
 )
 echo Maj des Endpoint BME : OK 
 
+
 echo "###############################################"
 echo "#       DB BACKUP WITH ACCOUNT MIGRATED       #"
 echo "###############################################"

@@ -194,6 +194,15 @@ IF ERRORLEVEL 1 (
 )
 echo Maj des c_GroupId dans la BME Subscriptions : OK 
 
+
+sqlcmd -b -S %1 -U %8 -P %9 -Q "update %2.dbo.t_be_hub_pdc_serviceidaudit set c_StartDate = (select top 1 c_CreateAppliedDate from %2.dbo.t_be_hub_cat_subscriptionin bmeSub where c_Media is not null and c_Media != '' and SUBSTRING(c_Username,CHARINDEX('_',c_Username,0)+1,LEN(c_Username)) = bmeSub.c_ServiceId order by c_CreateAppliedDate ) ,c_StartDateUsed = (select top 1 c_CreateAppliedDateUsed from %2.dbo.t_be_hub_cat_subscriptionin bmeSub where c_Media is not null and c_Media != '' and SUBSTRING(c_Username,CHARINDEX('_',c_Username,0)+1,LEN(c_Username)) = bmeSub.c_ServiceId order by c_CreateAppliedDate )"
+IF ERRORLEVEL 1 (
+	echo Maj des Endpoint BME : KO 
+	echo Verifier la cause des problemes avant de continuer !
+	pause
+)
+echo Maj des Endpoint BME : OK 
+
 echo "###############################################"
 echo "#   DB BACKUP ACCOUNT & SUBS/NO ICB MIGRATED  #"
 echo "###############################################"
