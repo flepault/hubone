@@ -363,12 +363,12 @@ public class ComToSubscription extends MappingConstants{
 				return null;
 			}else {
 				ecbCOM.setAccountId(endpoint.getUserName());
-				subscriptionInfoBME.setIsSharedTariffGrid("N");	
+				subscriptionInfoBME.setIsSharedTariffGrid("F");	
 				//subscriptionInfoBME.setGroupId(groupId);
 			}
 
 		}else {
-			subscriptionInfoBME.setIsSharedTariffGrid("Y");		
+			subscriptionInfoBME.setIsSharedTariffGrid("T");		
 		}
 
 		listEcbRootBeans.add(ecbCOM);
