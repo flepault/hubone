@@ -139,7 +139,7 @@ and usg.id_sess not in ( select id_sess from t_cust_usage_correction cor, t_invo
 						 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)) as 'MONTANT_USG_RAMP_BUCKET'				 						 
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC
 where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
-and invoice_string like '%L%' and invoice_amount > 5
+and invoice_string like '%L%' 
 union
 select 'C'+avC.c_ClientRootId as 'CODE_CLIENT_GENERIQUE',
 IIF(acc1.id_type=12, 'C', 'F')+map.nm_login as 'CODE_CLIENT_FACTURE', 
@@ -164,7 +164,7 @@ and rec.id_sess in ( select id_sess from t_cust_usage_correction cor  where cor.
 0 as 'MONTANT_USG_RAMP_BUCKET'
 from t_invoice inv, t_account_mapper map, t_account acc1, t_av_Common avC 
 where inv.id_acc = map.id_acc and map.id_acc = acc1.id_acc and acc1.id_acc = avC.id_acc
-and invoice_string like '%R%'    and invoice_amount > 5
+and invoice_string like '%R%'    
 
 -- Détails Usage Destination par Factures
 select inv.invoice_string, pv.c_DestZoneId, sum(acu.amount)
@@ -178,10 +178,26 @@ and acu.id_acc = inv.id_acc and pv.id_sess = acu.id_sess and acu.id_sess not in
 where cor.id_invoice_num = i.id_invoice_num and i.id_acc = inv.id_acc and i.id_invoice_num!=inv.id_invoice_num)
 group by inv.invoice_string, pv.c_DestZoneId order by inv.invoice_string
 
---Chiffre d’affaire factures régulières et de régularisation
-select  'Facture régulières' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like '%L%'  and invoice_amount > 5
+select pv.c_TariffCode, pv.c_ProductCode, sum(usg.amount),count(usg.amount),sum(pv.c_RatedDuration)  
+from t_pv_Voix pv, t_acc_usage usg where usg.id_sess = pv.id_sess
+group by pv.c_TariffCode, pv.c_ProductCode
 union
-select 'Facture de régularisation' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like '%R%'   and invoice_amount > 5
+select pv.c_TariffCode, pv.c_ProductCode, sum(usg.amount),count(usg.amount),sum(pv.c_RatedDuration)  
+from t_pv_Tetra pv, t_acc_usage usg where usg.id_sess = pv.id_sess
+group by pv.c_TariffCode, pv.c_ProductCode
+
+select 'INTERCO', map.nm_login , sum(usg.amount),count(usg.amount)  , sum(pv.c_Duration)
+from t_pv_Interco pv, t_acc_usage usg, t_account_mapper map where usg.id_sess = pv.id_sess and usg.id_acc = map.id_acc
+group by map.nm_login 
+union
+select 'WIFIROAM', map.nm_login , sum(usg.amount),count(usg.amount)  , sum(pv.c_Duration)
+from t_pv_WifiRoaming pv, t_acc_usage usg, t_account_mapper map where usg.id_sess = pv.id_sess and usg.id_acc = map.id_acc
+group by map.nm_login 
+
+--Chiffre d’affaire factures régulières et de régularisation
+select  'Facture régulières' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like '%L%'  
+union
+select 'Facture de régularisation' ,COALESCE(sum(invoice_amount),0) as 'Montant TTC' from t_invoice where invoice_string like '%R%'   
 
 --Quantité d'ABO
 select count(*) as 'Quantité Abonnement' from t_svc_FlatRecurringCharge rec , t_usage_interval inter 
@@ -189,10 +205,10 @@ where inter.tx_interval_status = 'O' and rec.c__IntervalID = inter.id_interval
 and GETDATE()> dt_end
 
 --Quantité de facture régulière
-select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like '%L%'  and invoice_amount > 5
+select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like '%L%'  
 
 --Quantité de facture de régularisation
-select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like '%R%' and invoice_amount > 5
+select count(*) as 'Quantité de Facture' from t_invoice where invoice_string like '%R%' 
 
 --Nombre d'entités facturables dans Rafael
 select count(*) as 'NB Entité Facturable' from t_av_Internal where c_Billable = 1

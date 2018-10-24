@@ -115,7 +115,7 @@ public class ComToSubscription extends MappingConstants{
 		subscriptionInfoBME.setCatalogPrice(com.getPRIX_CATALOGUE());
 		subscriptionInfoBME.setDiscountPercent(com.getPOURCENT_REMISE_MANUEL());
 		subscriptionInfoBME.setDiscountAmount(com.getMONTANT_REMISE_MANUEL());
-		subscriptionInfoBME.setIsOnDemand("N");		
+		subscriptionInfoBME.setIsOnDemand("F");		
 		subscriptionInfoBME.setAppliedPrice(com.getPRIX_APPLIQUE_MANUEL());
 		subscriptionInfoBME.setSiteAddressId(com.getADRESSE_ID());
 		subscriptionInfoBME.setProductIntegrationId(com.getINTEGRATION_ID());
